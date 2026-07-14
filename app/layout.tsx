@@ -59,7 +59,9 @@ export default async function RootLayout({
         } as React.CSSProperties
       }
     >
-      <body className="min-h-full flex flex-col">
+      {/* suppressHydrationWarning: extension trình duyệt (IDM...) hay chèn
+          attribute vào <body> trước khi React hydrate — không phải lỗi app */}
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
         <ThemeProvider>
           {children}
           <Toaster richColors position="top-center" />
