@@ -50,6 +50,10 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 
 ## 3. Deploy production trên Windows Server
 
+> **Hướng dẫn deploy VPS đầy đủ từng bước xem tại [DEPLOY.md](DEPLOY.md)** — kèm script tự động
+> `scripts/deploy-first-time.ps1` (cài lần đầu), `scripts/update.ps1` (cập nhật code) và
+> `scripts/backup.ps1` (sao lưu hằng ngày). Phần dưới đây là bản tóm tắt.
+
 ```powershell
 # Build bản production
 npm install
