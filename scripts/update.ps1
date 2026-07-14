@@ -16,7 +16,9 @@ Write-Host "[2/4] npm install..." -ForegroundColor Cyan
 npm install
 if ($LASTEXITCODE -ne 0) { Write-Error "npm install thất bại" }
 
-Write-Host "[3/4] prisma migrate + build..." -ForegroundColor Cyan
+Write-Host "[3/4] prisma generate + migrate + build..." -ForegroundColor Cyan
+npx prisma generate
+if ($LASTEXITCODE -ne 0) { Write-Error "prisma generate thất bại" }
 npx prisma migrate deploy
 if ($LASTEXITCODE -ne 0) { Write-Error "prisma migrate thất bại" }
 npm run build

@@ -57,6 +57,7 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 ```powershell
 # Build bản production
 npm install
+npx prisma generate
 npx prisma migrate deploy
 npx prisma db seed        # chỉ lần đầu
 npm run build
@@ -69,16 +70,11 @@ npm start                  # mặc định cổng 3000
 
 1. **Đưa dữ liệu ra ngoài thư mục code** để cập nhật code không đụng dữ liệu:
    ```
-   DATABASE_URL="file:D:/appdata/finance.db"
-   UPLOAD_DIR="D:/appdata/uploads"
+   DATABASE_URL="file:C:/appdata/finance.db"
+   UPLOAD_DIR="C:/appdata/uploads"
    ```
-2. **Chạy như service** (tự khởi động lại khi reboot): dùng [PM2](https://pm2.keymetrics.io/) (`pm2 start npm --name finance -- start`) hoặc [NSSM](https://nssm.cc/) để đăng ký `npm start` thành Windows Service.
-3. **Mở qua domain + HTTPS:** đặt reverse proxy trước app — IIS (module ARR + URL Rewrite) hoặc [Caddy](https://caddyserver.com/) (tự lo chứng chỉ Let's Encrypt, cấu hình 2 dòng):
-   ```
-   ten-mien-cua-ban.com {
-       reverse_proxy localhost:3000
-   }
-   ```
+2. **Chạy như service** (tự khởi động lại khi reboot): dùng [NSSM](https://nssm.cc/) để đăng ký `npm start` thành Windows Service.
+3. **Mở qua domain + HTTPS:** dùng **IIS** (có sẵn trong Windows Server) làm reverse proxy — bật module ARR + URL Rewrite, rồi xin chứng chỉ miễn phí bằng [win-acme](https://www.win-acme.com/). Xem hướng dẫn từng bước trong [DEPLOY.md](DEPLOY.md).
 4. **Đổi `APP_PASSWORD` thành mật khẩu mạnh trước khi mở public.** Đổi mật khẩu sẽ tự đăng xuất mọi phiên cũ.
 
 ## 4. Sao lưu (bắt buộc gồm CẢ HAI)

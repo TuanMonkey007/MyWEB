@@ -38,9 +38,11 @@ APP_PASSWORD="$pw"
     Write-Host "[3/5] .env đã tồn tại — giữ nguyên" -ForegroundColor Yellow
 }
 
-# --- 4. Cài deps, tạo database, seed, build ---
+# --- 4. Cài deps, generate Prisma Client, tạo database, seed, build ---
 npm install
 if ($LASTEXITCODE -ne 0) { Write-Error "npm install thất bại" }
+npx prisma generate
+if ($LASTEXITCODE -ne 0) { Write-Error "prisma generate thất bại" }
 npx prisma migrate deploy
 if ($LASTEXITCODE -ne 0) { Write-Error "prisma migrate thất bại" }
 npx prisma db seed
@@ -65,7 +67,7 @@ if (Test-Path $nssm) {
         Write-Host "[5/5] Đã cài và chạy service MyWEB" -ForegroundColor Green
     }
     Write-Host ""
-    Write-Host "Kiểm tra: http://localhost:3000 — tiếp theo làm Bước 3 (Caddy) trong DEPLOY.md" -ForegroundColor Cyan
+    Write-Host "Kiểm tra: http://localhost:3000 — tiếp theo làm Bước 3 (domain + HTTPS qua IIS) trong DEPLOY.md" -ForegroundColor Cyan
 } else {
     Write-Host "[5/5] Chưa có C:\tools\nssm.exe — tải tại https://nssm.cc/download rồi chạy lại script." -ForegroundColor Yellow
     Write-Host "      Tạm thời có thể chạy tay: npm start" -ForegroundColor Yellow
