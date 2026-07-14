@@ -32,6 +32,16 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# database & uploads (backup riêng, không commit)
+/prisma/*.db
+/prisma/*.db-journal
+/uploads
+
+# cấu hình cục bộ Claude Code
+.claude/settings.local.json
+.claude/.claude-backup
 
 # vercel
 .vercel

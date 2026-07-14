@@ -1,0 +1,201 @@
+// Schema theo mục 3 của BA-quan-ly-tai-chinh.md
+// SQLite không hỗ trợ enum/Decimal trong Prisma nên:
+// - Wallet.type nhận: CASH | BANK | EWALLET | INVEST (validate ở tầng app)
+// - Category.kind nhận: EXPENSE | INCOME
+// - Tiền VNĐ lưu Float nhưng luôn là số nguyên (BR-7); USD/tỷ giá có thập phân
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Wallet {
+  id             String   @id @default(cuid())
+  name           String
+  type           String
+  initialBalance Float    @default(0)
+  balanceUSD     Float?
+  exchangeRate   Float?
+  adjustment     Float    @default(0)
+  notes          String?
+  url            String?
+  createdAt      DateTime @default(now())
+
+  expenses      Expense[]
+  incomes       Income[]
+  transfersFrom Transfer[] @relation("TransferFrom")
+  transfersTo   Transfer[] @relation("TransferTo")
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String
+  kind String
+
+  expenses Expense[]
+  incomes  Income[]
+
+  @@unique([name, kind])
+}
+
+model Expense {
+  id         String   @id @default(cuid())
+  title      String
+  amount     Float
+  occurredAt DateTime
+  imagePath  String?
+  createdAt  DateTime @default(now())
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  walletId   String
+  wallet     Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([occurredAt])
+  @@index([walletId])
+}
+
+model Income {
+  id         String   @id @default(cuid())
+  title      String
+  amount     Float
+  occurredAt DateTime
+  imagePath  String?
+  createdAt  DateTime @default(now())
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  walletId   String
+  wallet     Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([occurredAt])
+  @@index([walletId])
+}
+
+model Transfer {
+  id         String   @id @default(cuid())
+  title      String?
+  amount     Float
+  occurredAt DateTime
+  imagePath  String?
+  createdAt  DateTime @default(now())
+
+  fromWalletId String
+  fromWallet   Wallet @relation("TransferFrom", fields: [fromWalletId], references: [id], onDelete: Cascade)
+  toWalletId   String
+  toWallet     Wallet @relation("TransferTo", fields: [toWalletId], references: [id], onDelete: Cascade)
+
+  @@index([occurredAt])
+}
+
+// ===== Module Đề xuất mua hàng =====
+// Số đã chi/còn lại của quỹ KHÔNG lưu — tính động trong lib/procurement.ts:
+// còn lại = Σ(phân bổ 12 tháng) − Σ(actualAmount các hạng mục PURCHASED)
+
+model BudgetYear {
+  id        String   @id @default(cuid())
+  year      Int      @unique
+  title     String?
+  notes     String?
+  createdAt DateTime @default(now())
+
+  groups    BudgetGroup[]
+  proposals Proposal[]
+}
+
+model BudgetGroup {
+  id           String     @id @default(cuid())
+  budgetYearId String
+  budgetYear   BudgetYear @relation(fields: [budgetYearId], references: [id], onDelete: Cascade)
+  code         String // "01".."09"
+  name         String
+  sortOrder    Int        @default(0)
+
+  funds BudgetFund[]
+
+  @@unique([budgetYearId, code])
+}
+
+// Quỹ = dòng khoản mục chi tiết trong BM02B, phân bổ theo 12 tháng (VNĐ)
+model BudgetFund {
+  id        String      @id @default(cuid())
+  groupId   String
+  group     BudgetGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name      String
+  m1        Float       @default(0)
+  m2        Float       @default(0)
+  m3        Float       @default(0)
+  m4        Float       @default(0)
+  m5        Float       @default(0)
+  m6        Float       @default(0)
+  m7        Float       @default(0)
+  m8        Float       @default(0)
+  m9        Float       @default(0)
+  m10       Float       @default(0)
+  m11       Float       @default(0)
+  m12       Float       @default(0)
+  notes     String?
+  sortOrder Int         @default(0)
+
+  items ProposalItem[]
+}
+
+// Đợt đề xuất mua hàng (phiếu CT.MH-QT-01/BM01)
+model Proposal {
+  id           String     @id @default(cuid())
+  budgetYearId String
+  budgetYear   BudgetYear @relation(fields: [budgetYearId], references: [id], onDelete: Cascade)
+  number       Int // STT đợt trong năm
+  title        String?
+  proposedAt   DateTime
+  notes        String?
+  createdAt    DateTime   @default(now())
+
+  items       ProposalItem[]
+  attachments Attachment[]
+
+  @@unique([budgetYearId, number])
+}
+
+model ProposalItem {
+  id             String     @id @default(cuid())
+  proposalId     String
+  proposal       Proposal   @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  fundId         String
+  fund           BudgetFund @relation(fields: [fundId], references: [id])
+  name           String
+  unit           String? // ĐVT
+  quantity       Float      @default(1)
+  specs          String? // yêu cầu kỹ thuật
+  reason         String? // lý do đề xuất
+  status         String     @default("PENDING") // PENDING | PURCHASED | CANCELLED
+  proposedAmount Float      @default(0)
+  actualAmount   Float? // tiền mua thực tế (VAT), chỉ khi PURCHASED
+  purchasedAt    DateTime?
+  notes          String?
+  createdAt      DateTime   @default(now())
+
+  attachments Attachment[]
+
+  @@index([fundId])
+  @@index([status])
+}
+
+// File bằng chứng: cấp phiếu (bản ký) hoặc cấp hạng mục (hóa đơn, ảnh lỗi...)
+model Attachment {
+  id        String   @id @default(cuid())
+  fileName  String // tên file gốc
+  filePath  String // {uuid}.{ext} trong UPLOAD_DIR/files
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+
+  proposalId String?
+  proposal   Proposal?     @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  itemId     String?
+  item       ProposalItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}

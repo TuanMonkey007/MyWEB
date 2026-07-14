@@ -1,0 +1,1249 @@
+{
+ "year": 2026,
+ "title": "Kế hoạch ngân sách hoạt động phòng CNTT 2026 (BM02B)",
+ "groups": [
+  {
+   "code": "01",
+   "name": "Chi phí Vận hành hạ tầng IT Miền Bắc",
+   "funds": [
+    {
+     "name": "Chi Phí Internet Yên Phong",
+     "monthly": [
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000,
+      2200000
+     ]
+    },
+    {
+     "name": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "monthly": [
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000
+     ]
+    },
+    {
+     "name": "Chi Phí mua mới máy tính, ổ cứng, Sim 5G Yên Phong",
+     "monthly": [
+      6000000,
+      0,
+      30000000,
+      2000000,
+      30000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí gia hạn giấy phép tường lửa Yên Phong",
+     "monthly": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      42000000,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí licence phần mềm diệt virus (50 máy tính)",
+     "monthly": [
+      0,
+      0,
+      37500000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí bảo trì, sửa chữa hệ thống cáp mạng, camera Yên Phong",
+     "monthly": [
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000
+     ]
+    },
+    {
+     "name": "Dự phòng máy tính, màn hình",
+     "monthly": [
+      0,
+      17500000,
+      0,
+      17500000,
+      0,
+      0,
+      17500000,
+      0,
+      0,
+      17500000,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Camera lắp mới sản xuất tầng 1,2",
+     "monthly": [
+      0,
+      0,
+      7500000,
+      0,
+      2500000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Dự phòng và mua mới máy in",
+     "monthly": [
+      5000000,
+      0,
+      5000000,
+      0,
+      0,
+      5000000,
+      0,
+      0,
+      0,
+      5000000,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí mực in, thuê máy photo",
+     "monthly": [
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000
+     ]
+    },
+    {
+     "name": "Chi phí lắp đặt mạng, camera cho kho thành phẩm thuê mới",
+     "monthly": [
+      0,
+      0,
+      20000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Camera dự phòng",
+     "monthly": [
+      2000000,
+      4000000,
+      0,
+      4000000,
+      0,
+      2000000,
+      0,
+      4000000,
+      0,
+      2000000,
+      2000000,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "code": "02",
+   "name": "Chi phí Vận hành hạ tầng IT HO",
+   "funds": [
+    {
+     "name": "Chi Phí Internet Định Công",
+     "monthly": [
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000,
+      7500000
+     ]
+    },
+    {
+     "name": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "monthly": [
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000,
+      8000000
+     ]
+    },
+    {
+     "name": "Chi phí mua mới máy tính xách tay",
+     "monthly": [
+      20000000,
+      0,
+      0,
+      20000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí internet, hệ thống camera",
+     "monthly": [
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000,
+      2000000
+     ]
+    },
+    {
+     "name": "Dự phòng máy tính, màn hình.",
+     "monthly": [
+      15000000,
+      15000000,
+      0,
+      3000000,
+      18000000,
+      0,
+      0,
+      18000000,
+      0,
+      3000000,
+      18000000,
+      0
+     ]
+    },
+    {
+     "name": "An toàn & bảo mật thông tin Định Công",
+     "monthly": [
+      0,
+      0,
+      75000000,
+      42000000,
+      0,
+      53000000,
+      0,
+      0,
+      42000000,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí thay mực in, Cartridge mực.",
+     "monthly": [
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000,
+      3500000
+     ]
+    },
+    {
+     "name": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "monthly": [
+      0,
+      0,
+      0,
+      12000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8200000,
+      0
+     ]
+    },
+    {
+     "name": "Dịch vụ mail hóa đơn điện tử",
+     "monthly": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      47000000,
+      0
+     ]
+    },
+    {
+     "name": "Dịch vụ xây dựng Exchange cluster Mail, Oracle datagard cho phần mềm nhân sự",
+     "monthly": [
+      0,
+      0,
+      0,
+      22000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí công tác",
+     "monthly": [
+      0,
+      12000000,
+      0,
+      0,
+      12000000,
+      0,
+      0,
+      12000000,
+      0,
+      0,
+      12000000,
+      0
+     ]
+    },
+    {
+     "name": "Máy tính bảng kênh GT",
+     "monthly": [
+      0,
+      0,
+      1000000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Tablet dự phòng.",
+     "monthly": [
+      0,
+      5000000,
+      5000000,
+      0,
+      5000000,
+      0,
+      5000000,
+      0,
+      5000000,
+      0,
+      5000000,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí thuê 3 máy máy photo",
+     "monthly": [
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000,
+      9000000
+     ]
+    },
+    {
+     "name": "Chi phí máy in dự phòng",
+     "monthly": [
+      0,
+      0,
+      5000000,
+      0,
+      0,
+      5000000,
+      0,
+      5000000,
+      0,
+      5000000,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Hệ thống camera xưởng sản xuất",
+     "monthly": [
+      0,
+      42200000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Máy chủ dự phòng, ổ cứng máy chủ",
+     "monthly": [
+      0,
+      86000000,
+      0,
+      280000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "code": "03",
+   "name": "Chi phí Vận hành hạ tầng IT Chi nhánh Miền Nam",
+   "funds": [
+    {
+     "name": "Sửa chữa, mua mới thay thế linh kiện, nâng cấp thiết bị IT nhà máy Bình Dương",
+     "monthly": [
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000
+     ]
+    },
+    {
+     "name": "Mua mới máy tính, màn hình, thiết bị mạng nhà máy Bình Dương",
+     "monthly": [
+      0,
+      18000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15000000,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí sửa chữa, thay thế linh kiện máy in, mực in Nhà máy Bình Dương",
+     "monthly": [
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000
+     ]
+    },
+    {
+     "name": "Hệ thống camera cho xưởng mới và camera kho thành phẩm",
+     "monthly": [
+      0,
+      0,
+      0,
+      0,
+      100000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Máy tính, máy in, màn hình dự phòng nhà máy Bình Dương",
+     "monthly": [
+      15000000,
+      2500000,
+      22000000,
+      7000000,
+      2500000,
+      22000000,
+      0,
+      7000000,
+      2500000,
+      15000000,
+      0,
+      7000000
+     ]
+    },
+    {
+     "name": "Chi phí thuê máy photo nhà máy Bình Dương",
+     "monthly": [
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000,
+      20500000
+     ]
+    },
+    {
+     "name": "Chi phí internet Nhà máy Bình Dương",
+     "monthly": [
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000,
+      4000000
+     ]
+    },
+    {
+     "name": "Thiết bị UPS phòng mạng 2000VA Online",
+     "monthly": [
+      0,
+      20000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Máy tính, máy in màn hình dự phòng HCM",
+     "monthly": [
+      0,
+      2500000,
+      0,
+      20000000,
+      7000000,
+      0,
+      2500000,
+      15000000,
+      0,
+      15000000,
+      7000000,
+      0
+     ]
+    },
+    {
+     "name": "Chi phí Internet, cước điện thoại di động văn phòng Hồ Chí Minh, kho trung chuyển.",
+     "monthly": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+     ]
+    },
+    {
+     "name": "Thuê máy photo văn phòng HCM, mực in",
+     "monthly": [
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000,
+      3000000
+     ]
+    },
+    {
+     "name": "Tablet dự phòng cho kinh doanh Miền Nam",
+     "monthly": [
+      0,
+      0,
+      46000000,
+      0,
+      0,
+      0,
+      0,
+      46000000,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "code": "04",
+   "name": "Chi phí bảo trì hàng năm hệ thống quản lý máy móc thiết bị",
+   "funds": [
+    {
+     "name": "Chi phí bảo trì hàng năm hệ thống quản lý máy móc thiết bị",
+     "monthly": [
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000,
+      5500000
+     ]
+    }
+   ]
+  },
+  {
+   "code": "05",
+   "name": "Tích hợp AI vào các phân hệ kế toán, csl, kho",
+   "funds": [
+    {
+     "name": "Tích hợp AI vào các phân hệ kế toán, csl, kho",
+     "monthly": [
+      0,
+      0,
+      0,
+      450000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      450000000,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "code": "06",
+   "name": "Xử lý sự cố, hỗ trợ vận hành ERP",
+   "funds": [
+    {
+     "name": "Xử lý sự cố, hỗ trợ vận hành ERP",
+     "monthly": [
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000,
+      11500000
+     ]
+    }
+   ]
+  },
+  {
+   "code": "07",
+   "name": "Duy trì hệ thống ổn định, giải quyết các phát sinh của kinh doanh kịp thời.",
+   "funds": [
+    {
+     "name": "Chi phí hỗ trợ nhân viên 3G",
+     "monthly": [
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000,
+      40000000
+     ]
+    },
+    {
+     "name": "Chi phí sửa chữa MTB",
+     "monthly": [
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000,
+      1000000
+     ]
+    },
+    {
+     "name": "Chi phí chi trả nhà cung ứng Viettel",
+     "monthly": [
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000,
+      250000000
+     ]
+    }
+   ]
+  },
+  {
+   "code": "08",
+   "name": "Chi phí bảo trì phần mềm nhân sự",
+   "funds": [
+    {
+     "name": "Chi phí bảo trì phần mềm nhân sự",
+     "monthly": [
+      30900000,
+      30900000,
+      30900000,
+      30900000,
+      30900000,
+      22700000,
+      22700000,
+      30900000,
+      30900000,
+      30900000,
+      30900000,
+      30900000
+     ]
+    }
+   ]
+  },
+  {
+   "code": "09",
+   "name": "Văn phòng điện tử",
+   "funds": [
+    {
+     "name": "Văn phòng điện tử",
+     "monthly": [
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000,
+      10500000
+     ]
+    }
+   ]
+  }
+ ],
+ "proposals": [
+  {
+   "number": 1,
+   "proposedAt": "2026-01-09T00:00:00",
+   "items": [
+    {
+     "name": "Case máy tính",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 13000000,
+     "actualAmount": 12399999,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Màn hình máy tính",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 3000000,
+     "actualAmount": 2220000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Pin Cmos CR2032",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 20.0,
+     "status": "PURCHASED",
+     "proposedAmount": 300000,
+     "actualAmount": 580000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Thiết bị vặn vít Máy Workfix WF-CV250MAX",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PENDING",
+     "proposedAmount": 900000,
+     "actualAmount": null,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Gia hạn tên miền huunghifood.com.vn và huunghifood.vn",
+     "fundName": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "quantity": 2.0,
+     "status": "PURCHASED",
+     "proposedAmount": 4100000,
+     "actualAmount": 820000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Gia hạn dịch vụ bảo trì phần mềm CMMS",
+     "fundName": "Chi phí bảo trì hàng năm hệ thống quản lý máy móc thiết bị",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 65000000,
+     "actualAmount": 65000000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Bản quyền phần mềm Ezmeetup",
+     "fundName": "An toàn & bảo mật thông tin Định Công",
+     "quantity": 1.0,
+     "status": "CANCELLED",
+     "proposedAmount": 66000000,
+     "actualAmount": 0,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Sửa chữa bản lề laptop HP",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 500000,
+     "actualAmount": 450000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Nguồn máy tính",
+     "fundName": "Chi Phí mua mới máy tính, ổ cứng, Sim 5G Yên Phong",
+     "quantity": 10.0,
+     "status": "PURCHASED",
+     "proposedAmount": 6000000,
+     "actualAmount": 6000000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "Hạt mạng Cat5E J45 AMP (Commscope)",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 2.0,
+     "status": "PURCHASED",
+     "proposedAmount": 1000000,
+     "actualAmount": 1000000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "Dây cáp mạng Cat5e Commscope UTP 6-219590-2",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 3500000,
+     "actualAmount": 3500000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "RAM máy tính DDR3",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 4.0,
+     "status": "PURCHASED",
+     "proposedAmount": 2000000,
+     "actualAmount": 2000000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "RAM máy tính DDR4",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 2.0,
+     "status": "PURCHASED",
+     "proposedAmount": 1400000,
+     "actualAmount": 1400000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "- Kéo lại dây cáp quang khu nhà trứng. - Kéo dây mới cho kho nguyên vật liệu. - Chuyển tủ mạng trong kho thành phẩm Yên Phong",
+     "fundName": "Chi Phí mua mới máy tính, ổ cứng, Sim 5G Yên Phong",
+     "quantity": 1.0,
+     "status": "CANCELLED",
+     "proposedAmount": 20000000,
+     "actualAmount": 0,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "Máy in canon",
+     "fundName": "Dự phòng và mua mới máy in",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 5000000,
+     "actualAmount": 5000000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "Dây xuất hình ảnh HDMI to HDMI",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 2.0,
+     "status": "PURCHASED",
+     "proposedAmount": 400000,
+     "actualAmount": 400000,
+     "notes": "Yên Phong"
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "proposedAt": "2026-02-02T00:00:00",
+   "items": [
+    {
+     "name": "Laptop cho chị Vân",
+     "fundName": "Chi phí mua mới máy tính xách tay",
+     "quantity": 1.0,
+     "status": "CANCELLED",
+     "proposedAmount": 22000000,
+     "actualAmount": 0,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Màn hình máy tính",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 3000000,
+     "actualAmount": 2220000,
+     "notes": null
+    },
+    {
+     "name": "Gia hạn tên miền banhmistaff.com, banhmistaff.com.vn, banhmistaff.vn",
+     "fundName": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "quantity": 3.0,
+     "status": "PURCHASED",
+     "proposedAmount": 6700000,
+     "actualAmount": 6700000,
+     "notes": "Định Công"
+    },
+    {
+     "name": "Sửa chữa màn hình Tivi giám sát camera",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 2000000,
+     "actualAmount": 2000000,
+     "notes": "Yên Phong"
+    },
+    {
+     "name": "Thang chữ A",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 2000000,
+     "actualAmount": 2000000,
+     "notes": "Yên Phong"
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "proposedAt": "2026-03-17T00:00:00",
+   "items": [
+    {
+     "name": "Thiết bị chuyển mạch.",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 13000000,
+     "actualAmount": 13150000,
+     "notes": null
+    },
+    {
+     "name": "Máy in",
+     "fundName": "Chi phí máy in dự phòng",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 5000000,
+     "actualAmount": 5050000,
+     "notes": "Chi Phí Internet Định Công"
+    },
+    {
+     "name": "Tivi màn hình lớn",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 18000000,
+     "actualAmount": 14750000,
+     "notes": null
+    },
+    {
+     "name": "Gia hạn license thiết bị tường lửa VP Định Công",
+     "fundName": "An toàn & bảo mật thông tin Định Công",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 42000000,
+     "actualAmount": 42000000,
+     "notes": null
+    },
+    {
+     "name": "Gia hạn 2 đường Internet VNPT Yên Phong",
+     "fundName": "Chi Phí Internet Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 23496000,
+     "actualAmount": 23496000,
+     "notes": null
+    },
+    {
+     "name": "Nguồn máy tính",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 800000,
+     "actualAmount": 1879630,
+     "notes": null
+    },
+    {
+     "name": "Bộ chia mạng",
+     "fundName": "Chi phí bảo trì, sửa chữa hệ thống cáp mạng, camera Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 1000000,
+     "actualAmount": 379630,
+     "notes": null
+    },
+    {
+     "name": "Hộp mực canon",
+     "fundName": "Dự phòng và mua mới máy in",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 1800000,
+     "actualAmount": 962962,
+     "notes": null
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "proposedAt": "2026-04-09T00:00:00",
+   "items": [
+    {
+     "name": "Gia hạn VPS hosting",
+     "fundName": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 10216800,
+     "actualAmount": 10216800,
+     "notes": null
+    },
+    {
+     "name": "Màn hình máy tính",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1.0,
+     "status": "PURCHASED",
+     "proposedAmount": 3000000,
+     "actualAmount": 2250000,
+     "notes": "Sửa chữa, thay thế thiết bị IT Yên Phong"
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "proposedAt": "2026-06-09T00:00:00",
+   "items": [
+    {
+     "name": "Gia hạn SSL cho tên miền trungthuhuunghi.com.vn",
+     "fundName": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "quantity": 1.0,
+     "status": "PENDING",
+     "proposedAmount": 400000,
+     "actualAmount": null,
+     "notes": null
+    },
+    {
+     "name": "Gia hạn SSL wildcard huunghi.com.vn",
+     "fundName": "Chi phí duy trì tên miền, hosting, bổ sung tên miền mới, gian hạn website tết",
+     "quantity": 1.0,
+     "status": "PENDING",
+     "proposedAmount": 5000000,
+     "actualAmount": null,
+     "notes": null
+    },
+    {
+     "name": "Hạt mạng RJ45",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Định Công",
+     "quantity": 1,
+     "status": "PURCHASED",
+     "proposedAmount": 600000,
+     "actualAmount": 550044,
+     "notes": null
+    },
+    {
+     "name": "Hạt mạng RJ45",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1,
+     "status": "PURCHASED",
+     "proposedAmount": 600000,
+     "actualAmount": 550044,
+     "notes": null
+    },
+    {
+     "name": "Thùng dây mạng",
+     "fundName": "Sửa chữa, thay thế thiết bị IT Yên Phong",
+     "quantity": 1,
+     "status": "PURCHASED",
+     "proposedAmount": 3000000,
+     "actualAmount": 2862000,
+     "notes": null
+    }
+   ]
+  }
+ ]
+}
