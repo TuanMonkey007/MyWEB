@@ -8,7 +8,11 @@ export default async function proxy(req: NextRequest) {
   const token = req.cookies.get(AUTH_COOKIE)?.value;
   const authed = !!token && token === (await expectedToken());
 
-  if (pathname === "/" || pathname.startsWith("/api/auth/")) {
+  if (
+    pathname === "/" ||
+    pathname.startsWith("/api/auth/") ||
+    pathname === "/api/branding/favicon" // favicon cần cho cả trang public
+  ) {
     return NextResponse.next();
   }
 

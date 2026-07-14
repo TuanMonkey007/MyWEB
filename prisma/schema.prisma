@@ -185,6 +185,12 @@ model ProposalItem {
   @@index([status])
 }
 
+// Cài đặt chung của platform (giao diện, mẫu xuất phiếu...) — key/value
+model AppSetting {
+  key   String @id
+  value String
+}
+
 // File bằng chứng: cấp phiếu (bản ký) hoặc cấp hạng mục (hóa đơn, ảnh lỗi...)
 model Attachment {
   id        String   @id @default(cuid())

@@ -3,6 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { jsonError } from "@/lib/api";
 import { buildProposalPdf } from "@/lib/export/pdf";
 import { buildProposalXlsx } from "@/lib/export/xlsx";
+import {
+  fillProposalTemplate,
+  hasExportTemplate,
+} from "@/lib/export/xlsx-template";
 import { exportFileName } from "@/lib/export/template";
 
 type Params = { params: Promise<{ id: string }> };
@@ -26,11 +30,15 @@ export async function GET(req: Request, { params }: Params) {
   if (!proposal.items.some((it) => it.status !== "CANCELLED"))
     return jsonError("Đợt chưa có hạng mục nào (ngoài mục đã huỷ) để xuất");
 
+  // Excel: ưu tiên điền vào file mẫu công ty đã upload (giữ logo, định dạng);
+  // chưa upload mẫu thì dùng layout dựng sẵn
   const [buffer, mimeType] =
     format === "pdf"
       ? [await buildProposalPdf(proposal), "application/pdf"]
       : [
-          await buildProposalXlsx(proposal),
+          (await hasExportTemplate())
+            ? await fillProposalTemplate(proposal)
+            : await buildProposalXlsx(proposal),
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         ];
 

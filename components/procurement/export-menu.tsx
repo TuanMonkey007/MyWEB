@@ -36,7 +36,7 @@ export function ExportMenu({ proposalId }: { proposalId: string }) {
             <div>
               <div>Excel — bản nháp</div>
               <div className="text-xs text-muted-foreground">
-                Kèm cột dự trù (ngoài vùng in)
+                Điền vào mẫu đã tải lên · kèm cột dự trù ngoài vùng in
               </div>
             </div>
           </a>

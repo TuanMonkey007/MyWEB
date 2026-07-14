@@ -141,7 +141,13 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
 - **Xuất phiếu đề xuất** từ trang chi tiết đợt, theo mẫu công ty (A4 ngang, font Times):
   - **PDF — bản trình ký**: không có cột dự trù tiền.
   - **Excel — bản nháp**: thêm cột N "Dự trù (VNĐ)" + công thức tổng, cột này nằm **ngoài vùng in** nên in từ Excel vẫn sạch như bản ký.
+  - **Dùng mẫu công ty**: upload file `.xlsx` mẫu thật (giữ nguyên logo, định dạng) ở trang Cài đặt — hệ thống tìm dòng tiêu đề có ô "STT", điền hạng mục vào các dòng kẻ sẵn (thiếu tự chèn thêm), điền các ô "Tổng ngân sách dự kiến/Ngày/Bộ phận đề xuất". Chưa upload mẫu thì dùng layout dựng sẵn.
   - Thông số mẫu (mã tài liệu, ấn bản, chức danh ký...) chỉnh tại `lib/export/template.ts`.
+
+## Cài đặt & bảo mật
+
+- **Trang Cài đặt** (`/settings`): chế độ màu sáng/tối/theo máy, font chữ (Inter, Be Vietnam Pro, Roboto), cỡ chữ, tên platform, favicon riêng, mẫu xuất phiếu, danh mục thu/chi.
+- **Bảo mật**: xác thực hoàn toàn ở backend (proxy kiểm tra cookie httpOnly trên mọi request; API trả 401); mật khẩu không bao giờ lưu phía trình duyệt; chặn dò mật khẩu 5 lần sai/5 phút mỗi IP; cookie tự bật cờ `Secure` khi truy cập qua HTTPS; đổi `APP_PASSWORD` là mọi phiên đăng nhập cũ hết hiệu lực.
 
 ## 7. Ghi chú nghiệp vụ module Tài chính
 

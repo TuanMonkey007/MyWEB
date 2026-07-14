@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "@/components/logout-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type NavItem = {
   href: string;
@@ -36,7 +37,7 @@ const procurementItems: NavItem[] = [
 ];
 
 const settingsItem: NavItem = {
-  href: "/finance/settings",
+  href: "/settings",
   label: "Cài đặt",
   icon: Settings,
 };
@@ -64,13 +65,28 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
   );
 }
 
-export function AppSidebar() {
+export function AppSidebar({
+  platformName = "Platform cá nhân",
+  faviconPath = null,
+}: {
+  platformName?: string;
+  faviconPath?: string | null;
+}) {
   const pathname = usePathname();
   return (
     <aside className="hidden md:flex w-60 shrink-0 flex-col border-r bg-sidebar">
       <div className="flex h-14 items-center gap-2 border-b px-4 font-semibold">
-        <LayoutDashboard className="size-5 text-primary" />
-        Platform cá nhân
+        {faviconPath ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/api/branding/favicon?v=${encodeURIComponent(faviconPath)}`}
+            alt=""
+            className="size-5 rounded object-contain"
+          />
+        ) : (
+          <LayoutDashboard className="size-5 text-primary" />
+        )}
+        <span className="truncate">{platformName}</span>
       </div>
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
         <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -89,8 +105,9 @@ export function AppSidebar() {
           <SidebarLink item={settingsItem} pathname={pathname} />
         </div>
       </nav>
-      <div className="border-t p-2">
-        <LogoutButton className="w-full justify-start text-muted-foreground" />
+      <div className="flex items-center gap-1 border-t p-2">
+        <LogoutButton className="flex-1 justify-start text-muted-foreground" />
+        <ThemeToggle />
       </div>
     </aside>
   );
