@@ -39,6 +39,15 @@ APP_PASSWORD="$pw"
 }
 
 # --- 4. Cài deps, generate Prisma Client, tạo database, seed, build ---
+# Dừng service cũ nếu đang chạy — Windows khóa file .dll của process đang chạy,
+# không dừng thì npm install / prisma generate lỗi EPERM
+$nssm = "C:\tools\nssm.exe"
+if ((Get-Service MyWEB -ErrorAction SilentlyContinue) -and (Test-Path $nssm)) {
+    & $nssm stop MyWEB | Out-Null
+    Start-Sleep -Seconds 3
+    Write-Host "      (đã dừng service MyWEB đang chạy để tránh khóa file)" -ForegroundColor Yellow
+}
+
 npm install
 if ($LASTEXITCODE -ne 0) { Write-Error "npm install thất bại" }
 npx prisma generate
@@ -52,12 +61,11 @@ if ($LASTEXITCODE -ne 0) { Write-Error "npm run build thất bại" }
 Write-Host "[4/5] Build xong" -ForegroundColor Green
 
 # --- 5. Đăng ký Windows Service qua NSSM ---
-$nssm = "C:\tools\nssm.exe"
 if (Test-Path $nssm) {
     $npmCmd = (Get-Command npm.cmd).Source
     if (Get-Service MyWEB -ErrorAction SilentlyContinue) {
-        & $nssm restart MyWEB
-        Write-Host "[5/5] Service MyWEB đã tồn tại — restart xong" -ForegroundColor Green
+        & $nssm start MyWEB
+        Write-Host "[5/5] Service MyWEB đã tồn tại — khởi động lại xong" -ForegroundColor Green
     } else {
         & $nssm install MyWEB $npmCmd start
         & $nssm set MyWEB AppDirectory (Get-Location).Path

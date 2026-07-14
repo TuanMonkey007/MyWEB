@@ -151,6 +151,7 @@ Script tự: `git pull` → `npm install` → generate Prisma Client → `prisma
 |---|---|
 | Web không lên | `C:\tools\nssm.exe status MyWEB` · log tại `C:\appdata\logs\myweb*.log` |
 | Lỗi "@prisma/client did not initialize yet" | Chạy `npx prisma generate` rồi thử lại. 2 script đã tự làm bước này — chỉ gặp lỗi nếu chạy tay từng lệnh riêng lẻ và bỏ sót nó |
+| Lỗi `EPERM ... rename ... .dll.node` khi update | App đang chạy nên Windows khóa file. Script đã tự dừng service trước khi build — nếu chạy lệnh tay thì phải `C:\tools\nssm.exe stop MyWEB` trước, xong `start` lại |
 | Domain/HTTPS không lên | Site `MyWEB` trong IIS Manager đã "Started" chưa · đã tích "Enable proxy" ở ARR chưa (Bước 3.3) · DNS đã trỏ đúng IP chưa (`nslookup ten-mien`) · cổng 80/443 đã mở chưa |
 | Cảnh báo chứng chỉ HTTPS hết hạn | Chạy lại `C:\tools\win-acme\wacs.exe` thủ công, hoặc kiểm tra Task Scheduler có task gia hạn của win-acme chạy được không |
 | Quên mật khẩu đăng nhập | Sửa `APP_PASSWORD` trong `C:\apps\MyWEB\.env` rồi `C:\tools\nssm.exe restart MyWEB` (mọi phiên cũ tự hết hạn) |
