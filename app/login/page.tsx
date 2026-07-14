@@ -27,7 +27,7 @@ export default function LoginPage() {
         const data = await res.json().catch(() => null);
         throw new Error(data?.error ?? "Đăng nhập thất bại");
       }
-      router.push("/");
+      router.push("/finance");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");

@@ -7,6 +7,7 @@ import { formatDate, formatVND } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AttachmentList } from "@/components/procurement/attachment-list";
+import { ExportMenu } from "@/components/procurement/export-menu";
 import { ItemsTable } from "@/components/procurement/items-table";
 import { ProposalActions } from "@/components/procurement/proposal-actions";
 
@@ -56,17 +57,20 @@ export default async function ProposalDetailPage({ params }: { params: Params })
             {proposal.title ? ` · ${proposal.title}` : ""}
           </p>
         </div>
-        <ProposalActions
-          proposal={{
-            id: proposal.id,
-            number: proposal.number,
-            title: proposal.title,
-            proposedAt: proposal.proposedAt.toISOString(),
-            notes: proposal.notes,
-          }}
-          budgetYearId={proposal.budgetYearId}
-          itemCount={proposal.items.length}
-        />
+        <div className="flex flex-wrap items-center gap-2">
+          <ExportMenu proposalId={proposal.id} />
+          <ProposalActions
+            proposal={{
+              id: proposal.id,
+              number: proposal.number,
+              title: proposal.title,
+              proposedAt: proposal.proposedAt.toISOString(),
+              notes: proposal.notes,
+            }}
+            budgetYearId={proposal.budgetYearId}
+            itemCount={proposal.items.length}
+          />
+        </div>
       </div>
 
       <Card>

@@ -22,11 +22,11 @@ type NavItem = {
   exact?: boolean;
 };
 
-// Platform module hóa: mỗi nhóm là một module
+// Platform module hóa: mỗi nhóm là một module (landing "/" là public, ngoài nav)
 const financeItems: NavItem[] = [
-  { href: "/", label: "Tổng quan", icon: LayoutDashboard, exact: true },
-  { href: "/wallets", label: "Ví tiền", icon: Wallet },
-  { href: "/transactions", label: "Giao dịch", icon: ArrowLeftRight },
+  { href: "/finance", label: "Tổng quan", icon: LayoutDashboard, exact: true },
+  { href: "/finance/wallets", label: "Ví tiền", icon: Wallet },
+  { href: "/finance/transactions", label: "Giao dịch", icon: ArrowLeftRight },
 ];
 
 const procurementItems: NavItem[] = [
@@ -35,7 +35,11 @@ const procurementItems: NavItem[] = [
   { href: "/procurement/budget", label: "Thiết lập quỹ", icon: SlidersHorizontal },
 ];
 
-const settingsItem: NavItem = { href: "/settings", label: "Cài đặt", icon: Settings };
+const settingsItem: NavItem = {
+  href: "/finance/settings",
+  label: "Cài đặt",
+  icon: Settings,
+};
 
 function isActive(pathname: string, item: NavItem): boolean {
   return item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -99,7 +103,7 @@ export function AppBottomNav() {
   const items: NavItem[] = inProcurement
     ? [
         ...procurementItems,
-        { href: "/", label: "Tài chính", icon: Wallet, exact: true },
+        { href: "/finance", label: "Tài chính", icon: Wallet, exact: true },
         settingsItem,
       ]
     : [

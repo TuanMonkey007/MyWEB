@@ -1,9 +1,9 @@
 # Platform cá nhân dạng module
 
-Web app cá nhân **một người dùng**, kiến trúc module hóa. Hiện có 2 module:
+Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang chủ `/` là landing page public (giới thiệu bản thân — đang là placeholder); các module bên trong yêu cầu đăng nhập:
 
-1. **Quản lý Tài chính Cá nhân** — ví tiền, khoản chi/thu, chuyển khoản nội bộ, đính ảnh hóa đơn, dashboard báo cáo (theo `BA-quan-ly-tai-chinh.md`).
-2. **Đề xuất mua hàng** (`/procurement`) — quản lý ngân sách IT theo năm (form BM02B: nhóm khoản mục → quỹ, phân bổ 12 tháng), các đợt đề xuất mua hàng và hạng mục, file bằng chứng đính kèm. Thay thế file Excel "Theo dõi các đề xuất đã mua".
+1. **Quản lý Tài chính Cá nhân** (`/finance`) — ví tiền, khoản chi/thu, chuyển khoản nội bộ, đính ảnh hóa đơn, dashboard báo cáo (theo `BA-quan-ly-tai-chinh.md`).
+2. **Đề xuất mua hàng** (`/procurement`) — quản lý ngân sách IT theo năm (form BM02B: nhóm khoản mục → quỹ, phân bổ 12 tháng), các đợt đề xuất mua hàng và hạng mục, file bằng chứng đính kèm, **xuất phiếu đề xuất PDF/Excel theo mẫu CT.MH-QT-01/BM01**. Thay thế file Excel "Theo dõi các đề xuất đã mua".
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.
 
@@ -138,6 +138,10 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
 - **Còn lại của quỹ = Tổng quỹ − Σ tiền thực tế các hạng mục Đã mua** (tính động — app sửa dứt điểm lỗi công thức trừ dây chuyền của file Excel cũ vốn làm sai số dư quỹ Yên Phong ~4,1 triệu). Hạng mục Huỷ không tính. Form thêm hạng mục hiển thị ngay số còn lại của quỹ để cân đối trước khi trình.
 - **File bằng chứng** đính được ở 2 cấp: phiếu đề xuất (bản scan đã ký) và từng hạng mục (hóa đơn, ảnh thiết bị lỗi...). Nhận PDF/ảnh/Word/Excel/zip ≤25MB, ảnh tự nén, lưu tên UUID trong `UPLOAD_DIR/files`, xóa hạng mục/phiếu thì file xóa theo.
 - Tạo năm mới có tùy chọn **sao chép cấu trúc quỹ** từ năm cũ (số tiền để 0) — tái sử dụng khi sang năm mới hoặc đổi công ty.
+- **Xuất phiếu đề xuất** từ trang chi tiết đợt, theo mẫu công ty (A4 ngang, font Times):
+  - **PDF — bản trình ký**: không có cột dự trù tiền.
+  - **Excel — bản nháp**: thêm cột N "Dự trù (VNĐ)" + công thức tổng, cột này nằm **ngoài vùng in** nên in từ Excel vẫn sạch như bản ký.
+  - Thông số mẫu (mã tài liệu, ấn bản, chức danh ký...) chỉnh tại `lib/export/template.ts`.
 
 ## 7. Ghi chú nghiệp vụ module Tài chính
 
