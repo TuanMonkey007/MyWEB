@@ -1,30 +1,32 @@
 import type { Metadata } from "next";
-import { Inter, Be_Vietnam_Pro, Roboto, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getSettings } from "@/lib/settings";
 import "./globals.css";
 
-const inter = Inter({
+// Font tự host trong repo (assets/fonts) — build không phụ thuộc mạng
+// tới Google Fonts (từng làm fail build khi mạng chập chờn)
+const inter = localFont({
+  src: "../assets/fonts/Inter-Variable.ttf",
   variable: "--font-inter",
-  subsets: ["latin", "vietnamese"],
+  weight: "100 900",
 });
 
-const beVietnam = Be_Vietnam_Pro({
+const beVietnam = localFont({
+  src: [
+    { path: "../assets/fonts/BeVietnamPro-Regular.ttf", weight: "400" },
+    { path: "../assets/fonts/BeVietnamPro-Medium.ttf", weight: "500" },
+    { path: "../assets/fonts/BeVietnamPro-SemiBold.ttf", weight: "600" },
+    { path: "../assets/fonts/BeVietnamPro-Bold.ttf", weight: "700" },
+  ],
   variable: "--font-be-vietnam",
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700"],
 });
 
-const roboto = Roboto({
+const roboto = localFont({
+  src: "../assets/fonts/Roboto-Variable.ttf",
   variable: "--font-roboto",
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "700"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -51,7 +53,7 @@ export default async function RootLayout({
     <html
       lang="vi"
       suppressHydrationWarning
-      className={`${inter.variable} ${beVietnam.variable} ${roboto.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${beVietnam.variable} ${roboto.variable} h-full antialiased`}
       style={
         {
           fontSize: `${settings.fontSize}px`,
