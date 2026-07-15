@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,13 +22,11 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? "Đăng nhập thất bại");
-      }
-      router.push("/finance");
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? "Đăng nhập thất bại");
+      router.push(data?.redirectTo ?? "/finance");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");
@@ -42,10 +41,21 @@ export default function LoginPage() {
           <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-primary/10">
             <Wallet className="size-6 text-primary" />
           </div>
-          <CardTitle>Quản lý Tài chính Cá nhân</CardTitle>
+          <CardTitle>Đăng nhập platform</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Tên đăng nhập</Label>
+              <Input
+                id="username"
+                autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="vd: admin"
+                autoFocus
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="password">Mật khẩu</Label>
               <Input
@@ -54,11 +64,14 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Nhập mật khẩu..."
-                autoFocus
+                placeholder="••••••••"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading || !password}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading || !username || !password}
+            >
               <Lock className="size-4" />
               {loading ? "Đang đăng nhập..." : "Đăng nhập"}
             </Button>

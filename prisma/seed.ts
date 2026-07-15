@@ -1,8 +1,28 @@
 import { readFileSync } from "fs";
 import path from "path";
+import { randomBytes, scryptSync } from "crypto";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+// Tài khoản quản trị đầu tiên: admin / APP_PASSWORD (fallback admin123)
+async function seedAdmin() {
+  if ((await prisma.user.count()) > 0) return;
+  const password = process.env.APP_PASSWORD || "admin123";
+  const salt = randomBytes(16).toString("hex");
+  const hash = scryptSync(password, salt, 64, { N: 16384 }).toString("hex");
+  await prisma.user.create({
+    data: {
+      username: "admin",
+      displayName: "Quản trị viên",
+      passwordHash: `scrypt$16384$${salt}$${hash}`,
+      role: "ADMIN",
+    },
+  });
+  console.log(
+    `Đã tạo tài khoản quản trị: admin / ${process.env.APP_PASSWORD ? "(APP_PASSWORD trong .env)" : "admin123 — ĐỔI NGAY"}`
+  );
+}
 
 // 8 ví theo FR-1 của BA
 const wallets = [
@@ -63,6 +83,7 @@ async function main() {
     });
   }
 
+  await seedAdmin();
   await seedProcurement();
 
   const [walletCount, categoryCount, fundCount, itemCount] = await Promise.all([

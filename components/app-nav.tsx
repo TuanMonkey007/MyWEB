@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeftRight,
+  CircleUser,
   ClipboardList,
   LayoutDashboard,
   LayoutGrid,
@@ -31,11 +32,12 @@ type NavItem = {
   exact?: boolean;
 };
 
-type ModuleGroup = { label: string; items: NavItem[] };
+type ModuleGroup = { id: string; label: string; items: NavItem[] };
 
-// Platform module hóa: mỗi nhóm là một module (landing "/" là public, ngoài nav)
+// Platform module hóa — id khớp lib/modules.ts, nav chỉ hiện module user được cấp
 const MODULES: ModuleGroup[] = [
   {
+    id: "finance",
     label: "Tài chính cá nhân",
     items: [
       { href: "/finance", label: "Tổng quan", icon: LayoutDashboard, exact: true },
@@ -44,6 +46,7 @@ const MODULES: ModuleGroup[] = [
     ],
   },
   {
+    id: "procurement",
     label: "Đề xuất mua hàng",
     items: [
       { href: "/procurement", label: "Ngân sách", icon: PiggyBank, exact: true },
@@ -52,6 +55,7 @@ const MODULES: ModuleGroup[] = [
     ],
   },
   {
+    id: "todos",
     label: "Công việc",
     items: [{ href: "/todos", label: "Việc cần làm", icon: ClipboardList }],
   },
@@ -59,16 +63,28 @@ const MODULES: ModuleGroup[] = [
 
 const settingsItem: NavItem = { href: "/settings", label: "Cài đặt", icon: Settings };
 
+type NavProps = {
+  allowedModules: string[];
+  isAdmin: boolean;
+  userName: string;
+};
+
 function isActive(pathname: string, item: NavItem): boolean {
   return item.exact ? pathname === item.href : pathname.startsWith(item.href);
 }
 
-// Nhóm module đang mở theo URL (mặc định: nhóm đầu — Tài chính)
-function currentModule(pathname: string): ModuleGroup {
+function visibleModules(allowed: string[]): ModuleGroup[] {
+  return MODULES.filter((m) => allowed.includes(m.id));
+}
+
+// Nhóm module đang mở theo URL (mặc định: nhóm đầu được cấp)
+function currentModule(pathname: string, mods: ModuleGroup[]): ModuleGroup | null {
   return (
-    MODULES.find((m) =>
+    mods.find((m) =>
       m.items.some((it) => pathname.startsWith(it.href.split("/").slice(0, 2).join("/")))
-    ) ?? MODULES[0]
+    ) ??
+    mods[0] ??
+    null
   );
 }
 
@@ -94,11 +110,16 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
 export function AppSidebar({
   platformName = "Platform cá nhân",
   faviconPath = null,
-}: {
+  allowedModules,
+  isAdmin,
+  userName,
+}: NavProps & {
   platformName?: string;
   faviconPath?: string | null;
 }) {
   const pathname = usePathname();
+  const mods = visibleModules(allowedModules);
+
   return (
     <aside className="hidden md:flex w-60 shrink-0 flex-col border-r bg-sidebar">
       <div className="flex h-14 items-center gap-2 border-b px-4 font-semibold">
@@ -115,8 +136,8 @@ export function AppSidebar({
         <span className="truncate">{platformName}</span>
       </div>
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
-        {MODULES.map((mod) => (
-          <div key={mod.label} className="contents">
+        {mods.map((mod) => (
+          <div key={mod.id} className="contents">
             <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               {mod.label}
             </div>
@@ -125,28 +146,44 @@ export function AppSidebar({
             ))}
           </div>
         ))}
-        <div className="mt-4 border-t pt-2">
-          <SidebarLink item={settingsItem} pathname={pathname} />
-        </div>
+        {isAdmin && (
+          <div className="mt-4 border-t pt-2">
+            <SidebarLink item={settingsItem} pathname={pathname} />
+          </div>
+        )}
       </nav>
       <div className="flex items-center gap-1 border-t p-2">
-        <LogoutButton className="flex-1 justify-start text-muted-foreground" />
+        <Link
+          href="/account"
+          className={cn(
+            "flex min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+            pathname === "/account"
+              ? "bg-accent text-accent-foreground"
+              : "text-muted-foreground hover:bg-accent"
+          )}
+          title="Tài khoản của tôi"
+        >
+          <CircleUser className="size-4 shrink-0" />
+          <span className="truncate">{userName}</span>
+        </Link>
         <ThemeToggle />
+        <LogoutButton iconOnly />
       </div>
     </aside>
   );
 }
 
 // Bottom nav mobile: các mục của module đang dùng + nút Menu mở danh sách module
-export function AppBottomNav() {
+export function AppBottomNav({ allowedModules, isAdmin, userName }: NavProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const mod = currentModule(pathname);
+  const mods = visibleModules(allowedModules);
+  const mod = currentModule(pathname, mods);
 
   return (
     <>
       <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 flex border-t bg-background">
-        {mod.items.map((item) => {
+        {(mod?.items ?? []).map((item) => {
           const Icon = item.icon;
           const active = isActive(pathname, item);
           return (
@@ -179,8 +216,8 @@ export function AppBottomNav() {
             <SheetTitle>Tất cả module</SheetTitle>
           </SheetHeader>
           <div className="grid gap-4 p-4 pt-2">
-            {MODULES.map((m) => (
-              <div key={m.label}>
+            {mods.map((m) => (
+              <div key={m.id}>
                 <div className="pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   {m.label}
                 </div>
@@ -207,17 +244,27 @@ export function AppBottomNav() {
                 </div>
               </div>
             ))}
-            <div className="flex items-center justify-between border-t pt-3">
+            <div className="flex items-center justify-between gap-2 border-t pt-3">
               <Link
-                href={settingsItem.href}
+                href="/account"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 text-sm text-muted-foreground"
+                className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground"
               >
-                <Settings className="size-4" /> Cài đặt
+                <CircleUser className="size-4 shrink-0" />
+                <span className="truncate">{userName}</span>
               </Link>
-              <div className="flex items-center gap-1">
+              <div className="flex shrink-0 items-center gap-1">
+                {isAdmin && (
+                  <Link
+                    href={settingsItem.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-1.5 text-sm text-muted-foreground"
+                  >
+                    <Settings className="size-4" /> Cài đặt
+                  </Link>
+                )}
                 <ThemeToggle />
-                <LogoutButton className="text-muted-foreground" />
+                <LogoutButton iconOnly />
               </div>
             </div>
           </div>

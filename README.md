@@ -145,10 +145,19 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
   - **Dùng mẫu công ty**: upload file `.xlsx` mẫu thật (giữ nguyên logo, định dạng) ở trang Cài đặt — hệ thống tìm dòng tiêu đề có ô "STT", điền hạng mục vào các dòng kẻ sẵn (thiếu tự chèn thêm), điền các ô "Tổng ngân sách dự kiến/Ngày/Bộ phận đề xuất". Chưa upload mẫu thì dùng layout dựng sẵn.
   - Thông số mẫu (mã tài liệu, ấn bản, chức danh ký...) chỉnh tại `lib/export/template.ts`.
 
+## Tài khoản & phân quyền
+
+- **Đa tài khoản**: đăng nhập bằng username + mật khẩu (băm scrypt, phiên lưu DB — thu hồi được ngay).
+- **2 vai trò**: `ADMIN` (mọi module + trang Cài đặt + quản lý tài khoản) và `USER` (chỉ các module được cấp).
+- **Phân quyền theo module**: admin cấp cho từng user quyền dùng module nào (Tài chính / Mua hàng / Công việc) tại **Cài đặt → Tài khoản & phân quyền**; sidebar và mọi route/API bị chặn theo đúng quyền (kiểm tra ở proxy, server-side). Dữ liệu trong module là chung giữa các user.
+- **Tài khoản đầu tiên**: khi hệ thống chưa có user nào, đăng nhập `admin` + mật khẩu trong `APP_PASSWORD` (.env) sẽ tự tạo tài khoản quản trị.
+- Mọi user tự đổi mật khẩu tại `/account` (yêu cầu mật khẩu cũ; các thiết bị khác bị đăng xuất).
+- Khóa tài khoản / đặt lại mật khẩu / đổi quyền → phiên đang mở của user đó bị hủy ngay. Hệ thống luôn giữ tối thiểu 1 admin hoạt động.
+
 ## Cài đặt & bảo mật
 
-- **Trang Cài đặt** (`/settings`): chế độ màu sáng/tối/theo máy, font chữ (Inter, Be Vietnam Pro, Roboto), cỡ chữ, tên platform, favicon riêng, mẫu xuất phiếu, danh mục thu/chi.
-- **Bảo mật**: xác thực hoàn toàn ở backend (proxy kiểm tra cookie httpOnly trên mọi request; API trả 401); mật khẩu không bao giờ lưu phía trình duyệt; chặn dò mật khẩu 5 lần sai/5 phút mỗi IP; cookie tự bật cờ `Secure` khi truy cập qua HTTPS; đổi `APP_PASSWORD` là mọi phiên đăng nhập cũ hết hiệu lực.
+- **Trang Cài đặt** (`/settings`, chỉ admin): tài khoản & phân quyền, chế độ màu sáng/tối/theo máy, font chữ (Inter, Be Vietnam Pro, Roboto), cỡ chữ, tên platform, favicon riêng, mẫu xuất phiếu, danh mục thu/chi.
+- **Bảo mật**: xác thực hoàn toàn ở backend (proxy kiểm tra phiên trong DB trên mọi request; API trả 401/403); mật khẩu băm scrypt, không bao giờ lưu phía trình duyệt; chặn dò mật khẩu 5 lần sai/5 phút mỗi IP+username; cookie httpOnly + tự bật cờ `Secure` khi truy cập qua HTTPS.
 
 ## 7. Ghi chú nghiệp vụ module Tài chính
 

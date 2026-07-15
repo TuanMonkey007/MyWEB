@@ -191,6 +191,32 @@ model AppSetting {
   value String
 }
 
+// ===== Tài khoản & phân quyền =====
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  displayName  String?
+  passwordHash String // scrypt$N$salt$hash
+  role         String   @default("USER") // ADMIN | USER
+  modules      String   @default("") // CSV id module được cấp, vd "finance,todos" (ADMIN: tất cả)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  sessions Session[]
+}
+
+// Phiên đăng nhập lưu DB — thu hồi được ngay (xóa user/đổi mật khẩu là hết phiên)
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
 // ===== Module Todolist =====
 model Todo {
   id          String    @id @default(cuid())

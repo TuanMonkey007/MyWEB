@@ -154,6 +154,7 @@ Script tự: `git pull` → `npm install` → generate Prisma Client → `prisma
 | Lỗi `EPERM ... rename ... .dll.node` khi update | App đang chạy nên Windows khóa file. Script đã tự dừng service trước khi build — nếu chạy lệnh tay thì phải `C:\tools\nssm.exe stop MyWEB` trước, xong `start` lại |
 | Domain/HTTPS không lên | Site `MyWEB` trong IIS Manager đã "Started" chưa · đã tích "Enable proxy" ở ARR chưa (Bước 3.3) · DNS đã trỏ đúng IP chưa (`nslookup ten-mien`) · cổng 80/443 đã mở chưa |
 | Cảnh báo chứng chỉ HTTPS hết hạn | Chạy lại `C:\tools\win-acme\wacs.exe` thủ công, hoặc kiểm tra Task Scheduler có task gia hạn của win-acme chạy được không |
-| Quên mật khẩu đăng nhập | Sửa `APP_PASSWORD` trong `C:\apps\MyWEB\.env` rồi `C:\tools\nssm.exe restart MyWEB` (mọi phiên cũ tự hết hạn) |
+| Quên mật khẩu user thường | Admin đặt lại trong **Cài đặt → Tài khoản & phân quyền** |
+| Quên mật khẩu admin (mất hết) | Trong `C:\apps\MyWEB` chạy: `node -e "const{PrismaClient}=require('@prisma/client');const p=new PrismaClient();p.session.deleteMany().then(()=>p.user.deleteMany()).then(()=>console.log('OK'))"` — xóa toàn bộ tài khoản, sau đó đăng nhập `admin` + mật khẩu `APP_PASSWORD` trong `.env` để hệ thống tạo lại admin |
 | Lỗi sau khi update | Xem log rồi có thể quay lại bản trước: `git log --oneline` → `git checkout <commit>` → chạy lại `update.ps1` (bỏ bước git pull) |
 | Service không tự chạy sau reboot | `C:\tools\nssm.exe set MyWEB Start SERVICE_AUTO_START` (mặc định NSSM đã bật) |
