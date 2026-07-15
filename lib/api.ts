@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { ITEM_STATUSES, type ItemStatus } from "@/lib/procurement";
+import {
+  TODO_PRIORITIES,
+  TODO_STATUSES,
+  type TodoPriority,
+  type TodoStatus,
+} from "@/lib/todos-constants";
 
 export function jsonError(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
@@ -116,6 +122,34 @@ export type ItemBody = {
 
 function optText(v: unknown): string | null {
   return typeof v === "string" && v.trim() ? v.trim() : null;
+}
+
+// Việc trong module Todolist
+export type TodoBody = {
+  title: string;
+  notes: string | null;
+  priority: TodoPriority;
+  status: TodoStatus;
+  dueDate: Date | null;
+};
+
+export function parseTodoBody(body: Record<string, unknown>): TodoBody | { error: string } {
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  if (!title) return { error: "Tên việc là bắt buộc" };
+
+  const priority = String(body.priority ?? "MEDIUM") as TodoPriority;
+  if (!TODO_PRIORITIES.includes(priority)) return { error: "Ưu tiên không hợp lệ" };
+
+  const status = String(body.status ?? "TODO") as TodoStatus;
+  if (!TODO_STATUSES.includes(status)) return { error: "Trạng thái không hợp lệ" };
+
+  let dueDate: Date | null = null;
+  if (body.dueDate) {
+    dueDate = new Date(String(body.dueDate));
+    if (isNaN(dueDate.getTime())) return { error: "Hạn không hợp lệ" };
+  }
+
+  return { title, notes: optText(body.notes), priority, status, dueDate };
 }
 
 export function parseItemBody(body: Record<string, unknown>): ItemBody | { error: string } {

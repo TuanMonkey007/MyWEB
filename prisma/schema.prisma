@@ -191,6 +191,20 @@ model AppSetting {
   value String
 }
 
+// ===== Module Todolist =====
+model Todo {
+  id          String    @id @default(cuid())
+  title       String
+  notes       String?
+  priority    String    @default("MEDIUM") // LOW | MEDIUM | HIGH
+  status      String    @default("TODO") // TODO | DOING | DONE
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([status])
+}
+
 // File bằng chứng: cấp phiếu (bản ký) hoặc cấp hạng mục (hóa đơn, ảnh lỗi...)
 model Attachment {
   id        String   @id @default(cuid())

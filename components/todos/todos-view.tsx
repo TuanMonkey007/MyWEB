@@ -1,0 +1,378 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Kanban,
+  List,
+  Plus,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { formatDate } from "@/lib/format";
+import {
+  TODO_PRIORITY_LABELS,
+  TODO_STATUSES,
+  TODO_STATUS_LABELS,
+  isOverdue,
+  sortTodos,
+  type TodoDTO,
+  type TodoStatus,
+} from "@/lib/todos-constants";
+import { cn } from "@/lib/utils";
+import { TodoDialog } from "./todo-dialog";
+
+const VIEW_KEY = "todos-view";
+
+function PriorityBadge({ priority }: { priority: string }) {
+  if (priority === "HIGH")
+    return <Badge className="bg-red-600 text-white">Cao</Badge>;
+  if (priority === "LOW") return <Badge variant="secondary">Thấp</Badge>;
+  return <Badge className="bg-amber-500 text-white">Vừa</Badge>;
+}
+
+function DueDate({ todo }: { todo: TodoDTO }) {
+  if (!todo.dueDate) return null;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 text-xs",
+        isOverdue(todo) ? "font-medium text-red-600" : "text-muted-foreground"
+      )}
+    >
+      <CalendarDays className="size-3.5" />
+      {formatDate(todo.dueDate)}
+    </span>
+  );
+}
+
+export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
+  const router = useRouter();
+  const [todos, setTodos] = useState(serverTodos);
+  const [view, setView] = useState<"list" | "kanban">("list");
+  const [quickTitle, setQuickTitle] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [dialog, setDialog] = useState<{ open: boolean; todo: TodoDTO | null }>({
+    open: false,
+    todo: null,
+  });
+
+  useEffect(() => setTodos(serverTodos), [serverTodos]);
+  useEffect(() => {
+    const saved = localStorage.getItem(VIEW_KEY);
+    if (saved === "kanban") setView("kanban");
+  }, []);
+
+  function switchView(v: "list" | "kanban") {
+    setView(v);
+    localStorage.setItem(VIEW_KEY, v);
+  }
+
+  // Đổi trạng thái lạc quan (tick checkbox, kéo thả, nút mũi tên)
+  async function setStatus(todo: TodoDTO, status: TodoStatus) {
+    if (todo.status === status) return;
+    setTodos((ts) =>
+      ts.map((t) =>
+        t.id === todo.id
+          ? {
+              ...t,
+              status,
+              completedAt:
+                status === "DONE" ? (t.completedAt ?? new Date().toISOString()) : null,
+            }
+          : t
+      )
+    );
+    const res = await fetch(`/api/todos/${todo.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ statusOnly: true, status }),
+    });
+    if (!res.ok) {
+      toast.error("Cập nhật thất bại");
+      setTodos(serverTodos);
+    }
+    router.refresh();
+  }
+
+  async function quickAdd(e: React.FormEvent) {
+    e.preventDefault();
+    const title = quickTitle.trim();
+    if (!title) return;
+    setAdding(true);
+    try {
+      const res = await fetch("/api/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      });
+      if (!res.ok) throw new Error();
+      setQuickTitle("");
+      router.refresh();
+    } catch {
+      toast.error("Thêm việc thất bại");
+    } finally {
+      setAdding(false);
+    }
+  }
+
+  const openTodos = todos.filter((t) => t.status !== "DONE");
+  const doneTodos = sortTodos(todos.filter((t) => t.status === "DONE"));
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Việc cần làm</h1>
+          <p className="text-sm text-muted-foreground">
+            {openTodos.length} việc đang mở · {doneTodos.length} đã xong
+          </p>
+        </div>
+        <div className="flex rounded-md border p-0.5">
+          <Button
+            variant={view === "list" ? "default" : "ghost"}
+            size="sm"
+            className="h-8"
+            onClick={() => switchView("list")}
+          >
+            <List className="size-4" /> Danh sách
+          </Button>
+          <Button
+            variant={view === "kanban" ? "default" : "ghost"}
+            size="sm"
+            className="h-8"
+            onClick={() => switchView("kanban")}
+          >
+            <Kanban className="size-4" /> Kanban
+          </Button>
+        </div>
+      </div>
+
+      <form onSubmit={quickAdd} className="flex gap-2">
+        <Input
+          value={quickTitle}
+          onChange={(e) => setQuickTitle(e.target.value)}
+          placeholder="Thêm việc mới rồi nhấn Enter..."
+        />
+        <Button type="submit" disabled={adding || !quickTitle.trim()}>
+          <Plus className="size-4" /> Thêm
+        </Button>
+      </form>
+
+      {view === "list" ? (
+        <ChecklistView
+          todos={todos}
+          onToggle={(t) => setStatus(t, t.status === "DONE" ? "TODO" : "DONE")}
+          onOpen={(t) => setDialog({ open: true, todo: t })}
+        />
+      ) : (
+        <KanbanView
+          todos={todos}
+          onMove={setStatus}
+          onOpen={(t) => setDialog({ open: true, todo: t })}
+        />
+      )}
+
+      <TodoDialog
+        open={dialog.open}
+        todo={dialog.todo}
+        onClose={() => setDialog({ open: false, todo: null })}
+      />
+    </div>
+  );
+}
+
+// ===== Checklist =====
+function ChecklistView({
+  todos,
+  onToggle,
+  onOpen,
+}: {
+  todos: TodoDTO[];
+  onToggle: (t: TodoDTO) => void;
+  onOpen: (t: TodoDTO) => void;
+}) {
+  const sections: { status: TodoStatus; todos: TodoDTO[] }[] = [
+    { status: "DOING", todos: sortTodos(todos.filter((t) => t.status === "DOING")) },
+    { status: "TODO", todos: sortTodos(todos.filter((t) => t.status === "TODO")) },
+    { status: "DONE", todos: sortTodos(todos.filter((t) => t.status === "DONE")) },
+  ];
+
+  if (todos.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed py-16 text-center text-sm text-muted-foreground">
+        Chưa có việc nào — thêm việc đầu tiên ở ô phía trên.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      {sections.map(
+        ({ status, todos: items }) =>
+          items.length > 0 && (
+            <div key={status}>
+              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                {TODO_STATUS_LABELS[status]} ({items.length})
+              </h2>
+              <ul className="divide-y rounded-lg border">
+                {items.map((t) => (
+                  <li
+                    key={t.id}
+                    className="flex cursor-pointer items-center gap-3 px-3 py-2.5 hover:bg-accent/50"
+                    onClick={() => onOpen(t)}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={t.status === "DONE"}
+                      onChange={() => onToggle(t)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="size-4 shrink-0 accent-primary"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div
+                        className={cn(
+                          "truncate font-medium",
+                          t.status === "DONE" && "text-muted-foreground line-through"
+                        )}
+                      >
+                        {t.title}
+                      </div>
+                      {t.notes && (
+                        <div className="truncate text-xs text-muted-foreground">
+                          {t.notes}
+                        </div>
+                      )}
+                    </div>
+                    <DueDate todo={t} />
+                    {t.status !== "DONE" && <PriorityBadge priority={t.priority} />}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+      )}
+    </div>
+  );
+}
+
+// ===== Kanban (kéo thả giữa 3 cột; mobile dùng nút ← →) =====
+function KanbanView({
+  todos,
+  onMove,
+  onOpen,
+}: {
+  todos: TodoDTO[];
+  onMove: (t: TodoDTO, status: TodoStatus) => void;
+  onOpen: (t: TodoDTO) => void;
+}) {
+  const [dragOver, setDragOver] = useState<TodoStatus | null>(null);
+
+  function neighbors(status: string): { prev: TodoStatus | null; next: TodoStatus | null } {
+    const i = TODO_STATUSES.indexOf(status as TodoStatus);
+    return {
+      prev: i > 0 ? TODO_STATUSES[i - 1] : null,
+      next: i < TODO_STATUSES.length - 1 ? TODO_STATUSES[i + 1] : null,
+    };
+  }
+
+  return (
+    <div className="grid gap-3 md:grid-cols-3">
+      {TODO_STATUSES.map((status) => {
+        const items = sortTodos(todos.filter((t) => t.status === status));
+        return (
+          <div
+            key={status}
+            className={cn(
+              "rounded-lg border bg-muted/30 p-2 transition-colors",
+              dragOver === status && "border-primary bg-primary/5"
+            )}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(status);
+            }}
+            onDragLeave={() => setDragOver(null)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragOver(null);
+              const id = e.dataTransfer.getData("text/todo-id");
+              const todo = todos.find((t) => t.id === id);
+              if (todo) onMove(todo, status);
+            }}
+          >
+            <h2 className="px-1 pb-2 pt-1 text-sm font-semibold">
+              {TODO_STATUS_LABELS[status]}{" "}
+              <span className="font-normal text-muted-foreground">({items.length})</span>
+            </h2>
+            <div className="space-y-2">
+              {items.map((t) => {
+                const { prev, next } = neighbors(t.status);
+                return (
+                  <Card
+                    key={t.id}
+                    draggable
+                    onDragStart={(e) => e.dataTransfer.setData("text/todo-id", t.id)}
+                    onClick={() => onOpen(t)}
+                    className="cursor-grab gap-1.5 p-3 active:cursor-grabbing"
+                  >
+                    <div
+                      className={cn(
+                        "text-sm font-medium",
+                        t.status === "DONE" && "text-muted-foreground line-through"
+                      )}
+                    >
+                      {t.title}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {t.status !== "DONE" && <PriorityBadge priority={t.priority} />}
+                      <DueDate todo={t} />
+                      <span className="ml-auto flex gap-0.5 md:hidden">
+                        {prev && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="size-6"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onMove(t, prev);
+                            }}
+                          >
+                            <ArrowLeft className="size-3.5" />
+                          </Button>
+                        )}
+                        {next && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="size-6"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onMove(t, next);
+                            }}
+                          >
+                            <ArrowRight className="size-3.5" />
+                          </Button>
+                        )}
+                      </span>
+                    </div>
+                  </Card>
+                );
+              })}
+              {items.length === 0 && (
+                <div className="rounded-md border border-dashed py-6 text-center text-xs text-muted-foreground">
+                  Kéo việc vào đây
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
