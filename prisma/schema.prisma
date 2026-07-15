@@ -217,6 +217,36 @@ model Session {
   @@index([userId])
 }
 
+// ===== Module Drive (kho file) =====
+// Tối ưu lưu trữ: file vật lý lưu content-addressed theo SHA-256 (chống trùng
+// lặp — 2 file trùng nội dung chỉ tốn 1 lần đĩa). StoredFile là "tên hiển thị"
+// trỏ tới nội dung qua sha256; xóa file vật lý chỉ khi không còn ai trỏ tới.
+model Folder {
+  id        String   @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Folder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children  Folder[] @relation("FolderTree")
+  files     StoredFile[]
+  createdAt DateTime @default(now())
+
+  @@index([parentId])
+}
+
+model StoredFile {
+  id        String   @id @default(cuid())
+  name      String
+  folderId  String?
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  size      Int // byte (tối đa ~2GB/file)
+  mimeType  String
+  sha256    String // địa chỉ nội dung → file vật lý drive/<sha[0:2]>/<sha>
+  createdAt DateTime @default(now())
+
+  @@index([folderId])
+  @@index([sha256])
+}
+
 // ===== Module Todolist =====
 model Todo {
   id          String    @id @default(cuid())

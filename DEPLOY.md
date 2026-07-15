@@ -78,12 +78,17 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 - Physical path: một thư mục rỗng bất kỳ, vd `C:\inetpub\myweb` (IIS chỉ dùng thư mục này để giữ `web.config`, không cần chứa gì khác)
 - Binding: type `http`, Host name: điền domain của bạn (vd `ten-mien-cua-ban.com`), port `80`
 
-**5. Tạo file `C:\inetpub\myweb\web.config`** — rule chuyển toàn bộ traffic sang Next.js đang chạy ở cổng 3000:
+**5. Tạo file `C:\inetpub\myweb\web.config`** — rule chuyển toàn bộ traffic sang Next.js đang chạy ở cổng 3000. `maxAllowedContentLength` nâng lên 2GB để module Kho file tải được file lớn (mặc định IIS chỉ cho ~28MB):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <system.webServer>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="2147483648" />
+      </requestFiltering>
+    </security>
     <rewrite>
       <rules>
         <rule name="ReverseProxyToNode" stopProcessing="true">

@@ -5,6 +5,10 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
 1. **Quản lý Tài chính Cá nhân** (`/finance`) — ví tiền, khoản chi/thu, chuyển khoản nội bộ, đính ảnh hóa đơn, dashboard báo cáo (theo `BA-quan-ly-tai-chinh.md`).
 2. **Đề xuất mua hàng** (`/procurement`) — quản lý ngân sách IT theo năm (form BM02B: nhóm khoản mục → quỹ, phân bổ 12 tháng), các đợt đề xuất mua hàng và hạng mục, file bằng chứng đính kèm, **xuất phiếu đề xuất PDF/Excel theo mẫu CT.MH-QT-01/BM01**. Thay thế file Excel "Theo dõi các đề xuất đã mua".
 3. **Việc cần làm** (`/todos`) — todolist: thêm nhanh 1 dòng, ưu tiên (cao/vừa/thấp), hạn chót (quá hạn tô đỏ), ghi chú; 2 kiểu xem chuyển qua lại: **checklist** (tick hoàn thành) và **Kanban** (kéo thả Chờ làm / Đang làm / Đã xong; mobile dùng nút ← →).
+4. **Kho file** (`/drive`) — drive cá nhân: thư mục lồng nhau, tải lên nhiều file (kéo thả, có tiến độ), xem/tải/đổi tên/xóa. **Lưu trữ tối ưu**:
+   - **Chống trùng lặp (dedup)**: file lưu theo mã băm SHA-256 nội dung → 2 file trùng nội dung (kể cả khác tên) chỉ tốn **1 lần** dung lượng đĩa; thẻ thống kê hiển thị dung lượng đã tiết kiệm.
+   - **Streaming**: up/down chảy thẳng qua đĩa, không nạp cả file vào RAM (chịu được file lớn, tối đa 2GB/file).
+   - **Range request**: xem/tua video, ảnh, PDF ngay trong trình duyệt không phải tải hết; file vật lý băm theo 2 ký tự đầu hash để không dồn một chỗ. Xóa file chỉ giải phóng đĩa khi không còn bản nào trùng nội dung (đếm tham chiếu).
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.
 

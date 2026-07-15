@@ -7,6 +7,7 @@ import {
   ArrowLeftRight,
   CircleUser,
   ClipboardList,
+  HardDrive,
   LayoutDashboard,
   LayoutGrid,
   PiggyBank,
@@ -58,6 +59,11 @@ const MODULES: ModuleGroup[] = [
     id: "todos",
     label: "Công việc",
     items: [{ href: "/todos", label: "Việc cần làm", icon: ClipboardList }],
+  },
+  {
+    id: "drive",
+    label: "Kho file",
+    items: [{ href: "/drive", label: "Tất cả file", icon: HardDrive }],
   },
 ];
 
