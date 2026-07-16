@@ -259,10 +259,11 @@ export function adjustExceptions(
   shiftEnd: string,
   breakWindows: string,
   windowMinutes: number
-): { rows: Row[]; proposals: Proposal[] } {
-  if (exceptionIds.size === 0) return { rows, proposals: [] };
+): { rows: Row[]; proposals: Proposal[]; removed: number } {
+  if (exceptionIds.size === 0) return { rows, proposals: [], removed: 0 };
   const segments = buildSegments(parseHHMM(shiftStart), parseHHMM(shiftEnd), parseBreaks(breakWindows));
   const proposals: Proposal[] = [];
+  const toDelete = new Set<Row>();
 
   const groups = new Map<string, Row[]>();
   for (const r of rows) {
@@ -294,6 +295,9 @@ export function adjustExceptions(
     if (COL_HHMM in r.v) r.v[COL_HHMM] = fmtHHMM(nt);
   };
 
+  // Với user ngoại lệ: mỗi ca chỉ giữ 1 lượt VÀO sớm nhất (dời ra trước giờ ca)
+  // + 1 lượt RA muộn nhất (dời ra sau giờ ca). Mọi lượt ra/vào GIỮA GIỜ bị xóa
+  // → người ngoại lệ xem như có mặt suốt ca, không lộ ra/vào trong giờ làm.
   for (const group of groups.values()) {
     for (const [tenCa, caStart, caEnd] of segments) {
       const inCa = group.filter((r) => {
@@ -302,9 +306,12 @@ export function adjustExceptions(
       });
       if (inCa.length === 0) continue;
 
+      const keep = new Set<Row>();
+
       const vao = inCa.filter((r) => (r.v[COL_DIEM] ?? "").toLowerCase().includes("vào"));
       if (vao.length) {
         const earliest = vao.reduce((a, b) => (a.gio! <= b.gio! ? a : b));
+        keep.add(earliest);
         if (timeFloat(earliest.gio!) > caStart) {
           applyNew(earliest, caStart, "before",
             [idOf(earliest), earliest.gio!.toISOString(), "di_muon", tenCa], "Đi muộn", tenCa);
@@ -313,16 +320,21 @@ export function adjustExceptions(
       const ra = inCa.filter((r) => (r.v[COL_DIEM] ?? "").toLowerCase().includes("ra"));
       if (ra.length) {
         const latest = ra.reduce((a, b) => (a.gio! >= b.gio! ? a : b));
+        keep.add(latest);
         if (timeFloat(latest.gio!) < caEnd) {
           applyNew(latest, caEnd, "after",
             [idOf(latest), latest.gio!.toISOString(), "ve_som", tenCa], "Về sớm", tenCa);
         }
       }
+
+      // xóa các lượt ra/vào lắt nhắt còn lại trong ca
+      for (const r of inCa) if (!keep.has(r)) toDelete.add(r);
     }
   }
 
-  rows.sort((a, b) => (b.gio?.getTime() ?? 0) - (a.gio?.getTime() ?? 0));
-  return { rows, proposals };
+  const kept = rows.filter((r) => !toDelete.has(r));
+  kept.sort((a, b) => (b.gio?.getTime() ?? 0) - (a.gio?.getTime() ?? 0));
+  return { rows: kept, proposals, removed: toDelete.size };
 }
 
 // ---------- Phân sheet theo khung giờ ----------
@@ -457,9 +469,11 @@ export async function runPipeline(
       params.shiftStart, params.shiftEnd, params.breakWindows, params.exceptionWindowMinutes
     );
     finalRows = adj.rows;
+    if (adj.removed > 0)
+      log(`→ Đã xóa ${adj.removed.toLocaleString("vi-VN")} lượt ra/vào giữa giờ của user ngoại lệ.`);
     if (adj.proposals.length === 0) log("→ Không có mục đi muộn/về sớm nào cần điều chỉnh.");
     else {
-      log(`→ Đã điều chỉnh ${adj.proposals.length.toLocaleString("vi-VN")} mục:`);
+      log(`→ Đã dời ${adj.proposals.length.toLocaleString("vi-VN")} mốc vào/ra ra ngoài ca:`);
       for (const p of adj.proposals.slice(0, 40)) {
         log(`   ID ${p.id}${p.ten ? " | " + p.ten : ""} | ${p.ngay} | ${p.loai}: ${p.gioCu} → ${p.gioMoi}`);
       }
