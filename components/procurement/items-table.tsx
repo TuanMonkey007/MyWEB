@@ -15,6 +15,7 @@ import {
 import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ItemDialog, type FundOption, type ItemDTO } from "./item-dialog";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 export function ItemStatusBadge({ status }: { status: string }) {
   if (status === "PURCHASED")
@@ -34,6 +35,7 @@ export function ItemsTable({
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selected, setSelected] = useState<ItemDTO | null>(null);
+  const canCreate = useCan()("procurement", "create");
 
   const fundName = (id: string) => fundOptions.find((f) => f.id === id)?.name ?? "?";
 
@@ -43,6 +45,8 @@ export function ItemsTable({
         <h2 className="font-medium">Hạng mục ({items.length})</h2>
         <Button
           size="sm"
+          disabled={!canCreate}
+          title={canCreate ? undefined : NO_PERM}
           onClick={() => {
             setSelected(null);
             setDialogOpen(true);

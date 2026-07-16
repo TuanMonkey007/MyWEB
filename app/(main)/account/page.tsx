@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { CircleUser } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
-import { MODULE_REGISTRY, userModuleIds } from "@/lib/modules";
+import { MODULE_REGISTRY } from "@/lib/modules";
+import { MODULE_CAPS, parsePermissions, userModules } from "@/lib/permissions";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChangePasswordForm } from "@/components/account/change-password-form";
@@ -12,7 +13,9 @@ export const dynamic = "force-dynamic";
 export default async function AccountPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  const moduleIds = userModuleIds(user);
+  const moduleIds = userModules(user);
+  const perms = parsePermissions(user);
+  const isAdmin = user.role === "ADMIN";
 
   return (
     <div className="space-y-4">
@@ -42,14 +45,26 @@ export default async function AccountPage() {
                   <Badge variant="secondary">Người dùng</Badge>
                 )}
               </span>
-              <span className="text-muted-foreground">Module được cấp</span>
-              <span className="flex flex-wrap gap-1">
+              <span className="text-muted-foreground">Quyền được cấp</span>
+              <span className="space-y-1.5">
                 {moduleIds.length === 0 && "—"}
-                {MODULE_REGISTRY.filter((m) => moduleIds.includes(m.id)).map((m) => (
-                  <Badge key={m.id} variant="outline">
-                    {m.label}
-                  </Badge>
-                ))}
+                {MODULE_REGISTRY.filter((m) => moduleIds.includes(m.id)).map((m) => {
+                  const caps = isAdmin
+                    ? MODULE_CAPS[m.id].map((c) => c.id)
+                    : perms[m.id] ?? [];
+                  return (
+                    <span key={m.id} className="flex flex-wrap items-center gap-1">
+                      <Badge variant="outline">{m.label}</Badge>
+                      {MODULE_CAPS[m.id]
+                        .filter((c) => caps.includes(c.id))
+                        .map((c) => (
+                          <Badge key={c.id} variant="secondary" className="text-[10px]">
+                            {c.label}
+                          </Badge>
+                        ))}
+                    </span>
+                  );
+                })}
               </span>
             </div>
           </CardContent>

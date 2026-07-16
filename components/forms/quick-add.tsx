@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { TransactionForm, type Option } from "./transaction-form";
 import { TransferForm } from "./transfer-form";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 // Nút thêm nhanh 3 loại giao dịch — dùng ở Dashboard và trang Giao dịch
 export function QuickAddButtons({
@@ -24,21 +25,37 @@ export function QuickAddButtons({
 }) {
   const [open, setOpen] = useState<"expense" | "income" | "transfer" | null>(null);
   const close = () => setOpen(null);
+  const can = useCan();
+  const canCreate = can("finance", "create");
 
   return (
     <>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={() => setOpen("expense")} variant="destructive" size="sm">
+        <Button
+          onClick={() => setOpen("expense")}
+          variant="destructive"
+          size="sm"
+          disabled={!canCreate}
+          title={canCreate ? undefined : NO_PERM}
+        >
           <Minus className="size-4" /> Khoản chi
         </Button>
         <Button
           onClick={() => setOpen("income")}
           size="sm"
+          disabled={!canCreate}
+          title={canCreate ? undefined : NO_PERM}
           className="bg-emerald-600 text-white hover:bg-emerald-700"
         >
           <Plus className="size-4" /> Khoản thu
         </Button>
-        <Button onClick={() => setOpen("transfer")} variant="outline" size="sm">
+        <Button
+          onClick={() => setOpen("transfer")}
+          variant="outline"
+          size="sm"
+          disabled={!canCreate}
+          title={canCreate ? undefined : NO_PERM}
+        >
           <ArrowLeftRight className="size-4" /> Chuyển khoản
         </Button>
       </div>

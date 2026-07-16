@@ -37,6 +37,7 @@ import { formatUSD, formatVND, formatAmountInput } from "@/lib/format";
 import { WALLET_TYPE_LABELS, type WalletType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { WalletFormDialog, type WalletDTO } from "./wallet-form";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 const TYPE_ICONS: Record<WalletType, typeof Banknote> = {
   CASH: Banknote,
@@ -47,6 +48,10 @@ const TYPE_ICONS: Record<WalletType, typeof Banknote> = {
 
 export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
   const router = useRouter();
+  const can = useCan();
+  const canCreate = can("finance", "create");
+  const canEdit = can("finance", "edit");
+  const canDelete = can("finance", "delete");
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<WalletDTO | null>(null);
   const [deleting, setDeleting] = useState<WalletDTO | null>(null);
@@ -67,7 +72,12 @@ export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button onClick={() => setCreating(true)} size="sm">
+        <Button
+          onClick={() => setCreating(true)}
+          size="sm"
+          disabled={!canCreate}
+          title={canCreate ? undefined : NO_PERM}
+        >
           <Plus className="size-4" /> Thêm ví
         </Button>
       </div>
@@ -96,7 +106,7 @@ export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setEditing(w)}>
+                    <DropdownMenuItem disabled={!canEdit} onClick={() => setEditing(w)}>
                       <Pencil className="size-4" /> Sửa
                     </DropdownMenuItem>
                     {w.url && (
@@ -108,6 +118,7 @@ export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
                     )}
                     <DropdownMenuItem
                       variant="destructive"
+                      disabled={!canDelete}
                       onClick={() => setDeleting(w)}
                     >
                       <Trash2 className="size-4" /> Xóa

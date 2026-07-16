@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ProposalDialog, type ProposalDTO } from "./proposal-dialog";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 export function ProposalActions({
   proposal,
@@ -27,6 +28,9 @@ export function ProposalActions({
   itemCount: number;
 }) {
   const router = useRouter();
+  const can = useCan();
+  const canEdit = can("procurement", "edit");
+  const canDelete = can("procurement", "delete");
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -45,13 +49,21 @@ export function ProposalActions({
 
   return (
     <div className="flex gap-2">
-      <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={!canEdit}
+        title={canEdit ? undefined : NO_PERM}
+        onClick={() => setEditing(true)}
+      >
         <Pencil className="size-4" /> Sửa
       </Button>
       <Button
         variant="outline"
         size="sm"
         className="text-destructive hover:text-destructive"
+        disabled={!canDelete}
+        title={canDelete ? undefined : NO_PERM}
         onClick={() => setConfirmDelete(true)}
       >
         <Trash2 className="size-4" /> Xóa đợt

@@ -2,14 +2,16 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { jsonError } from "@/lib/api";
 import { hashPassword, requireAdmin } from "@/lib/auth";
-import { ALL_MODULE_IDS } from "@/lib/modules";
+import { serializePermissions, type PermMap } from "@/lib/permissions";
 
-function sanitizeModules(raw: unknown): string {
-  if (!Array.isArray(raw)) return "";
-  return raw
-    .map(String)
-    .filter((m) => (ALL_MODULE_IDS as string[]).includes(m))
-    .join(",");
+// { finance:["view","create"], ... } → JSON đã chuẩn hóa
+function permsFromBody(raw: unknown): string {
+  if (!raw || typeof raw !== "object") return "{}";
+  const map: PermMap = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (Array.isArray(v)) map[k as keyof PermMap] = v.map(String);
+  }
+  return serializePermissions(map);
 }
 
 const USERNAME_RE = /^[a-z0-9._-]{3,30}$/;
@@ -25,7 +27,7 @@ export async function GET() {
       username: true,
       displayName: true,
       role: true,
-      modules: true,
+      permissions: true,
       active: true,
       createdAt: true,
       _count: { select: { sessions: true } },
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
           : null,
       passwordHash: hashPassword(password),
       role,
-      modules: role === "ADMIN" ? "" : sanitizeModules(body.modules),
+      permissions: role === "ADMIN" ? "" : permsFromBody(body.permissions),
     },
   });
   return NextResponse.json({ id: user.id, username: user.username }, { status: 201 });

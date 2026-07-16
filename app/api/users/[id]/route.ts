@@ -2,16 +2,17 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { jsonError } from "@/lib/api";
 import { deleteUserSessions, hashPassword, requireAdmin } from "@/lib/auth";
-import { ALL_MODULE_IDS } from "@/lib/modules";
+import { serializePermissions, type PermMap } from "@/lib/permissions";
 
 type Params = { params: Promise<{ id: string }> };
 
-function sanitizeModules(raw: unknown): string {
-  if (!Array.isArray(raw)) return "";
-  return raw
-    .map(String)
-    .filter((m) => (ALL_MODULE_IDS as string[]).includes(m))
-    .join(",");
+function permsFromBody(raw: unknown): string {
+  if (!raw || typeof raw !== "object") return "{}";
+  const map: PermMap = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (Array.isArray(v)) map[k as keyof PermMap] = v.map(String);
+  }
+  return serializePermissions(map);
 }
 
 // Đảm bảo hệ thống luôn còn ít nhất 1 admin đang hoạt động
@@ -48,7 +49,7 @@ export async function PUT(req: Request, { params }: Params) {
         ? body.displayName.trim()
         : null,
     role,
-    modules: role === "ADMIN" ? "" : sanitizeModules(body.modules),
+    permissions: role === "ADMIN" ? "" : permsFromBody(body.permissions),
     active,
   };
 
@@ -60,8 +61,8 @@ export async function PUT(req: Request, { params }: Params) {
 
   const user = await prisma.user.update({ where: { id }, data });
 
-  // Khóa tài khoản / đặt lại mật khẩu / thu hẹp quyền → hủy phiên đang mở của user đó
-  if (!active || data.passwordHash || role !== existing.role || user.modules !== existing.modules) {
+  // Khóa tài khoản / đặt lại mật khẩu / đổi quyền → hủy phiên đang mở của user đó
+  if (!active || data.passwordHash || role !== existing.role || user.permissions !== existing.permissions) {
     if (user.id !== admin.id) await deleteUserSessions(user.id);
   }
 

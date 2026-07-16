@@ -27,6 +27,7 @@ import {
 } from "@/lib/todos-constants";
 import { cn } from "@/lib/utils";
 import { TodoDialog } from "./todo-dialog";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 const VIEW_KEY = "todos-view";
 
@@ -54,6 +55,7 @@ function DueDate({ todo }: { todo: TodoDTO }) {
 
 export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
   const router = useRouter();
+  const canCreate = useCan()("todos", "create");
   const [todos, setTodos] = useState(serverTodos);
   const [view, setView] = useState<"list" | "kanban">("list");
   const [quickTitle, setQuickTitle] = useState("");
@@ -158,9 +160,14 @@ export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
         <Input
           value={quickTitle}
           onChange={(e) => setQuickTitle(e.target.value)}
-          placeholder="Thêm việc mới rồi nhấn Enter..."
+          placeholder={canCreate ? "Thêm việc mới rồi nhấn Enter..." : NO_PERM}
+          disabled={!canCreate}
         />
-        <Button type="submit" disabled={adding || !quickTitle.trim()}>
+        <Button
+          type="submit"
+          disabled={!canCreate || adding || !quickTitle.trim()}
+          title={canCreate ? undefined : NO_PERM}
+        >
           <Plus className="size-4" /> Thêm
         </Button>
       </form>

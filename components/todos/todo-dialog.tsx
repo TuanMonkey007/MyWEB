@@ -29,6 +29,7 @@ import {
   TODO_STATUS_LABELS,
   type TodoDTO,
 } from "@/lib/todos-constants";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 export function TodoDialog({
   open,
@@ -40,6 +41,10 @@ export function TodoDialog({
   todo: TodoDTO | null; // null = tạo mới
 }) {
   const router = useRouter();
+  const can = useCan();
+  const canCreate = can("todos", "create");
+  const canEdit = can("todos", "edit");
+  const canDelete = can("todos", "delete");
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
@@ -177,12 +182,19 @@ export function TodoDialog({
                 type="button"
                 variant="outline"
                 className="text-destructive hover:text-destructive"
+                disabled={!canDelete}
+                title={canDelete ? undefined : NO_PERM}
                 onClick={handleDelete}
               >
                 <Trash2 className="size-4" />
               </Button>
             )}
-            <Button type="submit" className="flex-1" disabled={saving}>
+            <Button
+              type="submit"
+              className="flex-1"
+              disabled={saving || (todo ? !canEdit : !canCreate)}
+              title={(todo ? canEdit : canCreate) ? undefined : NO_PERM}
+            >
               {saving ? "Đang lưu..." : todo ? "Cập nhật" : "Thêm việc"}
             </Button>
           </div>

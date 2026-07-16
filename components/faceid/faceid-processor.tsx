@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 import { cn } from "@/lib/utils";
 
 type Personnel = { id: string; name: string; count: number };
@@ -39,6 +40,7 @@ const DEFAULTS = {
 };
 
 export function FaceidProcessor() {
+  const canRun = useCan()("faceid", "run");
   const fileRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<"idle" | "inspecting" | "ready" | "processing">("idle");
@@ -177,7 +179,7 @@ export function FaceidProcessor() {
         onDrop={(e) => {
           e.preventDefault();
           setDragActive(false);
-          if (e.dataTransfer.files[0]) inspect(e.dataTransfer.files[0]);
+          if (canRun && e.dataTransfer.files[0]) inspect(e.dataTransfer.files[0]);
         }}
         className={cn(
           "flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-10 text-center transition-colors",
@@ -202,17 +204,23 @@ export function FaceidProcessor() {
         ) : (
           <>
             <Upload className="size-6 text-muted-foreground" />
-            <div className="text-sm">
-              Kéo thả file Excel dữ liệu gốc vào đây, hoặc{" "}
-              <button
-                type="button"
-                className="font-medium text-primary hover:underline"
-                onClick={() => fileRef.current?.click()}
-              >
-                chọn file
-              </button>
-            </div>
-            <span className="text-xs text-muted-foreground">.xls · .xlsx · .xlsm</span>
+            {canRun ? (
+              <>
+                <div className="text-sm">
+                  Kéo thả file Excel dữ liệu gốc vào đây, hoặc{" "}
+                  <button
+                    type="button"
+                    className="font-medium text-primary hover:underline"
+                    onClick={() => fileRef.current?.click()}
+                  >
+                    chọn file
+                  </button>
+                </div>
+                <span className="text-xs text-muted-foreground">.xls · .xlsx · .xlsm</span>
+              </>
+            ) : (
+              <span className="text-sm text-muted-foreground">{NO_PERM}</span>
+            )}
           </>
         )}
       </div>
@@ -339,7 +347,12 @@ export function FaceidProcessor() {
                   </div>
                 </div>
 
-                <Button className="w-full" disabled={phase === "processing"} onClick={process}>
+                <Button
+                  className="w-full"
+                  disabled={phase === "processing" || !canRun}
+                  title={canRun ? undefined : NO_PERM}
+                  onClick={process}
+                >
                   {phase === "processing" ? (
                     <>
                       <Loader2 className="size-4 animate-spin" /> Đang xử lý...

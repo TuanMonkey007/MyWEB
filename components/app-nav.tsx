@@ -14,6 +14,7 @@ import {
   FileText,
   ScanFace,
   Settings,
+  ShieldCheck,
   SlidersHorizontal,
   Wallet,
 } from "lucide-react";
@@ -73,7 +74,11 @@ const MODULES: ModuleGroup[] = [
   },
 ];
 
-const settingsItem: NavItem = { href: "/settings", label: "Cài đặt", icon: Settings };
+// Khu quản trị (chỉ ADMIN)
+const adminItems: NavItem[] = [
+  { href: "/access", label: "Phân quyền", icon: ShieldCheck },
+  { href: "/settings", label: "Cài đặt", icon: Settings },
+];
 
 type NavProps = {
   allowedModules: string[];
@@ -169,7 +174,12 @@ export function AppSidebar({
         ))}
         {isAdmin && (
           <div className="mt-4 border-t pt-2">
-            <SidebarLink item={settingsItem} pathname={pathname} />
+            <div className="px-3 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Quản trị
+            </div>
+            {adminItems.map((item) => (
+              <SidebarLink key={item.href} item={item} pathname={pathname} />
+            ))}
           </div>
         )}
       </nav>
@@ -279,16 +289,21 @@ export function AppBottomNav({
                 <CircleUser className="size-4 shrink-0" />
                 <span className="truncate">{userName}</span>
               </Link>
-              <div className="flex shrink-0 items-center gap-1">
-                {isAdmin && (
-                  <Link
-                    href={settingsItem.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-1.5 text-sm text-muted-foreground"
-                  >
-                    <Settings className="size-4" /> Cài đặt
-                  </Link>
-                )}
+              <div className="flex shrink-0 items-center gap-2">
+                {isAdmin &&
+                  adminItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-1 text-sm text-muted-foreground"
+                      >
+                        <Icon className="size-4" /> {item.label}
+                      </Link>
+                    );
+                  })}
                 <ThemeToggle />
                 <LogoutButton iconOnly />
               </div>

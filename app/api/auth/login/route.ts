@@ -9,7 +9,7 @@ import {
   isHttpsRequest,
   verifyPassword,
 } from "@/lib/auth";
-import { homeFor } from "@/lib/modules";
+import { homeFor } from "@/lib/permissions";
 
 // Chống dò mật khẩu: tối đa 5 lần sai / 5 phút cho mỗi IP+username (in-memory)
 const WINDOW_MS = 5 * 60 * 1000;

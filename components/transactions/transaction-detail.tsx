@@ -26,6 +26,7 @@ import { formatDate, formatVND } from "@/lib/format";
 import { TRANSACTION_TYPE_LABELS, type TransactionRow } from "@/lib/types";
 import { TransactionForm, type Option } from "@/components/forms/transaction-form";
 import { TransferForm } from "@/components/forms/transfer-form";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 const ENDPOINTS = {
   expense: "/api/expenses",
@@ -48,6 +49,9 @@ export function TransactionDetailDialog({
   incomeCategories: Option[];
 }) {
   const router = useRouter();
+  const can = useCan();
+  const canEdit = can("finance", "edit");
+  const canDelete = can("finance", "delete");
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -174,6 +178,8 @@ export function TransactionDetailDialog({
                 <Button
                   variant="outline"
                   className="flex-1"
+                  disabled={!canEdit}
+                  title={canEdit ? undefined : NO_PERM}
                   onClick={() => setEditing(true)}
                 >
                   <Pencil className="size-4" /> Sửa
@@ -181,6 +187,8 @@ export function TransactionDetailDialog({
                 <Button
                   variant="outline"
                   className="flex-1 text-destructive hover:text-destructive"
+                  disabled={!canDelete}
+                  title={canDelete ? undefined : NO_PERM}
                   onClick={() => setConfirmDelete(true)}
                 >
                   <Trash2 className="size-4" /> Xóa

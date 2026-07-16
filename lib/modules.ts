@@ -37,21 +37,10 @@ export const MODULE_PATH_PREFIXES: [string, ModuleId][] = [
   ["/api/faceid", "faceid"],
 ];
 
-// Khu vực chỉ ADMIN (cấu hình hệ thống + quản lý tài khoản)
-export const ADMIN_PATH_PREFIXES = ["/settings", "/api/settings", "/api/users"];
-
-// Quyền module của một user: ADMIN thấy tất cả; USER theo CSV đã cấp
-export function userModuleIds(user: { role: string; modules: string }): ModuleId[] {
-  if (user.role === "ADMIN") return [...ALL_MODULE_IDS];
-  return user.modules
-    .split(",")
-    .map((s) => s.trim())
-    .filter((s): s is ModuleId => (ALL_MODULE_IDS as string[]).includes(s));
-}
-
-// Trang đích sau đăng nhập: module đầu tiên được cấp
-export function homeFor(user: { role: string; modules: string }): string {
-  const ids = userModuleIds(user);
-  const mod = MODULE_REGISTRY.find((m) => ids.includes(m.id));
-  return mod?.href ?? "/account";
-}
+// Khu vực chỉ ADMIN (cấu hình hệ thống + quản lý tài khoản/phân quyền)
+export const ADMIN_PATH_PREFIXES = [
+  "/settings",
+  "/api/settings",
+  "/access",
+  "/api/users",
+];

@@ -49,6 +49,7 @@ import { formatDate } from "@/lib/format";
 import { formatBytes } from "@/lib/drive-format";
 import { cn } from "@/lib/utils";
 import { fileIconFor } from "./file-icon";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 type FolderRow = { id: string; name: string; childCount: number };
 type FileRow = {
@@ -81,6 +82,10 @@ export function DriveBrowser({
   allFolders: { id: string; name: string }[];
 }) {
   const router = useRouter();
+  const can = useCan();
+  const canCreate = can("drive", "create");
+  const canEdit = can("drive", "edit");
+  const canDelete = can("drive", "delete");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploads, setUploads] = useState<Uploading[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -210,7 +215,7 @@ export function DriveBrowser({
       onDrop={(e) => {
         e.preventDefault();
         setDragActive(false);
-        if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files);
+        if (canCreate && e.dataTransfer.files.length) handleUpload(e.dataTransfer.files);
       }}
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -221,10 +226,21 @@ export function DriveBrowser({
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setNewFolderOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={!canCreate}
+            title={canCreate ? undefined : NO_PERM}
+            onClick={() => setNewFolderOpen(true)}
+          >
             <FolderPlus className="size-4" /> Thư mục mới
           </Button>
-          <Button size="sm" onClick={() => fileInputRef.current?.click()}>
+          <Button
+            size="sm"
+            disabled={!canCreate}
+            title={canCreate ? undefined : NO_PERM}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <Upload className="size-4" /> Tải file lên
           </Button>
           <input
@@ -345,6 +361,8 @@ export function DriveBrowser({
                   </span>
                 </Link>
                 <RowMenu
+                  canEdit={canEdit}
+                  canDelete={canDelete}
                   onRename={() => {
                     setRename({ kind: "folder", id: f.id, name: f.name });
                     setRenameValue(f.name);
@@ -381,6 +399,8 @@ export function DriveBrowser({
                     </Button>
                   </a>
                   <RowMenu
+                    canEdit={canEdit}
+                    canDelete={canDelete}
                     onRename={() => {
                       setRename({ kind: "file", id: f.id, name: f.name });
                       setRenameValue(f.name);
@@ -509,7 +529,17 @@ function StatCard({
   );
 }
 
-function RowMenu({ onRename, onDelete }: { onRename: () => void; onDelete: () => void }) {
+function RowMenu({
+  onRename,
+  onDelete,
+  canEdit,
+  canDelete,
+}: {
+  onRename: () => void;
+  onDelete: () => void;
+  canEdit: boolean;
+  canDelete: boolean;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -518,10 +548,10 @@ function RowMenu({ onRename, onDelete }: { onRename: () => void; onDelete: () =>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={onRename}>
+        <DropdownMenuItem disabled={!canEdit} onClick={onRename}>
           <Pencil className="size-4" /> Đổi tên
         </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive" onClick={onDelete}>
+        <DropdownMenuItem variant="destructive" disabled={!canDelete} onClick={onDelete}>
           <Trash2 className="size-4" /> Xóa
         </DropdownMenuItem>
       </DropdownMenuContent>

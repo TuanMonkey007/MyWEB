@@ -8,9 +8,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 // Xuất phiếu theo mẫu CT.MH-QT-01/BM01
 export function ExportMenu({ proposalId }: { proposalId: string }) {
+  const canExport = useCan()("procurement", "export");
+  if (!canExport) {
+    return (
+      <Button size="sm" disabled title={NO_PERM}>
+        <Download className="size-4" /> Xuất phiếu
+      </Button>
+    );
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

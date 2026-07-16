@@ -153,14 +153,16 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
   - Thông số mẫu (mã tài liệu, ấn bản, chức danh ký...) chỉnh tại `lib/export/template.ts`.
 - **Nhập từ Excel** (nút "Nhập từ Excel" ở trang Đợt đề xuất): tải file phiếu đề xuất đã điền → hệ thống đọc các hạng mục (theo cột dưới ô "STT"), tự khớp "Nguồn ngân sách" với quỹ trong năm và tự dò cột dự trù (kể cả khi không có tiêu đề). Bảng xem trước cho chọn quỹ với hạng mục chưa khớp và chọn đơn vị cột dự trù (triệu đồng / VNĐ), rồi tạo thành một đợt đề xuất mới.
 
-## Tài khoản & phân quyền
+## Tài khoản & phân quyền (module riêng `/access`)
 
 - **Đa tài khoản**: đăng nhập bằng username + mật khẩu (băm scrypt, phiên lưu DB — thu hồi được ngay).
-- **2 vai trò**: `ADMIN` (mọi module + trang Cài đặt + quản lý tài khoản) và `USER` (chỉ các module được cấp).
-- **Phân quyền theo module**: admin cấp cho từng user quyền dùng module nào (Tài chính / Mua hàng / Công việc) tại **Cài đặt → Tài khoản & phân quyền**; sidebar và mọi route/API bị chặn theo đúng quyền (kiểm tra ở proxy, server-side). Dữ liệu trong module là chung giữa các user.
+- **2 vai trò**: `ADMIN` (toàn quyền mọi module + `/settings` + `/access`) và `USER` (theo quyền được cấp).
+- **Phân quyền CHI TIẾT theo hành động**: tại **Phân quyền** (`/access`, chỉ admin), mỗi user có một ma trận quyền cho từng module — 4 quyền cơ bản **Xem / Thêm / Sửa / Xóa** cộng các quyền đặc biệt (Mua hàng: *Thiết lập quỹ*, *Xuất phiếu*; FaceID: *Xử lý file*). Bật "Xem" để mở khóa truy cập module rồi chọn thêm các quyền thao tác.
+- **Enforce 2 lớp**: proxy kiểm tra quyền theo `method + path` (server-side, trả 403); giao diện tự **làm mờ (disable)** các nút thao tác user không có quyền (kèm tooltip). Dữ liệu trong module là chung giữa các user.
 - **Tài khoản đầu tiên**: khi hệ thống chưa có user nào, đăng nhập `admin` + mật khẩu trong `APP_PASSWORD` (.env) sẽ tự tạo tài khoản quản trị.
 - Mọi user tự đổi mật khẩu tại `/account` (yêu cầu mật khẩu cũ; các thiết bị khác bị đăng xuất).
 - Khóa tài khoản / đặt lại mật khẩu / đổi quyền → phiên đang mở của user đó bị hủy ngay. Hệ thống luôn giữ tối thiểu 1 admin hoạt động.
+- Thêm quyền cho module mới: khai báo trong `lib/permissions.ts` (`MODULE_CAPS`) — ma trận, proxy và badge tự cập nhật.
 
 ## Cài đặt & bảo mật
 

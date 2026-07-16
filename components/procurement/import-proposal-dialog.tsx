@@ -30,6 +30,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 type FundOpt = { id: string; name: string; groupCode: string };
 type ParsedItem = {
@@ -55,6 +56,7 @@ export function ImportProposalButton({ budgetYearId }: { budgetYearId: string })
   const [proposedAt, setProposedAt] = useState<string | null>(null);
   const [unit, setUnit] = useState<"million" | "dong">("million");
   const [fileName, setFileName] = useState("");
+  const canCreate = useCan()("procurement", "create");
 
   const multiplier = unit === "million" ? 1_000_000 : 1;
 
@@ -136,6 +138,8 @@ export function ImportProposalButton({ budgetYearId }: { budgetYearId: string })
       <Button
         variant="outline"
         size="sm"
+        disabled={!canCreate}
+        title={canCreate ? undefined : NO_PERM}
         onClick={() => {
           reset();
           setOpen(true);

@@ -1,15 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
+import type { User } from "@prisma/client";
 import { AUTH_COOKIE, getUserByToken } from "@/lib/auth";
-import {
-  ADMIN_PATH_PREFIXES,
-  MODULE_PATH_PREFIXES,
-  homeFor,
-  userModuleIds,
-} from "@/lib/modules";
+import { ADMIN_PATH_PREFIXES } from "@/lib/modules";
+import { homeFor, requiredCapability, userCan } from "@/lib/permissions";
 
 // Cổng phân quyền của platform (Next 16 proxy chạy Node runtime → dùng được Prisma):
 // - Public: landing "/", /login, API đăng nhập, favicon
-// - Đã đăng nhập: chỉ vào được module mình được cấp; /settings + /api/users chỉ ADMIN
+// - Đã đăng nhập: chặn theo QUYỀN CHI TIẾT (view/create/edit/delete + đặc biệt)
+//   ứng với method+path; khu /access, /settings, /api/users chỉ ADMIN
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
@@ -48,16 +46,16 @@ export default async function proxy(req: NextRequest) {
     return deny(req, pathname, user);
   }
 
-  // Kiểm tra quyền module theo path
-  const owned = MODULE_PATH_PREFIXES.find(([prefix]) => pathname.startsWith(prefix));
-  if (owned && !userModuleIds(user).includes(owned[1])) {
+  // Kiểm tra quyền chi tiết theo method + path
+  const req_cap = requiredCapability(req.method, pathname);
+  if (req_cap && !userCan(user, req_cap.module, req_cap.cap)) {
     return deny(req, pathname, user);
   }
 
   return NextResponse.next();
 }
 
-function deny(req: NextRequest, pathname: string, user: { role: string; modules: string }) {
+function deny(req: NextRequest, pathname: string, user: User) {
   if (pathname.startsWith("/api/")) {
     return NextResponse.json(
       { error: "Tài khoản của bạn không có quyền dùng chức năng này" },

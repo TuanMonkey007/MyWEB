@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { FolderPlus, Pencil, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 import {
   Dialog,
   DialogContent,
@@ -353,6 +354,7 @@ export function BudgetManager({
   groups: GroupNode[];
 }) {
   const router = useRouter();
+  const canBudget = useCan()("procurement", "budget");
   const [groupDialog, setGroupDialog] = useState<{ open: boolean; group: GroupNode | null }>({
     open: false,
     group: null,
@@ -388,7 +390,12 @@ export function BudgetManager({
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button size="sm" onClick={() => setGroupDialog({ open: true, group: null })}>
+        <Button
+          size="sm"
+          disabled={!canBudget}
+          title={canBudget ? undefined : NO_PERM}
+          onClick={() => setGroupDialog({ open: true, group: null })}
+        >
           <FolderPlus className="size-4" /> Thêm nhóm
         </Button>
       </div>
@@ -403,6 +410,8 @@ export function BudgetManager({
               <Button
                 variant="ghost"
                 size="sm"
+                disabled={!canBudget}
+                title={canBudget ? undefined : NO_PERM}
                 onClick={() => setFundDialog({ open: true, groupId: g.id, fund: null })}
               >
                 <Plus className="size-4" /> Quỹ
@@ -411,6 +420,8 @@ export function BudgetManager({
                 variant="ghost"
                 size="icon"
                 className="size-8"
+                disabled={!canBudget}
+                title={canBudget ? undefined : NO_PERM}
                 onClick={() => setGroupDialog({ open: true, group: g })}
               >
                 <Pencil className="size-3.5" />
@@ -419,6 +430,8 @@ export function BudgetManager({
                 variant="ghost"
                 size="icon"
                 className="size-8 text-destructive hover:text-destructive"
+                disabled={!canBudget}
+                title={canBudget ? undefined : NO_PERM}
                 onClick={() => setDeleting({ kind: "group", node: g })}
               >
                 <Trash2 className="size-3.5" />
@@ -445,6 +458,8 @@ export function BudgetManager({
                       variant="ghost"
                       size="icon"
                       className="size-7"
+                      disabled={!canBudget}
+                      title={canBudget ? undefined : NO_PERM}
                       onClick={() => setFundDialog({ open: true, groupId: g.id, fund: f })}
                     >
                       <Pencil className="size-3.5" />
@@ -453,6 +468,8 @@ export function BudgetManager({
                       variant="ghost"
                       size="icon"
                       className="size-7 text-destructive hover:text-destructive"
+                      disabled={!canBudget}
+                      title={canBudget ? undefined : NO_PERM}
                       onClick={() => setDeleting({ kind: "fund", node: f })}
                     >
                       <Trash2 className="size-3.5" />

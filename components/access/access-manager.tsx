@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Pencil, Plus, Trash2, UserRound } from "lucide-react";
+import { Pencil, Plus, ShieldCheck, Trash2, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MODULE_REGISTRY } from "@/lib/modules";
+import { MODULE_CAPS, type PermMap } from "@/lib/permissions";
 import { cn } from "@/lib/utils";
 
 export type UserDTO = {
@@ -40,9 +41,69 @@ export type UserDTO = {
   username: string;
   displayName: string | null;
   role: string;
-  modules: string;
+  permissions: string; // JSON
   active: boolean;
 };
+
+function parsePerms(json: string): PermMap {
+  try {
+    const raw = JSON.parse(json || "{}");
+    const map: PermMap = {};
+    for (const [k, v] of Object.entries(raw))
+      if (Array.isArray(v)) map[k as keyof PermMap] = v.map(String);
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+function PermissionMatrix({
+  perms,
+  onToggle,
+}: {
+  perms: PermMap;
+  onToggle: (module: string, cap: string) => void;
+}) {
+  return (
+    <div className="space-y-3">
+      {MODULE_REGISTRY.map((m) => {
+        const caps = perms[m.id] ?? [];
+        const hasView = caps.includes("view");
+        return (
+          <div key={m.id} className="rounded-lg border p-3">
+            <div className="mb-2 text-sm font-medium">{m.label}</div>
+            <div className="flex flex-wrap gap-1.5">
+              {MODULE_CAPS[m.id].map((c) => {
+                const active = caps.includes(c.id);
+                const isView = c.id === "view";
+                const disabled = !isView && !hasView;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => onToggle(m.id, c.id)}
+                    className={cn(
+                      "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors",
+                      active
+                        ? isView
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-emerald-500 bg-emerald-500 text-white"
+                        : "text-muted-foreground hover:bg-accent",
+                      disabled && "cursor-not-allowed opacity-40"
+                    )}
+                  >
+                    {c.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 function UserDialog({
   open,
@@ -51,14 +112,14 @@ function UserDialog({
 }: {
   open: boolean;
   onClose: () => void;
-  user: UserDTO | null; // null = tạo mới
+  user: UserDTO | null;
 }) {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("USER");
-  const [modules, setModules] = useState<string[]>([]);
+  const [perms, setPerms] = useState<PermMap>({});
   const [active, setActive] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -68,12 +129,28 @@ function UserDialog({
     setDisplayName(user?.displayName ?? "");
     setPassword("");
     setRole(user?.role ?? "USER");
-    setModules(user ? user.modules.split(",").filter(Boolean) : []);
+    setPerms(user ? parsePerms(user.permissions) : {});
     setActive(user?.active ?? true);
   }, [open, user]);
 
-  function toggleModule(id: string) {
-    setModules((ms) => (ms.includes(id) ? ms.filter((m) => m !== id) : [...ms, id]));
+  function toggle(module: string, cap: string) {
+    setPerms((p) => {
+      const next: PermMap = { ...p };
+      const cur = new Set(next[module as keyof PermMap] ?? []);
+      if (cap === "view") {
+        if (cur.has("view")) delete next[module as keyof PermMap];
+        else next[module as keyof PermMap] = ["view"];
+        return next;
+      }
+      if (cur.has(cap)) cur.delete(cap);
+      else {
+        cur.add(cap);
+        cur.add("view");
+      }
+      if (cur.size === 0) delete next[module as keyof PermMap];
+      else next[module as keyof PermMap] = [...cur];
+      return next;
+    });
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -87,7 +164,7 @@ function UserDialog({
           username,
           displayName,
           role,
-          modules,
+          permissions: perms,
           active,
           ...(user ? { newPassword: password || undefined } : { password }),
         }),
@@ -108,7 +185,7 @@ function UserDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-md">
+      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{user ? `Sửa tài khoản @${user.username}` : "Thêm tài khoản"}</DialogTitle>
         </DialogHeader>
@@ -165,27 +242,16 @@ function UserDialog({
 
           {role === "ADMIN" ? (
             <p className="rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
-              Quản trị viên dùng được mọi module + trang Cài đặt + quản lý tài khoản.
+              Quản trị viên có toàn quyền mọi module + trang Cài đặt + Phân quyền.
             </p>
           ) : (
             <div className="space-y-2">
-              <Label>Module được sử dụng</Label>
-              <div className="space-y-1.5">
-                {MODULE_REGISTRY.map((m) => (
-                  <label
-                    key={m.id}
-                    className="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={modules.includes(m.id)}
-                      onChange={() => toggleModule(m.id)}
-                      className="size-4 accent-primary"
-                    />
-                    {m.label}
-                  </label>
-                ))}
-              </div>
+              <Label>Phân quyền theo module</Label>
+              <p className="text-xs text-muted-foreground">
+                Bật &quot;Xem&quot; để cấp quyền truy cập module, rồi chọn thêm các
+                quyền thao tác.
+              </p>
+              <PermissionMatrix perms={perms} onToggle={toggle} />
             </div>
           )}
 
@@ -197,7 +263,7 @@ function UserDialog({
                 onChange={(e) => setActive(e.target.checked)}
                 className="size-4 accent-primary"
               />
-              Đang hoạt động (bỏ tick = khóa tài khoản, đăng xuất ngay mọi thiết bị)
+              Đang hoạt động (bỏ tick = khóa, đăng xuất ngay mọi thiết bị)
             </label>
           )}
 
@@ -214,7 +280,7 @@ function UserDialog({
   );
 }
 
-export function UserManager({
+export function AccessManager({
   users,
   currentUserId,
 }: {
@@ -241,75 +307,86 @@ export function UserManager({
     setDeleting(null);
   }
 
-  const moduleLabel = (id: string) => MODULE_REGISTRY.find((m) => m.id === id)?.label ?? id;
+  function summary(u: UserDTO) {
+    if (u.role === "ADMIN") return null;
+    const perms = parsePerms(u.permissions);
+    return MODULE_REGISTRY.filter((m) => (perms[m.id] ?? []).includes("view")).map((m) => {
+      const caps = perms[m.id] ?? [];
+      const labels = MODULE_CAPS[m.id]
+        .filter((c) => caps.includes(c.id) && c.id !== "view")
+        .map((c) => c.label);
+      return { label: m.label, extra: labels };
+    });
+  }
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-base">Tài khoản & phân quyền</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-base">
+          <ShieldCheck className="size-5" /> Tài khoản & phân quyền
+        </CardTitle>
         <Button size="sm" onClick={() => setDialog({ open: true, user: null })}>
           <Plus className="size-4" /> Thêm tài khoản
         </Button>
       </CardHeader>
       <CardContent>
         <ul className="divide-y">
-          {users.map((u) => (
-            <li key={u.id} className="flex items-center gap-3 py-2.5">
-              <UserRound
-                className={cn(
-                  "size-5 shrink-0",
-                  u.active ? "text-muted-foreground" : "text-red-500"
-                )}
-              />
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="font-medium">{u.displayName || u.username}</span>
-                  <span className="text-xs text-muted-foreground">@{u.username}</span>
-                  {u.id === currentUserId && (
-                    <Badge variant="outline" className="text-[10px]">
-                      bạn
-                    </Badge>
+          {users.map((u) => {
+            const mods = summary(u);
+            return (
+              <li key={u.id} className="flex items-start gap-3 py-2.5">
+                <UserRound
+                  className={cn(
+                    "mt-0.5 size-5 shrink-0",
+                    u.active ? "text-muted-foreground" : "text-red-500"
                   )}
-                  {!u.active && <Badge variant="destructive">Đã khóa</Badge>}
-                </div>
-                <div className="mt-0.5 flex flex-wrap gap-1">
-                  {u.role === "ADMIN" ? (
-                    <Badge className="text-[10px]">Quản trị viên — mọi module</Badge>
-                  ) : u.modules ? (
-                    u.modules
-                      .split(",")
-                      .filter(Boolean)
-                      .map((m) => (
-                        <Badge key={m} variant="secondary" className="text-[10px]">
-                          {moduleLabel(m)}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="font-medium">{u.displayName || u.username}</span>
+                    <span className="text-xs text-muted-foreground">@{u.username}</span>
+                    {u.id === currentUserId && (
+                      <Badge variant="outline" className="text-[10px]">bạn</Badge>
+                    )}
+                    {!u.active && <Badge variant="destructive">Đã khóa</Badge>}
+                  </div>
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {u.role === "ADMIN" ? (
+                      <Badge className="text-[10px]">Quản trị viên — toàn quyền</Badge>
+                    ) : mods && mods.length ? (
+                      mods.map((m) => (
+                        <Badge key={m.label} variant="secondary" className="text-[10px]">
+                          {m.label}
+                          {m.extra.length ? `: ${m.extra.join(", ")}` : " (chỉ xem)"}
                         </Badge>
                       ))
-                  ) : (
-                    <span className="text-xs text-muted-foreground">
-                      Chưa được cấp module nào
-                    </span>
-                  )}
+                    ) : (
+                      <span className="text-xs text-muted-foreground">
+                        Chưa được cấp quyền nào
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8"
-                onClick={() => setDialog({ open: true, user: u })}
-              >
-                <Pencil className="size-3.5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 text-destructive hover:text-destructive"
-                disabled={u.id === currentUserId}
-                onClick={() => setDeleting(u)}
-              >
-                <Trash2 className="size-3.5" />
-              </Button>
-            </li>
-          ))}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 shrink-0"
+                  onClick={() => setDialog({ open: true, user: u })}
+                >
+                  <Pencil className="size-3.5" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 shrink-0 text-destructive hover:text-destructive"
+                  disabled={u.id === currentUserId}
+                  onClick={() => setDeleting(u)}
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
+              </li>
+            );
+          })}
         </ul>
       </CardContent>
 

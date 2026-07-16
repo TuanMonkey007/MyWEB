@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toDateInputValue } from "@/lib/format";
+import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 export type ProposalDTO = {
   id: string;
@@ -151,9 +152,15 @@ export function NewProposalButton({
   nextNumber: number;
 }) {
   const [open, setOpen] = useState(false);
+  const canCreate = useCan()("procurement", "create");
   return (
     <>
-      <Button size="sm" onClick={() => setOpen(true)}>
+      <Button
+        size="sm"
+        onClick={() => setOpen(true)}
+        disabled={!canCreate}
+        title={canCreate ? undefined : NO_PERM}
+      >
         <Plus className="size-4" /> Tạo đợt đề xuất
       </Button>
       <ProposalDialog

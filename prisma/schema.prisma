@@ -198,7 +198,8 @@ model User {
   displayName  String?
   passwordHash String // scrypt$N$salt$hash
   role         String   @default("USER") // ADMIN | USER
-  modules      String   @default("") // CSV id module được cấp, vd "finance,todos" (ADMIN: tất cả)
+  modules      String   @default("") // (cũ) CSV id module — giữ để tương thích ngược
+  permissions  String   @default("") // JSON { moduleId: [capId,...] } phân quyền chi tiết
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 
