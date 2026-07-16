@@ -4,6 +4,7 @@ import {
   FONT_OPTIONS,
   FONT_SIZE_OPTIONS,
   getSettings,
+  reconcileModuleOrder,
   setSetting,
 } from "@/lib/settings";
 
@@ -28,6 +29,11 @@ export async function PUT(req: Request) {
     if (!FONT_SIZE_OPTIONS.some((s) => s.id === String(body.fontSize)))
       return jsonError("Cỡ chữ không hợp lệ");
     await setSetting("fontSize", String(body.fontSize));
+  }
+  if (body.moduleOrder !== undefined) {
+    if (!Array.isArray(body.moduleOrder))
+      return jsonError("Thứ tự module không hợp lệ");
+    await setSetting("moduleOrder", reconcileModuleOrder(body.moduleOrder.map(String)).join(","));
   }
 
   return NextResponse.json(await getSettings());

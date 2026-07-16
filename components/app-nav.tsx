@@ -12,6 +12,7 @@ import {
   LayoutGrid,
   PiggyBank,
   FileText,
+  ScanFace,
   Settings,
   SlidersHorizontal,
   Wallet,
@@ -65,6 +66,11 @@ const MODULES: ModuleGroup[] = [
     label: "Kho file",
     items: [{ href: "/drive", label: "Tất cả file", icon: HardDrive }],
   },
+  {
+    id: "faceid",
+    label: "Lọc dữ liệu FaceID",
+    items: [{ href: "/faceid", label: "Xử lý dữ liệu", icon: ScanFace }],
+  },
 ];
 
 const settingsItem: NavItem = { href: "/settings", label: "Cài đặt", icon: Settings };
@@ -73,14 +79,22 @@ type NavProps = {
   allowedModules: string[];
   isAdmin: boolean;
   userName: string;
+  moduleOrder?: string[];
 };
 
 function isActive(pathname: string, item: NavItem): boolean {
   return item.exact ? pathname === item.href : pathname.startsWith(item.href);
 }
 
-function visibleModules(allowed: string[]): ModuleGroup[] {
-  return MODULES.filter((m) => allowed.includes(m.id));
+// Lọc module theo quyền + sắp theo thứ tự admin cấu hình
+function visibleModules(allowed: string[], order?: string[]): ModuleGroup[] {
+  const shown = MODULES.filter((m) => allowed.includes(m.id));
+  if (!order?.length) return shown;
+  return [...shown].sort((a, b) => {
+    const ia = order.indexOf(a.id);
+    const ib = order.indexOf(b.id);
+    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+  });
 }
 
 // Nhóm module đang mở theo URL (mặc định: nhóm đầu được cấp)
@@ -119,12 +133,13 @@ export function AppSidebar({
   allowedModules,
   isAdmin,
   userName,
+  moduleOrder,
 }: NavProps & {
   platformName?: string;
   faviconPath?: string | null;
 }) {
   const pathname = usePathname();
-  const mods = visibleModules(allowedModules);
+  const mods = visibleModules(allowedModules, moduleOrder);
 
   return (
     <aside className="hidden md:flex w-60 shrink-0 flex-col border-r bg-sidebar">
@@ -180,10 +195,15 @@ export function AppSidebar({
 }
 
 // Bottom nav mobile: các mục của module đang dùng + nút Menu mở danh sách module
-export function AppBottomNav({ allowedModules, isAdmin, userName }: NavProps) {
+export function AppBottomNav({
+  allowedModules,
+  isAdmin,
+  userName,
+  moduleOrder,
+}: NavProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const mods = visibleModules(allowedModules);
+  const mods = visibleModules(allowedModules, moduleOrder);
   const mod = currentModule(pathname, mods);
 
   return (

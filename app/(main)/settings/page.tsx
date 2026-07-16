@@ -6,6 +6,7 @@ import { CategoryManager } from "@/components/settings/category-manager";
 import { AppearanceSettings } from "@/components/settings/appearance-settings";
 import { ExportTemplateCard } from "@/components/settings/export-template-card";
 import { UserManager } from "@/components/settings/user-manager";
+import { ModuleOrderCard } from "@/components/settings/module-order-card";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,7 @@ export default async function SettingsPage() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <AppearanceSettings settings={settings} />
+        <ModuleOrderCard order={settings.moduleOrder} />
         <ExportTemplateCard templateName={settings.exportTemplateName} />
       </div>
 

@@ -9,6 +9,9 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
    - **Chống trùng lặp (dedup)**: file lưu theo mã băm SHA-256 nội dung → 2 file trùng nội dung (kể cả khác tên) chỉ tốn **1 lần** dung lượng đĩa; thẻ thống kê hiển thị dung lượng đã tiết kiệm.
    - **Streaming**: up/down chảy thẳng qua đĩa, không nạp cả file vào RAM (chịu được file lớn, tối đa 2GB/file).
    - **Range request**: xem/tua video, ảnh, PDF ngay trong trình duyệt không phải tải hết; file vật lý băm theo 2 ký tự đầu hash để không dồn một chỗ. Xóa file chỉ giải phóng đĩa khi không còn bản nào trùng nội dung (đếm tham chiếu).
+5. **Lọc dữ liệu FaceID** (`/faceid`) — làm sạch dữ liệu chấm công cổng bảo vệ (port từ script Python): kéo thả file Excel gốc → chọn ID loại bỏ / ID ngoại lệ từ danh sách nhân sự tự phát hiện, chỉnh tham số ca làm → chạy xử lý (lọc trùng trong cửa sổ giây, loại ID rác, tự sửa giờ đi muộn/về sớm cho user ngoại lệ, phân sheet theo khung giờ, xuất Excel định dạng). Có **nhật ký chạy trực tiếp** (stream như console Python) và tùy chọn tên file xuất (giữ tên gốc hoặc nhập mới).
+
+Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.
 
@@ -160,7 +163,7 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
 
 ## Cài đặt & bảo mật
 
-- **Trang Cài đặt** (`/settings`, chỉ admin): tài khoản & phân quyền, chế độ màu sáng/tối/theo máy, font chữ (Inter, Be Vietnam Pro, Roboto), cỡ chữ, tên platform, favicon riêng, mẫu xuất phiếu, danh mục thu/chi.
+- **Trang Cài đặt** (`/settings`, chỉ admin): tài khoản & phân quyền, **thứ tự module trên sidebar**, chế độ màu sáng/tối/theo máy, font chữ (Inter, Be Vietnam Pro, Roboto), cỡ chữ, tên platform, favicon riêng, mẫu xuất phiếu, danh mục thu/chi.
 - **Bảo mật**: xác thực hoàn toàn ở backend (proxy kiểm tra phiên trong DB trên mọi request; API trả 401/403); mật khẩu băm scrypt, không bao giờ lưu phía trình duyệt; chặn dò mật khẩu 5 lần sai/5 phút mỗi IP+username; cookie httpOnly + tự bật cờ `Secure` khi truy cập qua HTTPS.
 
 ## 7. Ghi chú nghiệp vụ module Tài chính

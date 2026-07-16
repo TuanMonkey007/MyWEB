@@ -14,6 +14,7 @@ export default async function MainLayout({
     allowedModules: userModuleIds(user),
     isAdmin: user.role === "ADMIN",
     userName: user.displayName || user.username,
+    moduleOrder: settings.moduleOrder,
   };
 
   return (

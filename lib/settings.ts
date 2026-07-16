@@ -7,13 +7,26 @@ import {
   type AppSettings,
   type FontId,
 } from "./settings-constants";
+import { ALL_MODULE_IDS } from "./modules";
 
 export * from "./settings-constants";
+
+// Hòa hợp thứ tự đã lưu với registry: giữ id hợp lệ theo thứ tự lưu,
+// module mới (chưa có trong thứ tự lưu) tự thêm vào cuối
+export function reconcileModuleOrder(saved: string[]): string[] {
+  const valid = saved.filter((id) => (ALL_MODULE_IDS as string[]).includes(id));
+  const missing = ALL_MODULE_IDS.filter((id) => !valid.includes(id));
+  return [...valid, ...missing];
+}
 
 export async function getSettings(): Promise<AppSettings> {
   const rows = await prisma.appSetting.findMany();
   const map = new Map(rows.map((r) => [r.key, r.value]));
   const font = map.get("fontFamily");
+  const savedOrder = (map.get("moduleOrder") || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   return {
     platformName: map.get("platformName") || DEFAULT_SETTINGS.platformName,
     fontFamily: FONT_OPTIONS.some((f) => f.id === font)
@@ -22,6 +35,7 @@ export async function getSettings(): Promise<AppSettings> {
     fontSize: map.get("fontSize") || DEFAULT_SETTINGS.fontSize,
     faviconPath: map.get("faviconPath") || null,
     exportTemplateName: map.get("exportTemplateName") || null,
+    moduleOrder: reconcileModuleOrder(savedOrder),
   };
 }
 
