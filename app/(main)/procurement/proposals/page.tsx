@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { YearSelect } from "@/components/procurement/year-select";
 import { NewProposalButton } from "@/components/procurement/proposal-dialog";
+import { ImportProposalButton } from "@/components/procurement/import-proposal-dialog";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +68,7 @@ export default async function ProposalsPage({
           <Suspense>
             <YearSelect years={years.map((y) => y.year)} selectedYear={selected.year} />
           </Suspense>
+          <ImportProposalButton budgetYearId={selected.id} />
           <NewProposalButton budgetYearId={selected.id} nextNumber={nextNumber} />
         </div>
       </div>

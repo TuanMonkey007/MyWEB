@@ -151,6 +151,7 @@ Compress-Archive D:\appdata\uploads "D:\backup\uploads-$d.zip" -Force
   - **Excel — bản nháp**: thêm cột N "Dự trù (VNĐ)" + công thức tổng, cột này nằm **ngoài vùng in** nên in từ Excel vẫn sạch như bản ký.
   - **Dùng mẫu công ty**: upload file `.xlsx` mẫu thật (giữ nguyên logo, định dạng) ở trang Cài đặt — hệ thống tìm dòng tiêu đề có ô "STT", điền hạng mục vào các dòng kẻ sẵn (thiếu tự chèn thêm), điền các ô "Tổng ngân sách dự kiến/Ngày/Bộ phận đề xuất". Chưa upload mẫu thì dùng layout dựng sẵn.
   - Thông số mẫu (mã tài liệu, ấn bản, chức danh ký...) chỉnh tại `lib/export/template.ts`.
+- **Nhập từ Excel** (nút "Nhập từ Excel" ở trang Đợt đề xuất): tải file phiếu đề xuất đã điền → hệ thống đọc các hạng mục (theo cột dưới ô "STT"), tự khớp "Nguồn ngân sách" với quỹ trong năm và tự dò cột dự trù (kể cả khi không có tiêu đề). Bảng xem trước cho chọn quỹ với hạng mục chưa khớp và chọn đơn vị cột dự trù (triệu đồng / VNĐ), rồi tạo thành một đợt đề xuất mới.
 
 ## Tài khoản & phân quyền
 
