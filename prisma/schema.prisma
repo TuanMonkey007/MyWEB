@@ -203,7 +203,35 @@ model User {
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 
-  sessions Session[]
+  sessions     Session[]
+  vaultConfig  VaultConfig?
+  vaultEntries VaultEntry[]
+}
+
+// ===== Module Kho mật khẩu (vault mã hóa đầu-cuối, riêng từng user) =====
+// Server CHỈ lưu bản mã: mật khẩu chủ và khóa giải mã không bao giờ rời trình
+// duyệt. salt + verifier để client tự kiểm tra mật khẩu chủ đúng khi mở khóa.
+model VaultConfig {
+  userId   String @id
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salt     String // base64, dùng cho PBKDF2
+  verifier String // base64 SHA-256 của nửa verifier trong khóa dẫn xuất
+  kdfIters Int    @default(600000)
+}
+
+model VaultEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  username  String   @default("")
+  url       String   @default("")
+  category  String   @default("")
+  cipher    String // base64(iv||ct) AES-256-GCM của JSON {password, notes}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 // Phiên đăng nhập lưu DB — thu hồi được ngay (xóa user/đổi mật khẩu là hết phiên)

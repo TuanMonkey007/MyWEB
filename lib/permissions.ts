@@ -42,6 +42,12 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "view", label: "Xem" },
     { id: "run", label: "Xử lý file" },
   ],
+  passwords: [
+    { id: "view", label: "Xem" },
+    { id: "create", label: "Thêm" },
+    { id: "edit", label: "Sửa" },
+    { id: "delete", label: "Xóa" },
+  ],
 };
 
 export type PermMap = Partial<Record<ModuleId, string[]>>;

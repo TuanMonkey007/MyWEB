@@ -8,6 +8,7 @@ import {
   CircleUser,
   ClipboardList,
   HardDrive,
+  KeyRound,
   LayoutDashboard,
   LayoutGrid,
   PiggyBank,
@@ -71,6 +72,11 @@ const MODULES: ModuleGroup[] = [
     id: "faceid",
     label: "Lọc dữ liệu FaceID",
     items: [{ href: "/faceid", label: "Xử lý dữ liệu", icon: ScanFace }],
+  },
+  {
+    id: "passwords",
+    label: "Kho mật khẩu",
+    items: [{ href: "/passwords", label: "Mật khẩu", icon: KeyRound }],
   },
 ];
 

@@ -11,6 +11,13 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
    - **Range request**: xem/tua video, ảnh, PDF ngay trong trình duyệt không phải tải hết; file vật lý băm theo 2 ký tự đầu hash để không dồn một chỗ. Xóa file chỉ giải phóng đĩa khi không còn bản nào trùng nội dung (đếm tham chiếu).
 5. **Lọc dữ liệu FaceID** (`/faceid`) — làm sạch dữ liệu chấm công cổng bảo vệ (port từ script Python): kéo thả file Excel gốc → chọn ID loại bỏ / ID ngoại lệ từ danh sách nhân sự tự phát hiện, chỉnh tham số ca làm → chạy xử lý (lọc trùng trong cửa sổ giây, loại ID rác, xử lý user ngoại lệ, phân sheet theo khung giờ, xuất Excel định dạng). **Xử lý ngoại lệ**: mỗi ca chỉ giữ 1 lượt VÀO sớm nhất (dời trước giờ ca) + 1 lượt RA muộn nhất (dời sau giờ ca), **xóa mọi lượt ra/vào giữa giờ** → người ngoại lệ xem như có mặt suốt ca. Có **nhật ký chạy trực tiếp** (stream như console Python) và tùy chọn tên file xuất (giữ tên gốc hoặc nhập mới).
 
+6. **Kho mật khẩu** (`/passwords`) — trình quản lý mật khẩu **mã hóa đầu-cuối** riêng từng user:
+   - **Mật khẩu chủ riêng** (khác mật khẩu đăng nhập). Mật khẩu + ghi chú được mã hóa **AES-256-GCM ngay trong trình duyệt** bằng khóa dẫn xuất **PBKDF2-SHA256 600.000 vòng**; server/DB **chỉ lưu bản mã** — lộ file DB cũng không đọc được, mật khẩu chủ không bao giờ rời máy. **Quên mật khẩu chủ = mất dữ liệu, không khôi phục** (bản chất E2E).
+   - **Tự khóa sau 5 phút** không dùng + nút khóa tay; copy mật khẩu **tự xóa clipboard sau 45 giây**.
+   - **Sinh mật khẩu mạnh** kiểu KeePassXC (độ dài, bộ ký tự A-Z/a-z/0-9/ký hiệu, bỏ ký tự dễ nhầm, thanh đo độ mạnh); nút **copy tài khoản/mật khẩu**, **mở link nhanh**.
+   - **Import/Export**: xuất bản sao lưu **đã mã hóa** (`.mwvault.json`, nhập lại cần mật khẩu chủ lúc xuất) hoặc CSV thuần tương thích KeePassXC (có cảnh báo); nhập từ cả hai định dạng.
+   - *Lưu ý*: tiêu đề/tài khoản/URL lưu dạng metadata (để tìm kiếm); chỉ **mật khẩu và ghi chú** được mã hóa.
+
 Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.
