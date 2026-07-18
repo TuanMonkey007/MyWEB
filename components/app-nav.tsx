@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   ArrowLeftRight,
   CircleUser,
+  ArrowRightLeft,
   ClipboardList,
   HardDrive,
   KeyRound,
@@ -77,6 +78,11 @@ const MODULES: ModuleGroup[] = [
     id: "passwords",
     label: "Kho mật khẩu",
     items: [{ href: "/passwords", label: "Mật khẩu", icon: KeyRound }],
+  },
+  {
+    id: "dms",
+    label: "DMS",
+    items: [{ href: "/dms", label: "Chuyển tuyến NPP", icon: ArrowRightLeft }],
   },
 ];
 

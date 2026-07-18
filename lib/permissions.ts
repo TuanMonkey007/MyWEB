@@ -48,6 +48,10 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "edit", label: "Sửa" },
     { id: "delete", label: "Xóa" },
   ],
+  dms: [
+    { id: "view", label: "Xem" },
+    { id: "run", label: "Chạy xử lý" },
+  ],
 };
 
 export type PermMap = Partial<Record<ModuleId, string[]>>;
@@ -152,8 +156,9 @@ export function requiredCapability(
       pathname.startsWith("/api/budget-funds"))
   )
     return { module, cap: isRead ? "view" : "budget" };
-  // FaceID: mọi thao tác xử lý là "run"
-  if (module === "faceid") return { module, cap: isRead ? "view" : "run" };
+  // FaceID / DMS: mọi thao tác xử lý là "run"
+  if (module === "faceid" || module === "dms")
+    return { module, cap: isRead ? "view" : "run" };
   // Quản lý danh mục thu/chi = quyền sửa của module tài chính
   if (module === "finance" && pathname.startsWith("/api/categories"))
     return { module, cap: isRead ? "view" : "edit" };

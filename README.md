@@ -18,6 +18,8 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
    - **Import/Export**: xuất bản sao lưu **đã mã hóa** (`.mwvault.json`, nhập lại cần mật khẩu chủ lúc xuất) hoặc CSV thuần tương thích KeePassXC (có cảnh báo); nhập từ cả hai định dạng.
    - *Lưu ý*: tiêu đề/tài khoản/URL lưu dạng metadata (để tìm kiếm); chỉ **mật khẩu và ghi chú** được mã hóa.
 
+7. **DMS** (`/dms`) — công cụ nghiệp vụ DMS (port từ script Python). Chức năng đầu tiên: **Chuyển tuyến giữa nhà phân phối** — tải file dữ liệu tuyến gốc NPP A (.xls/.xlsx) + file mẫu import + nhập mã đơn vị NPP B → sinh file import cho NPP B (đổi mã đơn vị, sinh mã tuyến = ngày + mã NVBH, từ ngày = ngày mai, đánh lại STT, giữ nguyên định dạng mẫu — font/viền/merge/độ rộng cột). Có nhật ký xử lý + cảnh báo (cột lệch, 1 NVBH gộp nhiều tuyến). Đọc được cả .xls cũ (BIFF) qua SheetJS.
+
 Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.
