@@ -12,12 +12,12 @@ export const DEFAULTS = {
   exceptionWindowMinutes: 10,
 };
 
-// Khung giờ phân sheet — cố định theo bản Python gốc
-const KHUNG_GIO: [string, number, number][] = [
-  ["Ca sáng 8h-12h", 8, 12],
-  ["Nghỉ trưa 12h-13h", 12, 13],
-  ["Ca chiều 13h-17h", 13, 17],
-];
+// Tên các sheet phân theo khung giờ — TÊN cố định (giữ nguyên khi đổi tham số),
+// còn RANGE lấy động theo tham số ca (xem computeFrames bên dưới).
+const SHEET_MORNING = "Ca sáng 8h-12h";
+const SHEET_LUNCH = "Nghỉ trưa 12h-13h";
+const SHEET_AFTERNOON = "Ca chiều 13h-17h";
+const SHEET_OTHER = "Còn lại";
 
 const COL_GIO = "Giờ";
 const COL_ID = "ID nhân sự";
@@ -338,10 +338,39 @@ export function adjustExceptions(
 }
 
 // ---------- Phân sheet theo khung giờ ----------
-export function splitByFrame(rows: Row[]): Record<string, Row[]> {
+// Ranh giới các khung sheet lấy ĐỘNG theo tham số ca (ca sáng = [vào ca, nghỉ trưa),
+// nghỉ trưa = [đầu nghỉ, cuối nghỉ), ca chiều = [hết nghỉ, tan ca)); TÊN sheet giữ cố định.
+// Bản ghi ngoài các khung (vd trước giờ vào ca, sau giờ tan ca) rơi vào "Còn lại".
+export function computeFrames(
+  shiftStart: string,
+  shiftEnd: string,
+  breakWindows: string
+): [string, number, number][] {
+  const ss = parseHHMM(shiftStart);
+  const se = parseHHMM(shiftEnd);
+  const breaks = parseBreaks(breakWindows)
+    .filter(([bs, be]) => ss < bs && bs < be && be < se)
+    .sort((a, b) => a[0] - b[0]);
+
+  if (breaks.length === 0) {
+    // Không có nghỉ trưa hợp lệ: cả ca gộp vào sheet "Ca sáng".
+    return [[SHEET_MORNING, ss, se]];
+  }
+  const [bs, be] = breaks[0];
+  return [
+    [SHEET_MORNING, ss, bs],
+    [SHEET_LUNCH, bs, be],
+    [SHEET_AFTERNOON, be, se],
+  ];
+}
+
+export function splitByFrame(
+  rows: Row[],
+  frames: [string, number, number][]
+): Record<string, Row[]> {
   const out: Record<string, Row[]> = {};
   const assigned = new Set<Row>();
-  for (const [name, from, to] of KHUNG_GIO) {
+  for (const [name, from, to] of frames) {
     out[name] = rows.filter((r) => {
       if (!r.gio) return false;
       const tf = timeFloat(r.gio);
@@ -350,7 +379,7 @@ export function splitByFrame(rows: Row[]): Record<string, Row[]> {
       return ok;
     });
   }
-  out["Còn lại"] = rows.filter((r) => !assigned.has(r));
+  out[SHEET_OTHER] = rows.filter((r) => !assigned.has(r));
   return out;
 }
 
@@ -418,13 +447,17 @@ function writeSheet(ws: ExcelJS.Worksheet, rows: Row[], allCols: string[], heade
   ws.views = [{ state: "frozen", ySplit: 1 }];
 }
 
-export async function writeWorkbook(rows: Row[], columns: string[]): Promise<Buffer> {
+export async function writeWorkbook(
+  rows: Row[],
+  columns: string[],
+  timeFrames: [string, number, number][]
+): Promise<Buffer> {
   const allCols = [...columns];
   for (const c of [COL_HOTEN, COL_HHMM]) if (!allCols.includes(c)) allCols.push(c);
 
   const wb = new ExcelJS.Workbook();
   writeSheet(wb.addWorksheet("Tất cả"), rows, allCols, "1F4E79");
-  const frames = splitByFrame(rows);
+  const frames = splitByFrame(rows, timeFrames);
   for (const [name, subset] of Object.entries(frames)) {
     writeSheet(wb.addWorksheet(name), subset, allCols, shiftColor(name));
   }
@@ -481,14 +514,15 @@ export async function runPipeline(
     }
   }
 
-  const frames = splitByFrame(finalRows);
-  log("Phân bổ theo khung giờ:");
+  const timeFrames = computeFrames(params.shiftStart, params.shiftEnd, params.breakWindows);
+  const frames = splitByFrame(finalRows, timeFrames);
+  log(`Phân bổ theo khung giờ (theo tham số ca ${params.shiftStart}–${params.shiftEnd}, nghỉ ${params.breakWindows}):`);
   for (const [name, subset] of Object.entries(frames)) {
     log(`   ${name.padEnd(20)}: ${subset.length.toLocaleString("vi-VN")} dòng`);
   }
 
   log("Đang tạo file Excel kết quả (định dạng + phân sheet)...");
-  const buffer = await writeWorkbook(finalRows, columns);
+  const buffer = await writeWorkbook(finalRows, columns, timeFrames);
 
   const totalRemoved = n0 - finalRows.length;
   const pct = n0 ? ((totalRemoved / n0) * 100).toFixed(1) : "0";
