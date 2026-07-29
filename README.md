@@ -64,6 +64,43 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 | `DATABASE_URL` | Đường dẫn file SQLite (tương đối so với thư mục `prisma/`) | `file:./dev.db` hoặc `file:D:/appdata/finance.db` |
 | `UPLOAD_DIR` | Thư mục lưu ảnh hóa đơn | `./uploads` hoặc `D:/appdata/uploads` |
 | `APP_PASSWORD` | Mật khẩu đăng nhập (bắt buộc đổi) | `mat-khau-manh` |
+| `MAIL_DRIVER` | Nhà cung cấp mail — xem mục Gửi mail | `log` |
+
+### Gửi mail (`lib/mail`)
+
+Module gửi mail **trung lập với nhà cung cấp**: code nghiệp vụ chỉ gọi `sendMail(...)`,
+còn dùng nhà nào là do `.env` quyết định. Đổi nhà = sửa `.env` + restart, **không sửa code**.
+Không phụ thuộc SDK riêng của nhà nào (chỉ dùng `fetch` có sẵn).
+
+```ts
+import { sendMail } from "@/lib/mail";
+
+await sendMail({
+  to: "nguoinhan@gmail.com",
+  subject: "Đề xuất đã được duyệt",
+  html: "<p>Xin chào...</p>",
+  attachments: [{ filename: "phieu.pdf", content: pdfBuffer }],
+});
+```
+
+| `MAIL_DRIVER` | Cần điền thêm | Ghi chú |
+|---|---|---|
+| `log` *(mặc định)* | — | Không gửi thật, chỉ in ra console. An toàn cho dev |
+| `resend` | `RESEND_API_KEY` | HTTP API cổng 443 |
+| `brevo` | `BREVO_API_KEY` | HTTP API cổng 443 |
+| `mailgun` | `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_REGION` | HTTP API cổng 443 |
+| `smtp` | `SMTP_HOST/PORT/USER/PASS` | Dùng cho mọi nhà + mail server nội bộ. Cần `npm i nodemailer` |
+
+Mọi driver đều cần `MAIL_FROM` (địa chỉ gửi, phải thuộc tên miền đã xác minh SPF/DKIM).
+
+Gửi thử để kiểm tra cấu hình + bản ghi DNS:
+
+```bash
+npm run mail:test -- ten.ban@gmail.com
+```
+
+> Trên VPS nên ưu tiên driver HTTP API (cổng 443) vì cổng SMTP 587/465 hay bị chặn.
+> Không tự dựng mail server: IP VPS thường bị liệt vào danh sách đen, mail sẽ rơi vào spam.
 
 ## 3. Deploy production trên Windows Server
 
