@@ -64,13 +64,26 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 | `DATABASE_URL` | Đường dẫn file SQLite (tương đối so với thư mục `prisma/`) | `file:./dev.db` hoặc `file:D:/appdata/finance.db` |
 | `UPLOAD_DIR` | Thư mục lưu ảnh hóa đơn | `./uploads` hoặc `D:/appdata/uploads` |
 | `APP_PASSWORD` | Mật khẩu đăng nhập (bắt buộc đổi) | `mat-khau-manh` |
-| `MAIL_DRIVER` | Nhà cung cấp mail — xem mục Gửi mail | `log` |
+| `APP_SECRET` | (tùy chọn) Khóa mã hóa bí mật lưu trong DB. Bỏ trống thì tự sinh file `.app-secret` cạnh database | chuỗi ngẫu nhiên dài |
 
 ### Gửi mail (`lib/mail`)
 
 Module gửi mail **trung lập với nhà cung cấp**: code nghiệp vụ chỉ gọi `sendMail(...)`,
-còn dùng nhà nào là do `.env` quyết định. Đổi nhà = sửa `.env` + restart, **không sửa code**.
+còn dùng nhà nào là do **cấu hình** quyết định, **không sửa code**.
 Không phụ thuộc SDK riêng của nhà nào (chỉ dùng `fetch` có sẵn).
+
+Cấu hình lấy theo thứ tự **database trước, `.env` sau**:
+
+1. **Database** — quản trị viên chỉnh ngay trên giao diện `/mailtest` → thẻ *Cấu hình mail*.
+   Có hiệu lực ngay, không cần khởi động lại. **Đây là cách khuyến nghị cho production**
+   (khỏi phải RDP vào máy chủ sửa file).
+2. **`.env`** — dự phòng khi database chưa có gì.
+
+API key / mật khẩu SMTP lưu trong DB được **mã hóa AES-256-GCM** (`lib/secret-box.ts`)
+vì script backup chép cả file `.db` ra ngoài. Khóa chủ nằm **ngoài** database:
+`APP_SECRET` trong `.env` nếu có, không thì tự sinh file `.app-secret` cạnh file database
+(file này không lọt vào backup vì `backup.ps1` chỉ chép `finance.db` + thư mục `uploads`).
+Mất khóa chủ thì chỉ cần nhập lại key, không mất dữ liệu nào khác.
 
 ```ts
 import { sendMail } from "@/lib/mail";
@@ -83,7 +96,7 @@ await sendMail({
 });
 ```
 
-| `MAIL_DRIVER` | Cần điền thêm | Ghi chú |
+| Nhà cung cấp | Cần điền thêm | Ghi chú |
 |---|---|---|
 | `log` *(mặc định)* | — | Không gửi thật, chỉ in ra console. An toàn cho dev |
 | `resend` | `RESEND_API_KEY` | HTTP API cổng 443 |
@@ -91,7 +104,8 @@ await sendMail({
 | `mailgun` | `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_REGION` | HTTP API cổng 443 |
 | `smtp` | `SMTP_HOST/PORT/USER/PASS` | Dùng cho mọi nhà + mail server nội bộ. Cần `npm i nodemailer` |
 
-Mọi driver đều cần `MAIL_FROM` (địa chỉ gửi, phải thuộc tên miền đã xác minh SPF/DKIM).
+Mọi driver đều cần **địa chỉ gửi** (phải thuộc tên miền đã xác minh SPF/DKIM).
+Tên biến `.env` tương ứng xem trong `.env.example`.
 
 Gửi thử để kiểm tra cấu hình + bản ghi DNS — bằng dòng lệnh:
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
-import { currentDriver, missingMailEnv, sendMail } from "@/lib/mail";
+import { FIELD_META, getMailConfig, missingFields, sendMail } from "@/lib/mail";
 
 // Gửi mail thử qua nhà cung cấp đang cấu hình (MAIL_DRIVER).
 // Proxy đã chặn quyền mailtest:send trước khi tới đây.
@@ -27,9 +27,12 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return jsonError("Chưa đăng nhập", 401);
 
-  const missing = missingMailEnv();
-  if (missing.length)
-    return jsonError(`Chưa cấu hình mail — thiếu biến: ${missing.join(", ")}`, 503);
+  const cfg = await getMailConfig();
+  const missing = missingFields(cfg);
+  if (missing.length) {
+    const labels = missing.map((f) => FIELD_META[f].label).join(", ");
+    return jsonError(`Chưa cấu hình mail — còn thiếu: ${labels}`, 503);
+  }
 
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
   if (!body) return jsonError("Dữ liệu không hợp lệ");
@@ -54,12 +57,15 @@ export async function POST(req: Request) {
     return jsonError(`Đã gửi quá ${MAX_PER_WINDOW} mail trong 1 giờ — thử lại sau`, 429);
 
   try {
-    const result = await sendMail({
-      to: recipients,
-      subject,
-      // Gửi text thuần thì để nguyên; nhà cung cấp tự bọc phần html.
-      ...(asHtml ? { html: content } : { text: content }),
-    });
+    const result = await sendMail(
+      {
+        to: recipients,
+        subject,
+        // Gửi text thuần thì để nguyên; nhà cung cấp tự bọc phần html.
+        ...(asHtml ? { html: content } : { text: content }),
+      },
+      cfg
+    );
     return NextResponse.json({
       id: result.id,
       driver: result.driver,
@@ -74,11 +80,13 @@ export async function POST(req: Request) {
 }
 
 // Trạng thái cấu hình mail — để UI hiện đang dùng nhà nào, gửi từ địa chỉ nào.
+// (Không kèm bí mật; muốn sửa cấu hình thì dùng /api/settings/mail, chỉ ADMIN.)
 export async function GET() {
+  const cfg = await getMailConfig();
   return NextResponse.json({
-    driver: currentDriver(),
-    from: process.env.MAIL_FROM ?? null,
-    ready: missingMailEnv().length === 0,
-    missing: missingMailEnv(),
+    driver: cfg.driver,
+    from: cfg.values.from,
+    ready: missingFields(cfg).length === 0,
+    missing: missingFields(cfg).map((f) => FIELD_META[f].label),
   });
 }

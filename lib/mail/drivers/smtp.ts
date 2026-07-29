@@ -6,7 +6,7 @@
 // chặn sẵn các cổng này. Nếu bị chặn, dùng driver HTTP API (cổng 443) thay thế.
 import type { MailDriver } from "../types";
 import { MailError } from "../types";
-import { formatAddress } from "../index";
+import { formatAddress } from "../address";
 
 type Transport = {
   sendMail(opts: Record<string, unknown>): Promise<{ messageId?: string }>;
@@ -27,16 +27,17 @@ async function loadNodemailer(): Promise<Nodemailer> {
 
 const driver: MailDriver = {
   name: "smtp",
-  async send(mail) {
+  async send(mail, cfg) {
     const nodemailer = await loadNodemailer();
-    const port = Number(process.env.SMTP_PORT || 587);
+    const port = Number(cfg.values.smtpPort || 587);
+    const forceSecure = cfg.values.smtpSecure;
 
     const transport = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
+      host: cfg.values.smtpHost,
       port,
-      // 465 = SSL ngầm định; 587 = STARTTLS. Ép bằng SMTP_SECURE nếu cần.
-      secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      // 465 = SSL ngầm định; 587 = STARTTLS. Ép bằng "Bắt buộc SSL" nếu cần.
+      secure: forceSecure ? forceSecure === "true" : port === 465,
+      auth: { user: cfg.values.smtpUser, pass: cfg.values.smtpPass },
     });
 
     const info = await transport.sendMail({

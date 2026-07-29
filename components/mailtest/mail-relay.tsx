@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useCan } from "@/components/permissions-provider";
+import { MailConfigCard, type MailConfigView } from "@/components/mailtest/mail-config-card";
 
 type Attempt = {
   at: string;
@@ -33,15 +34,15 @@ const MAU_HTML = `<div style="font-family:Arial,sans-serif;line-height:1.6">
 </div>`;
 
 export function MailRelay({
-  driver,
-  from,
-  missing,
+  isAdmin,
+  config,
 }: {
-  driver: string;
-  from: string | null;
-  missing: string[];
+  isAdmin: boolean;
+  config: MailConfigView;
 }) {
   const canSend = useCan()("mailtest", "send");
+  const { driver, missing } = config;
+  const from = config.values.from;
   const ready = missing.length === 0;
 
   const [to, setTo] = useState("");
@@ -126,13 +127,15 @@ export function MailRelay({
             <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2">
               <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600" />
               <span>
-                Chưa gửi được — thiếu biến môi trường:{" "}
-                <b>{missing.join(", ")}</b>. Bổ sung vào <code>.env</code> rồi khởi động lại.
+                Chưa gửi được — còn thiếu: <b>{missing.join(", ")}</b>.{" "}
+                {isAdmin ? "Điền ở phần Cấu hình mail bên dưới." : "Nhờ quản trị viên cấu hình."}
               </span>
             </div>
           )}
         </CardContent>
       </Card>
+
+      {isAdmin && <MailConfigCard config={config} />}
 
       <Card>
         <CardHeader className="pb-3">

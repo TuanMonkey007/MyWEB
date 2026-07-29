@@ -49,3 +49,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Khóa chủ mã hóa bí mật trong DB (sinh tự động cạnh file database)
+.app-secret

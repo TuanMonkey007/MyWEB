@@ -1,20 +1,20 @@
 // Driver Mailgun — REST API dạng form-data, fetch thuần, KHÔNG cần SDK.
 // Tài liệu: POST https://api.mailgun.net/v3/{domain}/messages
 // Xác thực: Basic auth với user cố định "api" và password là API key.
-import type { MailDriver } from "../types";
+import type { DriverConfig, MailDriver } from "../types";
 import { MailError } from "../types";
-import { formatAddress } from "../index";
+import { formatAddress } from "../address";
 
 // Tài khoản đăng ký ở EU phải gọi api.eu.mailgun.net, gọi nhầm sẽ 401.
-function endpoint(): string {
-  const region = (process.env.MAILGUN_REGION || "us").trim().toLowerCase();
+function endpoint(cfg: DriverConfig): string {
+  const region = (cfg.values.mailgunRegion || "us").trim().toLowerCase();
   const host = region === "eu" ? "api.eu.mailgun.net" : "api.mailgun.net";
-  return `https://${host}/v3/${process.env.MAILGUN_DOMAIN}/messages`;
+  return `https://${host}/v3/${cfg.values.mailgunDomain}/messages`;
 }
 
 const driver: MailDriver = {
   name: "mailgun",
-  async send(mail) {
+  async send(mail, cfg) {
     const form = new FormData();
     form.append("from", formatAddress(mail.from));
     for (const a of mail.to) form.append("to", formatAddress(a));
@@ -31,8 +31,8 @@ const driver: MailDriver = {
       form.append("attachment", blob, a.filename);
     }
 
-    const auth = Buffer.from(`api:${process.env.MAILGUN_API_KEY}`).toString("base64");
-    const res = await fetch(endpoint(), {
+    const auth = Buffer.from(`api:${cfg.values.mailgunApiKey}`).toString("base64");
+    const res = await fetch(endpoint(cfg), {
       method: "POST",
       headers: { Authorization: `Basic ${auth}` },
       body: form,

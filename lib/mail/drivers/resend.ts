@@ -2,13 +2,13 @@
 // Tài liệu: POST https://api.resend.com/emails  (header Authorization: Bearer)
 import type { MailDriver } from "../types";
 import { MailError } from "../types";
-import { formatAddress } from "../index";
+import { formatAddress } from "../address";
 
 const ENDPOINT = "https://api.resend.com/emails";
 
 const driver: MailDriver = {
   name: "resend",
-  async send(mail) {
+  async send(mail, cfg) {
     const payload: Record<string, unknown> = {
       from: formatAddress(mail.from),
       to: mail.to.map(formatAddress),
@@ -29,7 +29,7 @@ const driver: MailDriver = {
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${cfg.values.resendApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),

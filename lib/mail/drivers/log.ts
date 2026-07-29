@@ -2,7 +2,7 @@
 // Dùng khi dev hoặc khi chưa đăng ký nhà cung cấp nào — code nghiệp vụ vẫn
 // chạy bình thường, không cần if/else "đã cấu hình mail chưa".
 import type { MailDriver } from "../types";
-import { formatAddress } from "../index";
+import { formatAddress } from "../address";
 
 const driver: MailDriver = {
   name: "log",

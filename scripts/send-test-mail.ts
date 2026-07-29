@@ -1,6 +1,6 @@
 // Gửi một mail thử để kiểm tra cấu hình nhà cung cấp + bản ghi DNS.
 // Dùng:  npm run mail:test -- ten.ban@gmail.com
-import { currentDriver, isMailConfigured, missingMailEnv, sendMail } from "../lib/mail";
+import { FIELD_META, getMailConfig, isConfigured, missingFields, sendMail } from "../lib/mail";
 
 async function main() {
   const to = process.argv[2];
@@ -9,14 +9,16 @@ async function main() {
     process.exit(1);
   }
 
-  const driver = currentDriver();
-  console.log(`Driver     : ${driver}`);
-  console.log(`Gửi từ     : ${process.env.MAIL_FROM ?? "(chưa đặt MAIL_FROM)"}`);
-  console.log(`Sẵn sàng   : ${isMailConfigured() ? "có" : "chưa"}`);
+  // Cấu hình lấy từ DB trước, .env là dự phòng (giống hệt lúc chạy trong app)
+  const cfg = await getMailConfig();
+  const driver = cfg.driver;
+  console.log(`Driver     : ${driver} (${cfg.sources.driver ?? "mặc định"})`);
+  console.log(`Gửi từ     : ${cfg.values.from ?? "(chưa đặt)"}`);
+  console.log(`Sẵn sàng   : ${isConfigured(cfg) ? "có" : "chưa"}`);
 
-  const missing = missingMailEnv();
+  const missing = missingFields(cfg);
   if (missing.length) {
-    console.error(`Thiếu biến : ${missing.join(", ")}`);
+    console.error(`Còn thiếu  : ${missing.map((f) => FIELD_META[f].label).join(", ")}`);
     process.exit(1);
   }
   if (driver === "log") {
@@ -24,9 +26,10 @@ async function main() {
   }
 
   const now = new Date().toLocaleString("vi-VN");
-  const result = await sendMail({
-    to,
-    subject: `[MyWEB] Mail thử nghiệm — ${now}`,
+  const result = await sendMail(
+    {
+      to,
+      subject: `[MyWEB] Mail thử nghiệm — ${now}`,
     html: `
       <div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6">
         <h2 style="margin:0 0 12px">Cấu hình mail hoạt động ✅</h2>
@@ -38,7 +41,9 @@ async function main() {
         <p style="color:#666">Nếu mail này nằm trong hộp thư rác, hãy kiểm tra lại
         bản ghi SPF / DKIM / DMARC của tên miền.</p>
       </div>`,
-  });
+    },
+    cfg
+  );
 
   console.log(`\nĐã gửi. id = ${result.id ?? "(không có)"}`);
 }

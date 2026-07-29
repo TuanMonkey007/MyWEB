@@ -12,7 +12,7 @@ function addr(a: Address) {
 
 const driver: MailDriver = {
   name: "brevo",
-  async send(mail) {
+  async send(mail, cfg) {
     const payload: Record<string, unknown> = {
       sender: addr(mail.from),
       to: mail.to.map(addr),
@@ -33,7 +33,7 @@ const driver: MailDriver = {
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: {
-        "api-key": process.env.BREVO_API_KEY ?? "",
+        "api-key": cfg.values.brevoApiKey ?? "",
         "Content-Type": "application/json",
         Accept: "application/json",
       },

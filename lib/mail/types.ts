@@ -41,10 +41,15 @@ export type MailResult = {
   id: string | null; // id do nhà cung cấp trả về (tra cứu log bên họ)
 };
 
+// Driver nhận cấu hình từ ngoài (DB hoặc .env) chứ không tự đọc process.env,
+// nhờ vậy đổi cấu hình trên giao diện là có hiệu lực ngay.
 export type MailDriver = {
   name: string;
-  send(mail: NormalizedMail): Promise<MailResult>;
+  send(mail: NormalizedMail, cfg: DriverConfig): Promise<MailResult>;
 };
+
+// Phần cấu hình mà driver cần — chỉ là các giá trị đã gộp DB + .env.
+export type DriverConfig = { values: Record<string, string | null> };
 
 // Lỗi gửi mail — luôn kèm tên driver để biết hỏng ở đâu.
 export class MailError extends Error {
