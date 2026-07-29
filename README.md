@@ -93,11 +93,16 @@ await sendMail({
 
 Mọi driver đều cần `MAIL_FROM` (địa chỉ gửi, phải thuộc tên miền đã xác minh SPF/DKIM).
 
-Gửi thử để kiểm tra cấu hình + bản ghi DNS:
+Gửi thử để kiểm tra cấu hình + bản ghi DNS — bằng dòng lệnh:
 
 ```bash
 npm run mail:test -- ten.ban@gmail.com
 ```
+
+...hoặc bằng giao diện: module **Test Mail Relay** (`/mailtest`) có form nhập
+địa chỉ đích / tiêu đề / nội dung (text hoặc HTML), nút gửi và nhật ký các lần
+gửi gần đây kèm mã mail của nhà cung cấp. Giới hạn 20 mail/giờ mỗi tài khoản
+để không đốt quota. Quyền: `mailtest` → *Xem* / *Gửi mail*.
 
 > Trên VPS nên ưu tiên driver HTTP API (cổng 443) vì cổng SMTP 587/465 hay bị chặn.
 > Không tự dựng mail server: IP VPS thường bị liệt vào danh sách đen, mail sẽ rơi vào spam.

@@ -52,6 +52,10 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "view", label: "Xem" },
     { id: "run", label: "Chạy xử lý" },
   ],
+  mailtest: [
+    { id: "view", label: "Xem" },
+    { id: "send", label: "Gửi mail" },
+  ],
 };
 
 export type PermMap = Partial<Record<ModuleId, string[]>>;
@@ -159,6 +163,8 @@ export function requiredCapability(
   // FaceID / DMS: mọi thao tác xử lý là "run"
   if (module === "faceid" || module === "dms")
     return { module, cap: isRead ? "view" : "run" };
+  // Test Mail Relay: gửi mail là hành động riêng (tốn quota nhà cung cấp)
+  if (module === "mailtest") return { module, cap: isRead ? "view" : "send" };
   // Quản lý danh mục thu/chi = quyền sửa của module tài chính
   if (module === "finance" && pathname.startsWith("/api/categories"))
     return { module, cap: isRead ? "view" : "edit" };

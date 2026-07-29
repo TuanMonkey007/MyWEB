@@ -12,6 +12,7 @@ import {
   KeyRound,
   LayoutDashboard,
   LayoutGrid,
+  Mail,
   PiggyBank,
   FileText,
   ScanFace,
@@ -83,6 +84,11 @@ const MODULES: ModuleGroup[] = [
     id: "dms",
     label: "DMS",
     items: [{ href: "/dms", label: "Chuyển tuyến NPP", icon: ArrowRightLeft }],
+  },
+  {
+    id: "mailtest",
+    label: "Test Mail Relay",
+    items: [{ href: "/mailtest", label: "Gửi mail thử", icon: Mail }],
   },
 ];
 
