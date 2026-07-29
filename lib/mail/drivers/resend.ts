@@ -3,6 +3,7 @@
 import type { MailDriver } from "../types";
 import { MailError } from "../types";
 import { formatAddress } from "../address";
+import { errorMessage, readBody } from "./http";
 
 const ENDPOINT = "https://api.resend.com/emails";
 
@@ -35,11 +36,11 @@ const driver: MailDriver = {
       body: JSON.stringify(payload),
     });
 
-    const data = (await res.json().catch(() => null)) as { id?: string; message?: string } | null;
+    const { data, text } = await readBody(res);
     if (!res.ok) {
-      throw new MailError("resend", data?.message ?? `HTTP ${res.status}`, res.status);
+      throw new MailError("resend", errorMessage(res.status, data, text), res.status);
     }
-    return { driver: "resend", id: data?.id ?? null };
+    return { driver: "resend", id: typeof data?.id === "string" ? data.id : null };
   },
 };
 

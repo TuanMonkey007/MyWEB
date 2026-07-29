@@ -2,6 +2,7 @@
 // Tài liệu: POST https://api.brevo.com/v3/smtp/email  (header api-key)
 import type { Address, MailDriver } from "../types";
 import { MailError } from "../types";
+import { errorMessage, readBody } from "./http";
 
 const ENDPOINT = "https://api.brevo.com/v3/smtp/email";
 
@@ -40,13 +41,11 @@ const driver: MailDriver = {
       body: JSON.stringify(payload),
     });
 
-    const data = (await res.json().catch(() => null)) as
-      | { messageId?: string; message?: string }
-      | null;
+    const { data, text } = await readBody(res);
     if (!res.ok) {
-      throw new MailError("brevo", data?.message ?? `HTTP ${res.status}`, res.status);
+      throw new MailError("brevo", errorMessage(res.status, data, text), res.status);
     }
-    return { driver: "brevo", id: data?.messageId ?? null };
+    return { driver: "brevo", id: typeof data?.messageId === "string" ? data.messageId : null };
   },
 };
 

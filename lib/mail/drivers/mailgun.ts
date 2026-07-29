@@ -4,6 +4,7 @@
 import type { DriverConfig, MailDriver } from "../types";
 import { MailError } from "../types";
 import { formatAddress } from "../address";
+import { errorMessage, readBody } from "./http";
 
 // Tài khoản đăng ký ở EU phải gọi api.eu.mailgun.net, gọi nhầm sẽ 401.
 function endpoint(cfg: DriverConfig): string {
@@ -38,14 +39,13 @@ const driver: MailDriver = {
       body: form,
     });
 
-    const data = (await res.json().catch(() => null)) as
-      | { id?: string; message?: string }
-      | null;
+    const { data, text } = await readBody(res);
     if (!res.ok) {
-      throw new MailError("mailgun", data?.message ?? `HTTP ${res.status}`, res.status);
+      throw new MailError("mailgun", errorMessage(res.status, data, text), res.status);
     }
     // Mailgun trả id dạng "<2024...@domain>" — bỏ ngoặc cho gọn.
-    return { driver: "mailgun", id: data?.id?.replace(/^<|>$/g, "") ?? null };
+    const id = typeof data?.id === "string" ? data.id.replace(/^<|>$/g, "") : null;
+    return { driver: "mailgun", id };
   },
 };
 
