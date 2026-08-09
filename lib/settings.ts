@@ -35,6 +35,7 @@ export async function getSettings(): Promise<AppSettings> {
     fontSize: map.get("fontSize") || DEFAULT_SETTINGS.fontSize,
     faviconPath: map.get("faviconPath") || null,
     exportTemplateName: map.get("exportTemplateName") || null,
+    dmsTemplateName: map.get("dmsTemplateName") || null,
     moduleOrder: reconcileModuleOrder(savedOrder),
   };
 }
@@ -61,3 +62,10 @@ export function templatesDir(): string {
 }
 
 export const EXPORT_TEMPLATE_FILE = "proposal-template.xlsx";
+
+// Mẫu import tuyến của module DMS — lưu một lần, mọi lần chạy sau dùng lại
+export const DMS_TEMPLATE_FILE = "dms-route-template.xlsx";
+
+export function dmsTemplatePath(): string {
+  return path.join(templatesDir(), DMS_TEMPLATE_FILE);
+}

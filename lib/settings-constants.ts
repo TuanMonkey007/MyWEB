@@ -18,6 +18,7 @@ export type AppSettings = {
   fontSize: string;
   faviconPath: string | null; // tên file trong UPLOAD_DIR/branding
   exportTemplateName: string | null; // tên gốc file mẫu xuất phiếu đã upload
+  dmsTemplateName: string | null; // tên gốc file mẫu import tuyến (module DMS)
   moduleOrder: string[]; // thứ tự id module trên sidebar (admin cấu hình)
 };
 
@@ -27,5 +28,6 @@ export const DEFAULT_SETTINGS: AppSettings = {
   fontSize: "16",
   faviconPath: null,
   exportTemplateName: null,
+  dmsTemplateName: null,
   moduleOrder: [],
 };
