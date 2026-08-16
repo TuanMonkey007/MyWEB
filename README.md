@@ -20,6 +20,8 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
 
 7. **DMS** (`/dms`) — công cụ nghiệp vụ DMS (port từ script Python). Chức năng đầu tiên: **Chuyển tuyến giữa nhà phân phối** — tải file dữ liệu tuyến gốc NPP A (.xls/.xlsx) + nhập mã đơn vị NPP B → sinh file import cho NPP B (đổi mã đơn vị, sinh mã tuyến = ngày + mã NVBH, từ ngày = ngày mai, đánh lại STT, giữ nguyên định dạng mẫu — font/viền/merge/độ rộng cột). Có nhật ký xử lý + cảnh báo (cột lệch, 1 NVBH gộp nhiều tuyến). Đọc được cả .xls cũ (BIFF) qua SheetJS. **Mẫu import lưu một lần** (quản trị viên lưu ở ngay trang DMS, file nằm trong `UPLOAD_DIR/templates`) — những lần chạy sau chỉ cần chọn file gốc; vẫn có thể dùng file mẫu khác cho riêng một lần chạy. Mẫu được kiểm tra cột bắt buộc (STT, Mã đơn vị, Mã tuyến, Mã NVBH, Từ ngày) ngay lúc lưu.
 
+8. **Test Mail Relay** (`/mailtest`) — gửi mail thử để kiểm tra API key và bản ghi DNS của nhà cung cấp: form nhập địa chỉ đích / tiêu đề / nội dung (text hoặc HTML), nhật ký các lần gửi kèm mã mail. Quản trị viên chỉnh cấu hình mail ngay tại đây (xem mục Gửi mail bên dưới).
+
 9. **Bài hướng dẫn** (`/articles` quản lý · `/huong-dan` công khai) — kho tài liệu kỹ thuật kiểu diễn đàn:
    - Soạn bằng **Markdown** với khung xem trước ngay cạnh; khối lệnh có tô màu cú pháp theo đúng token màu của app (đổi theme là code đổi theo) và nút chép nhanh.
    - **Mỗi bài tự chọn phạm vi**: `Nháp` (chỉ tác giả + admin) · `Nội bộ` (cần đăng nhập) · `Công khai` (ai vào web cũng đọc). Bài không công khai còn được đánh `noindex` để công cụ tìm kiếm bỏ qua.
@@ -71,6 +73,8 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 | `DATABASE_URL` | Đường dẫn file SQLite (tương đối so với thư mục `prisma/`) | `file:./dev.db` hoặc `file:D:/appdata/finance.db` |
 | `UPLOAD_DIR` | Thư mục lưu ảnh hóa đơn | `./uploads` hoặc `D:/appdata/uploads` |
 | `APP_PASSWORD` | Mật khẩu đăng nhập (bắt buộc đổi) | `mat-khau-manh` |
+| `APP_SECRET` | (tùy chọn) Khóa mã hóa bí mật lưu trong DB. Bỏ trống thì tự sinh file `.app-secret` cạnh database | chuỗi ngẫu nhiên dài |
+
 ### Màu giao diện
 
 Admin đổi **màu nhấn** ở Cài đặt → Giao diện: chọn 1 trong 9 màu gợi ý hoặc tự nhập
@@ -81,8 +85,6 @@ mã `#RRGGBB` bất kỳ. Chỉ lưu đúng một mã màu, 22 token còn lại 
 độ sáng** cho tới khi đạt tương phản 4.5:1 — nên chọn màu chói như vàng chanh hay
 trắng tinh thì nút vẫn đọc được, không vỡ khả năng tiếp cận. Form cài đặt hiện sẵn
 ô xem trước cho cả nền sáng lẫn nền tối kèm số đo tương phản.
-
-| `APP_SECRET` | (tùy chọn) Khóa mã hóa bí mật lưu trong DB. Bỏ trống thì tự sinh file `.app-secret` cạnh database | chuỗi ngẫu nhiên dài |
 
 ### Gửi mail (`lib/mail`)
 
