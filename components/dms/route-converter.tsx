@@ -284,7 +284,7 @@ export function RouteConverter({
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold">
+        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
           <ArrowRightLeft className="size-6" /> Chuyển tuyến giữa nhà phân phối
         </h1>
         <p className="text-sm text-muted-foreground">

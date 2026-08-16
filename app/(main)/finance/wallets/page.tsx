@@ -13,7 +13,7 @@ export default async function WalletsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold">Ví tiền</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Ví tiền</h1>
         <p className="text-sm text-muted-foreground">
           Tổng tài sản:{" "}
           <span className="font-medium text-foreground tabular-nums">

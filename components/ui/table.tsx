@@ -70,7 +70,9 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        // Tiêu đề cột tách hẳn khỏi dữ liệu: chữ nhỏ, viết hoa, giãn chữ, màu mờ
+        // hơn — mắt phân biệt được hàng tiêu đề mà không cần kẻ đậm.
+        "h-9 px-3 text-left align-middle text-xs font-medium tracking-wide uppercase whitespace-nowrap text-muted-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -83,7 +85,9 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        // px-3 thay p-2: cột sát nhau theo chiều ngang là thứ làm bảng nhiều cột
+        // khó đọc nhất; chiều dọc giữ 8px để bảng 700 dòng không bị dài ra.
+        "px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}

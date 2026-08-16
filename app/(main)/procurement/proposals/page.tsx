@@ -59,7 +59,7 @@ export default async function ProposalsPage({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Đợt đề xuất mua hàng</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Đợt đề xuất mua hàng</h1>
           <p className="text-sm text-muted-foreground">
             Năm {selected.year} · {proposals.length} đợt
           </p>

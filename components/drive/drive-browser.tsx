@@ -220,7 +220,7 @@ export function DriveBrowser({
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Kho file</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Kho file</h1>
           <p className="text-sm text-muted-foreground">
             Lưu trữ chống trùng lặp — file giống hệt chỉ tốn dung lượng một lần.
           </p>

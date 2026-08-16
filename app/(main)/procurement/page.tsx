@@ -48,7 +48,7 @@ export default async function ProcurementPage({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Ngân sách mua hàng</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Ngân sách mua hàng</h1>
           <p className="text-sm text-muted-foreground">
             {selected.title ?? `Năm ${selected.year}`} · còn lại = tổng quỹ − đã chi
             thực tế

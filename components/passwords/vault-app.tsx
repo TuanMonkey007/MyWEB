@@ -196,7 +196,7 @@ export function VaultApp() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold">
+          <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
             <ShieldCheck className="size-6 text-emerald-600" /> Kho mật khẩu
           </h1>
           <p className="text-sm text-muted-foreground">

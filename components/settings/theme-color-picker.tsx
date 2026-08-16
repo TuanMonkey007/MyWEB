@@ -63,7 +63,11 @@ export function ThemeColorPicker({ current }: { current: string }) {
               aria-pressed={active}
               onClick={() => setColor(p.hex)}
               className={cn(
-                "flex size-8 items-center justify-center rounded-full transition-transform hover:scale-110",
+                // 44px trên mobile cho đạt cỡ vùng chạm tối thiểu, thu lại 32px
+                // từ màn hình vừa trở lên vì lúc đó dùng chuột
+                // 44px ở mọi cỡ màn cho đạt vùng chạm tối thiểu.
+                // shrink-0: thiếu nó thì flex bóp nút méo thành hình bầu dục.
+                "flex size-11 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-110",
                 active && "ring-2 ring-offset-2 ring-ring ring-offset-background"
               )}
               style={{ backgroundColor: p.hex }}

@@ -15,7 +15,7 @@ export default async function AccessPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold">Phân quyền</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Phân quyền</h1>
         <p className="text-sm text-muted-foreground">
           Quản lý tài khoản và cấp quyền chi tiết (xem / thêm / sửa / xóa và các tính
           năng đặc biệt) cho từng module.

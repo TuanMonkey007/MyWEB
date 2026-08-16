@@ -37,7 +37,7 @@ export default async function BudgetSettingsPage({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Thiết lập ngân sách</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Thiết lập ngân sách</h1>
           <p className="text-sm text-muted-foreground">
             Năm ngân sách → nhóm khoản mục → quỹ (phân bổ 12 tháng)
           </p>

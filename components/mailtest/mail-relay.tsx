@@ -93,7 +93,7 @@ export function MailRelay({
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold">
+        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
           <Mail className="size-6" /> Test Mail Relay
         </h1>
         <p className="text-sm text-muted-foreground">

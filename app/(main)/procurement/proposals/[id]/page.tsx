@@ -49,7 +49,7 @@ export default async function ProposalDetailPage({ params }: { params: Params })
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">
+          <h1 className="text-2xl font-semibold tracking-tight">
             Đợt đề xuất #{proposal.number} — {formatDate(proposal.proposedAt)}
           </h1>
           <p className="text-sm text-muted-foreground">

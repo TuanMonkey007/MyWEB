@@ -20,7 +20,7 @@ export default async function AccountPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Tài khoản của tôi</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Tài khoản của tôi</h1>
         <LogoutButton className="md:hidden" />
       </div>
 

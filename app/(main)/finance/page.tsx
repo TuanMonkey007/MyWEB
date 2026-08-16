@@ -35,7 +35,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Tổng quan</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Tổng quan</h1>
         <QuickAddButtons
           wallets={wallets.map((w) => ({ id: w.id, name: w.name }))}
           expenseCategories={categories
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold tabular-nums">
+            <div className="text-2xl font-semibold tabular-nums tracking-tight">
               {formatVND(totalAssets)}
             </div>
           </CardContent>
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold tabular-nums text-emerald-600">
+            <div className="text-2xl font-semibold tabular-nums text-emerald-600 tracking-tight">
               {formatVND(monthTotals.income)}
             </div>
           </CardContent>
@@ -80,7 +80,7 @@ export default async function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold tabular-nums text-red-600">
+            <div className="text-2xl font-semibold tabular-nums text-red-600 tracking-tight">
               {formatVND(monthTotals.expense)}
             </div>
           </CardContent>

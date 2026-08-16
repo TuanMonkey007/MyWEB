@@ -206,7 +206,7 @@ function CityCard({ city, now }: { city: City; now: number }) {
       </div>
 
       <div className="text-center">
-        <div className="font-mono text-2xl font-semibold tabular-nums text-white">
+        <div className="font-mono text-2xl font-semibold tabular-nums text-white tracking-tight">
           {pad(parts.hour)}:{pad(parts.minute)}
           <span className="text-white/40">:{pad(parts.second)}</span>
         </div>
@@ -289,7 +289,7 @@ export default function LandingPage() {
               {pad(heroParts.hour)}
               <span className="animate-pulse text-white/50">:</span>
               {pad(heroParts.minute)}
-              <span className="text-3xl text-white/40 sm:text-4xl">
+              <span className="text-3xl text-white/40 sm:text-4xl tracking-tight">
                 :{pad(heroParts.second)}
               </span>
             </div>
@@ -300,7 +300,7 @@ export default function LandingPage() {
               <span className="capitalize">{heroParts.dateLabel}</span>
             </div>
           </div>
-          <h1 className="max-w-xl bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-2xl font-bold text-transparent sm:text-3xl">
+          <h1 className="max-w-xl bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-2xl font-bold text-transparent sm:text-3xl tracking-tight">
             Đồng hồ thế giới
           </h1>
         </section>

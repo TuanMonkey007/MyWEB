@@ -162,7 +162,7 @@ export function FaceidProcessor() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold">Lọc dữ liệu FaceID</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Lọc dữ liệu FaceID</h1>
         <p className="text-sm text-muted-foreground">
           Làm sạch dữ liệu chấm công cổng bảo vệ: lọc trùng, loại ID không cần, sửa
           giờ user ngoại lệ, phân sheet theo khung giờ.

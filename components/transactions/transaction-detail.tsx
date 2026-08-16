@@ -126,7 +126,7 @@ export function TransactionDetailDialog({
             <div className="space-y-4">
               <div className="space-y-1">
                 <div className="text-lg font-semibold">{row.title}</div>
-                <div className="text-2xl font-semibold tabular-nums">
+                <div className="text-2xl font-semibold tabular-nums tracking-tight">
                   {formatVND(row.amount)}
                 </div>
               </div>

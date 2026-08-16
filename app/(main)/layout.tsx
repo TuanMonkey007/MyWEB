@@ -27,7 +27,10 @@ export default async function MainLayout({
           {...nav}
         />
         <main className="flex-1 min-w-0 pb-20 md:pb-8">
-          <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8">
+          {/* max-w-7xl thay 6xl: bảng ngân sách 11 cột trước đây phải cuộn ngang
+              trong khi hai bên còn thừa chỗ. Nội dung chữ vẫn nằm trong thẻ nên
+              không bị dài quá tầm mắt. */}
+          <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-8 md:py-8">
             {children}
           </div>
         </main>
