@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
+import { STRIP_EXTENSION_ATTRS_SCRIPT } from "@/lib/strip-extension-attrs";
 import { themeStyleVars } from "@/lib/theme-color";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -68,9 +70,18 @@ export default async function RootLayout({
         } as React.CSSProperties
       }
     >
-      {/* suppressHydrationWarning: extension trình duyệt (IDM...) hay chèn
-          attribute vào <body> trước khi React hydrate — không phải lỗi app */}
+      {/* suppressHydrationWarning: lớp bảo hiểm cho chính thẻ body */}
       <body suppressHydrationWarning className="min-h-full flex flex-col">
+        {/* Dọn thuộc tính do extension trình duyệt chèn (Bitdefender
+            bis_skin_checked, IDM, Grammarly...) TRƯỚC khi React hydrate. HTML
+            máy chủ trả về vốn sạch — xem lib/strip-extension-attrs.ts.
+            Phải nằm TRONG <body>: đặt thẻ script làm con trực tiếp của <html>
+            là HTML không hợp lệ và tự nó gây hydration error. */}
+        <Script
+          id="strip-extension-attrs"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: STRIP_EXTENSION_ATTRS_SCRIPT }}
+        />
         <ThemeProvider>
           {children}
           <Toaster richColors position="top-center" />
