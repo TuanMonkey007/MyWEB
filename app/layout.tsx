@@ -57,7 +57,10 @@ export default async function RootLayout({
       style={
         {
           fontSize: `${settings.fontSize}px`,
-          "--font-geist-sans": fontVar,
+          // Tên biến phải khớp --app-font trong globals.css. Trước đây đặt nhầm
+          // --font-geist-sans (sót từ template) nên font tải về mà không hề được
+          // áp, cả app rơi về serif mặc định của trình duyệt.
+          "--app-font": fontVar,
         } as React.CSSProperties
       }
     >
