@@ -4,6 +4,7 @@ import { Eye, Lock, MessageSquareText, Pin } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { listArticles, listCategories } from "@/lib/articles";
 import { getSettings } from "@/lib/settings";
+import { thoiGianTuongDoi } from "@/lib/article-format";
 
 export const dynamic = "force-dynamic";
 
@@ -15,21 +16,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function thoiGian(d: Date | null): string {
-  if (!d) return "";
-  const phut = Math.floor((Date.now() - d.getTime()) / 60000);
-  if (phut < 1) return "vừa xong";
-  if (phut < 60) return `${phut} phút trước`;
-  const gio = Math.floor(phut / 60);
-  if (gio < 24) return `${gio} giờ trước`;
-  const ngay = Math.floor(gio / 24);
-  if (ngay < 30) return `${ngay} ngày trước`;
-  return d.toLocaleDateString("vi-VN");
-}
-
-export default async function HuongDanPage() {
+export default async function HuongDanPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ "chuyen-muc"?: string }>;
+}) {
+  const { "chuyen-muc": chuyenMuc } = await searchParams;
   const user = await getCurrentUser();
-  const [articles, categories] = await Promise.all([listArticles(user), listCategories()]);
+  const [articles, categories] = await Promise.all([
+    listArticles(user, chuyenMuc),
+    listCategories(),
+  ]);
 
   // Gom bài theo chuyên mục — kiểu diễn đàn: mỗi chuyên mục là một khu,
   // trong đó là danh sách chủ đề.
@@ -108,7 +105,7 @@ export default async function HuongDanPage() {
                       {a.views}
                     </span>
                     <span className="w-24 text-right">
-                      {thoiGian(a.publishedAt ?? a.createdAt)}
+                      {thoiGianTuongDoi(a.publishedAt ?? a.createdAt)}
                     </span>
                   </span>
                 </Link>

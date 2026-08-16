@@ -1,6 +1,6 @@
 # Platform cá nhân dạng module
 
-Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang chủ `/` là landing page public (giới thiệu bản thân — đang là placeholder); các module bên trong yêu cầu đăng nhập:
+Web app cá nhân, kiến trúc module hóa. Trang chủ `/` là **trang tin công khai** (bài hướng dẫn kỹ thuật, ai cũng đọc được); các module bên trong yêu cầu đăng nhập:
 
 1. **Quản lý Tài chính Cá nhân** (`/finance`) — ví tiền, khoản chi/thu, chuyển khoản nội bộ, đính ảnh hóa đơn, dashboard báo cáo (theo `BA-quan-ly-tai-chinh.md`).
 2. **Đề xuất mua hàng** (`/procurement`) — quản lý ngân sách IT theo năm (form BM02B: nhóm khoản mục → quỹ, phân bổ 12 tháng), các đợt đề xuất mua hàng và hạng mục, file bằng chứng đính kèm, **xuất phiếu đề xuất PDF/Excel theo mẫu CT.MH-QT-01/BM01**. Thay thế file Excel "Theo dõi các đề xuất đã mua".
@@ -26,8 +26,11 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
    - Soạn bằng **Markdown** với khung xem trước ngay cạnh; khối lệnh có tô màu cú pháp theo đúng token màu của app (đổi theme là code đổi theo) và nút chép nhanh.
    - **Mỗi bài tự chọn phạm vi**: `Nháp` (chỉ tác giả + admin) · `Nội bộ` (cần đăng nhập) · `Công khai` (ai vào web cũng đọc). Bài không công khai còn được đánh `noindex` để công cụ tìm kiếm bỏ qua.
    - Trang công khai xếp theo **chuyên mục → danh sách bài** (tiêu đề, người viết, lượt xem, thời gian). Bài không đủ quyền trả **404**, không lộ cả việc bài có tồn tại.
-   - **An toàn XSS**: dùng `react-markdown` và cố ý KHÔNG bật `rehype-raw`, nên HTML thô trong bài bị vô hiệu thành văn bản thường.
    - Slug tự sinh từ tiêu đề tiếng Việt (`Hướng dẫn tạo VPN Site-to-Site` → `huong-dan-tao-vpn-site-to-site`), trùng thì thêm hậu tố số.
+   - **Viết được bằng HTML** ngoài Markdown (chia cột, hộp cảnh báo, `<details>`, `<figure>`…). HTML đi qua `rehype-raw` rồi **bị lọc ngay** bằng `rehype-sanitize` theo danh sách cho phép ở `lib/markdown-sanitize.ts` — thứ tự plugin này là bắt buộc, đảo lại là hở XSS.
+   - **Ảnh bìa** cho từng bài (nén bằng sharp, tối đa 1600px/~500KB), phục vụ qua route công khai `/api/anh-bai-viet/<uuid>.jpg`.
+
+**Trang chủ `/`** là trang báo: thanh chuyên mục ngang, bài nổi bật cỡ lớn ở giữa, hai cột phụ hai bên, lưới bài phía dưới. Đồng hồ thế giới chuyển sang **`/dong-ho`**, thanh đầu trang có đồng hồ thu gọn dẫn tới đó.
 
 Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 

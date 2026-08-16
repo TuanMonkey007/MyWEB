@@ -3,15 +3,22 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
+import { articleSchema } from "@/lib/markdown-sanitize";
 import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Render Markdown dùng chung cho khung xem trước lúc soạn và trang đọc bài.
 //
-// BẢO MẬT: react-markdown KHÔNG render HTML thô trừ khi cài thêm rehype-raw.
-// Ta cố ý không cài — bài viết là nội dung do người dùng nhập, cho phép HTML
-// thô là mở đường cho XSS. Muốn chèn HTML thì phải xem lại quyết định này.
+// BẢO MẬT — thứ tự plugin ở đây là điểm mấu chốt, đừng đảo:
+//   rehype-raw      đọc HTML thô người viết nhúng vào
+//   rehype-sanitize LỌC ngay sau đó theo danh sách cho phép
+//   rehype-highlight tô màu code (chạy sau khi đã sạch)
+// Nếu đặt sanitize TRƯỚC raw thì HTML thô lọt qua không bị lọc — bài viết hiển
+// thị công khai nên đó là lỗ hổng XSS thật. Danh sách cho phép ở
+// lib/markdown-sanitize.ts.
 
 function CodeBlock({ children }: { children: React.ReactNode }) {
   const [copied, setCopied] = useState(false);
@@ -51,7 +58,11 @@ export function MarkdownView({ content, className }: { content: string; classNam
     <div className={cn("prose-article", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+        rehypePlugins={[
+          rehypeRaw,
+          [rehypeSanitize, articleSchema],
+          [rehypeHighlight, { detect: true, ignoreMissing: true }],
+        ]}
         components={{
           pre: ({ children }) => <CodeBlock>{children}</CodeBlock>,
           // Link ra ngoài mở tab mới + chặn tab-nabbing

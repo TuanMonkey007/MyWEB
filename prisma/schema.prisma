@@ -323,7 +323,8 @@ model Article {
   slug      String   @unique
   title     String
   summary   String? // mô tả ngắn hiện ở danh sách
-  content   String // nội dung Markdown
+  content   String // nội dung Markdown (cho phép HTML, đã lọc lúc render)
+  coverImage String? // tên file ảnh bìa trong UPLOAD_DIR/articles
   // DRAFT: chỉ tác giả + admin thấy | INTERNAL: cần đăng nhập | PUBLIC: ai cũng đọc
   visibility String  @default("DRAFT")
   pinned    Boolean  @default(false) // ghim lên đầu chuyên mục

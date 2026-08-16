@@ -13,11 +13,14 @@ export default async function proxy(req: NextRequest) {
 
   if (
     pathname === "/" ||
+    pathname === "/dong-ho" ||
     // Khu bài hướng dẫn công khai. Trang tự lọc theo quyền xem (lib/articles
     // visibleWhere): chưa đăng nhập chỉ thấy bài PUBLIC, đăng nhập rồi thấy
     // thêm bài nội bộ. Không có API công khai — trang đọc thẳng từ DB.
     pathname === "/huong-dan" ||
     pathname.startsWith("/huong-dan/") ||
+    // Ảnh bìa bài viết — trang công khai cần hiện được cho khách
+    pathname.startsWith("/api/anh-bai-viet/") ||
     pathname.startsWith("/api/auth/login") ||
     pathname === "/api/branding/favicon"
   ) {

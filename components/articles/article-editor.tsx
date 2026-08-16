@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ArrowLeft, Eye, ExternalLink, Loader2, Pencil, Save } from "lucide-react";
+import { ArrowLeft, Eye, ExternalLink, ImagePlus, Loader2, Pencil, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,7 @@ export type EditorArticle = {
   content: string;
   visibility: string;
   categoryId: string | null;
+  coverImage: string | null;
 };
 
 const MAU_BAI = `## Chuẩn bị
@@ -73,9 +74,29 @@ export function ArticleEditor({
     (article?.visibility as Visibility) ?? "DRAFT"
   );
   const [categoryId, setCategoryId] = useState(article?.categoryId ?? "none");
+  const [coverImage, setCoverImage] = useState(article?.coverImage ?? null);
+  const [uploading, setUploading] = useState(false);
+  const coverRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   // Trên màn hẹp không đủ chỗ hai cột — cho chuyển qua lại soạn/xem trước
   const [mobileTab, setMobileTab] = useState<"soan" | "xem">("soan");
+
+  async function uploadCover(file: File) {
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/articles/cover", { method: "POST", body: form });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "Tải ảnh thất bại");
+      setCoverImage(data.name);
+      toast.success("Đã tải ảnh bìa — nhớ bấm Lưu");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Tải ảnh thất bại");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function save() {
     if (!title.trim()) return toast.error("Nhập tiêu đề bài viết");
@@ -89,6 +110,7 @@ export function ArticleEditor({
         content,
         visibility,
         categoryId: categoryId === "none" ? null : categoryId,
+        coverImage,
       };
       const res = await fetch(article ? `/api/articles/${article.id}` : "/api/articles", {
         method: article ? "PUT" : "POST",
@@ -178,6 +200,45 @@ export function ArticleEditor({
             </Select>
             <p className="text-xs text-muted-foreground">{VISIBILITY_HINTS[visibility]}</p>
           </div>
+          <div className="space-y-1.5 md:col-span-3">
+            <Label className="text-xs">
+              Ảnh bìa <span className="text-muted-foreground">(hiện ở trang chủ kiểu báo)</span>
+            </Label>
+            <input
+              ref={coverRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.[0]) uploadCover(e.target.files[0]);
+                e.target.value = "";
+              }}
+            />
+            <div className="flex flex-wrap items-center gap-3">
+              {coverImage ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/api/anh-bai-viet/${coverImage}`}
+                    alt="Ảnh bìa bài viết"
+                    className="h-20 w-32 rounded-md border object-cover"
+                  />
+                  <Button type="button" variant="outline" size="sm" onClick={() => coverRef.current?.click()} disabled={uploading}>
+                    <ImagePlus className="size-4" /> Đổi ảnh
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive" onClick={() => setCoverImage(null)}>
+                    <Trash2 className="size-4" /> Gỡ
+                  </Button>
+                </>
+              ) : (
+                <Button type="button" variant="outline" size="sm" onClick={() => coverRef.current?.click()} disabled={uploading}>
+                  {uploading ? <Loader2 className="size-4 animate-spin" /> : <ImagePlus className="size-4" />}
+                  Tải ảnh bìa
+                </Button>
+              )}
+            </div>
+          </div>
+
           <div className="space-y-1.5 md:col-span-3">
             <Label htmlFor="summary" className="text-xs">
               Mô tả ngắn <span className="text-muted-foreground">(hiện ở danh sách, không bắt buộc)</span>

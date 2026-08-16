@@ -94,6 +94,7 @@ const LIST_SELECT = {
   slug: true,
   title: true,
   summary: true,
+  coverImage: true,
   visibility: true,
   pinned: true,
   views: true,

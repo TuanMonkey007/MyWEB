@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { userCan } from "@/lib/permissions";
 import { canEdit, isVisibility, uniqueSlug } from "@/lib/articles";
+import { deleteArticleImage } from "@/lib/article-image";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -63,6 +64,13 @@ export async function PUT(req: Request, { params }: Ctx) {
     data.categoryId = categoryId;
   }
   if (body.pinned !== undefined) data.pinned = body.pinned === true;
+  if (body.coverImage !== undefined) {
+    const c = body.coverImage ? String(body.coverImage) : null;
+    // Ảnh cũ bị thay thì xóa khỏi đĩa, khỏi tích rác
+    if (article.coverImage && article.coverImage !== c)
+      await deleteArticleImage(article.coverImage);
+    data.coverImage = c;
+  }
   if (body.visibility !== undefined) {
     const visibility = String(body.visibility);
     if (!isVisibility(visibility)) return jsonError("Phạm vi hiển thị không hợp lệ");
@@ -94,6 +102,7 @@ export async function DELETE(_req: Request, { params }: Ctx) {
   if (!canEdit(user, article))
     return jsonError("Bạn chỉ xóa được bài do mình viết", 403);
 
+  await deleteArticleImage(article.coverImage);
   await prisma.article.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
