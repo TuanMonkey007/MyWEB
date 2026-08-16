@@ -20,6 +20,13 @@ Web app cá nhân **một người dùng**, kiến trúc module hóa. Trang ch�
 
 7. **DMS** (`/dms`) — công cụ nghiệp vụ DMS (port từ script Python). Chức năng đầu tiên: **Chuyển tuyến giữa nhà phân phối** — tải file dữ liệu tuyến gốc NPP A (.xls/.xlsx) + nhập mã đơn vị NPP B → sinh file import cho NPP B (đổi mã đơn vị, sinh mã tuyến = ngày + mã NVBH, từ ngày = ngày mai, đánh lại STT, giữ nguyên định dạng mẫu — font/viền/merge/độ rộng cột). Có nhật ký xử lý + cảnh báo (cột lệch, 1 NVBH gộp nhiều tuyến). Đọc được cả .xls cũ (BIFF) qua SheetJS. **Mẫu import lưu một lần** (quản trị viên lưu ở ngay trang DMS, file nằm trong `UPLOAD_DIR/templates`) — những lần chạy sau chỉ cần chọn file gốc; vẫn có thể dùng file mẫu khác cho riêng một lần chạy. Mẫu được kiểm tra cột bắt buộc (STT, Mã đơn vị, Mã tuyến, Mã NVBH, Từ ngày) ngay lúc lưu.
 
+9. **Bài hướng dẫn** (`/articles` quản lý · `/huong-dan` công khai) — kho tài liệu kỹ thuật kiểu diễn đàn:
+   - Soạn bằng **Markdown** với khung xem trước ngay cạnh; khối lệnh có tô màu cú pháp theo đúng token màu của app (đổi theme là code đổi theo) và nút chép nhanh.
+   - **Mỗi bài tự chọn phạm vi**: `Nháp` (chỉ tác giả + admin) · `Nội bộ` (cần đăng nhập) · `Công khai` (ai vào web cũng đọc). Bài không công khai còn được đánh `noindex` để công cụ tìm kiếm bỏ qua.
+   - Trang công khai xếp theo **chuyên mục → danh sách bài** (tiêu đề, người viết, lượt xem, thời gian). Bài không đủ quyền trả **404**, không lộ cả việc bài có tồn tại.
+   - **An toàn XSS**: dùng `react-markdown` và cố ý KHÔNG bật `rehype-raw`, nên HTML thô trong bài bị vô hiệu thành văn bản thường.
+   - Slug tự sinh từ tiêu đề tiếng Việt (`Hướng dẫn tạo VPN Site-to-Site` → `huong-dan-tao-vpn-site-to-site`), trùng thì thêm hậu tố số.
+
 Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 
 **Công nghệ:** Next.js (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Recharts · SQLite + Prisma · sharp.

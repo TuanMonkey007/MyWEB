@@ -7,6 +7,7 @@ import {
   ArrowLeftRight,
   CircleUser,
   ArrowRightLeft,
+  BookOpen,
   ClipboardList,
   HardDrive,
   KeyRound,
@@ -89,6 +90,11 @@ const MODULES: ModuleGroup[] = [
     id: "mailtest",
     label: "Test Mail Relay",
     items: [{ href: "/mailtest", label: "Gửi mail thử", icon: Mail }],
+  },
+  {
+    id: "articles",
+    label: "Bài hướng dẫn",
+    items: [{ href: "/articles", label: "Quản lý bài viết", icon: BookOpen }],
   },
 ];
 

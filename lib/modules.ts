@@ -9,6 +9,7 @@ export const MODULE_REGISTRY = [
   { id: "passwords", label: "Kho mật khẩu", href: "/passwords" },
   { id: "dms", label: "DMS", href: "/dms" },
   { id: "mailtest", label: "Test Mail Relay", href: "/mailtest" },
+  { id: "articles", label: "Bài hướng dẫn", href: "/articles" },
 ] as const;
 
 export type ModuleId = (typeof MODULE_REGISTRY)[number]["id"];
@@ -44,6 +45,9 @@ export const MODULE_PATH_PREFIXES: [string, ModuleId][] = [
   ["/api/dms", "dms"],
   ["/mailtest", "mailtest"],
   ["/api/mailtest", "mailtest"],
+  ["/articles", "articles"],
+  ["/api/articles", "articles"],
+  ["/api/article-categories", "articles"],
 ];
 
 // Khu vực chỉ ADMIN (cấu hình hệ thống + quản lý tài khoản/phân quyền)

@@ -206,6 +206,7 @@ model User {
   sessions     Session[]
   vaultConfig  VaultConfig?
   vaultEntries VaultEntry[]
+  articles     Article[]
 }
 
 // ===== Module Kho mật khẩu (vault mã hóa đầu-cuối, riêng từng user) =====
@@ -303,4 +304,39 @@ model Attachment {
   proposal   Proposal?     @relation(fields: [proposalId], references: [id], onDelete: Cascade)
   itemId     String?
   item       ProposalItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+// ===== Bài hướng dẫn (kiểu diễn đàn) =====
+model ArticleCategory {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  articles    Article[]
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  summary   String? // mô tả ngắn hiện ở danh sách
+  content   String // nội dung Markdown
+  // DRAFT: chỉ tác giả + admin thấy | INTERNAL: cần đăng nhập | PUBLIC: ai cũng đọc
+  visibility String  @default("DRAFT")
+  pinned    Boolean  @default(false) // ghim lên đầu chuyên mục
+  views     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+
+  categoryId String?
+  category   ArticleCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  authorId   String
+  author     User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([visibility, publishedAt])
+  @@index([categoryId])
 }
