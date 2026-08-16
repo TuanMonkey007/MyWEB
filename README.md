@@ -64,6 +64,17 @@ Mở trình duyệt vào **http://localhost:3000** → đăng nhập bằng mậ
 | `DATABASE_URL` | Đường dẫn file SQLite (tương đối so với thư mục `prisma/`) | `file:./dev.db` hoặc `file:D:/appdata/finance.db` |
 | `UPLOAD_DIR` | Thư mục lưu ảnh hóa đơn | `./uploads` hoặc `D:/appdata/uploads` |
 | `APP_PASSWORD` | Mật khẩu đăng nhập (bắt buộc đổi) | `mat-khau-manh` |
+### Màu giao diện
+
+Admin đổi **màu nhấn** ở Cài đặt → Giao diện: chọn 1 trong 9 màu gợi ý hoặc tự nhập
+mã `#RRGGBB` bất kỳ. Chỉ lưu đúng một mã màu, 22 token còn lại (sáng + tối) do
+`lib/theme-color.ts` tự suy ra.
+
+Điểm đáng chú ý: hệ thống **giữ nguyên sắc và độ tươi của màu bạn chọn nhưng tự dò
+độ sáng** cho tới khi đạt tương phản 4.5:1 — nên chọn màu chói như vàng chanh hay
+trắng tinh thì nút vẫn đọc được, không vỡ khả năng tiếp cận. Form cài đặt hiện sẵn
+ô xem trước cho cả nền sáng lẫn nền tối kèm số đo tương phản.
+
 | `APP_SECRET` | (tùy chọn) Khóa mã hóa bí mật lưu trong DB. Bỏ trống thì tự sinh file `.app-secret` cạnh database | chuỗi ngẫu nhiên dài |
 
 ### Gửi mail (`lib/mail`)

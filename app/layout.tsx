@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { themeStyleVars } from "@/lib/theme-color";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getSettings } from "@/lib/settings";
@@ -61,6 +62,9 @@ export default async function RootLayout({
           // --font-geist-sans (sót từ template) nên font tải về mà không hề được
           // áp, cả app rơi về serif mặc định của trình duyệt.
           "--app-font": fontVar,
+          // Màu nhấn admin chọn trong Cài đặt — cấp giá trị cho cả hai chế độ,
+          // globals.css tự lấy bộ --tl-* (sáng) hoặc --td-* (tối)
+          ...themeStyleVars(settings.themeColor),
         } as React.CSSProperties
       }
     >

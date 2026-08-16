@@ -21,6 +21,7 @@ import {
   FONT_SIZE_OPTIONS,
   type AppSettings,
 } from "@/lib/settings-constants";
+import { ThemeColorPicker } from "@/components/settings/theme-color-picker";
 import { cn } from "@/lib/utils";
 
 const THEMES = [
@@ -130,6 +131,8 @@ export function AppearanceSettings({ settings }: { settings: AppSettings }) {
             })}
           </div>
         </div>
+
+        <ThemeColorPicker current={settings.themeColor} />
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">

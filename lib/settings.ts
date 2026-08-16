@@ -8,6 +8,7 @@ import {
   type FontId,
 } from "./settings-constants";
 import { ALL_MODULE_IDS } from "./modules";
+import { DEFAULT_THEME_COLOR, isValidHex } from "./theme-color";
 
 export * from "./settings-constants";
 
@@ -36,6 +37,7 @@ export async function getSettings(): Promise<AppSettings> {
     faviconPath: map.get("faviconPath") || null,
     exportTemplateName: map.get("exportTemplateName") || null,
     dmsTemplateName: map.get("dmsTemplateName") || null,
+    themeColor: isValidHex(map.get("themeColor") || "") ? map.get("themeColor")! : DEFAULT_THEME_COLOR,
     moduleOrder: reconcileModuleOrder(savedOrder),
   };
 }

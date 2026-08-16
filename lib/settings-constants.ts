@@ -1,4 +1,6 @@
 // Hằng số cài đặt giao diện — dùng được ở cả client lẫn server
+import { DEFAULT_THEME_COLOR } from "./theme-color";
+
 export const FONT_OPTIONS = [
   { id: "inter", label: "Inter (mặc định)" },
   { id: "be-vietnam", label: "Be Vietnam Pro" },
@@ -19,6 +21,7 @@ export type AppSettings = {
   faviconPath: string | null; // tên file trong UPLOAD_DIR/branding
   exportTemplateName: string | null; // tên gốc file mẫu xuất phiếu đã upload
   dmsTemplateName: string | null; // tên gốc file mẫu import tuyến (module DMS)
+  themeColor: string; // mã màu nhấn (#RRGGBB) — token còn lại tự suy ra
   moduleOrder: string[]; // thứ tự id module trên sidebar (admin cấu hình)
 };
 
@@ -29,5 +32,6 @@ export const DEFAULT_SETTINGS: AppSettings = {
   faviconPath: null,
   exportTemplateName: null,
   dmsTemplateName: null,
+  themeColor: DEFAULT_THEME_COLOR,
   moduleOrder: [],
 };

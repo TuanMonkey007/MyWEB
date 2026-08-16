@@ -7,6 +7,7 @@ import {
   reconcileModuleOrder,
   setSetting,
 } from "@/lib/settings";
+import { isValidHex } from "@/lib/theme-color";
 
 export async function GET() {
   return NextResponse.json(await getSettings());
@@ -29,6 +30,11 @@ export async function PUT(req: Request) {
     if (!FONT_SIZE_OPTIONS.some((s) => s.id === String(body.fontSize)))
       return jsonError("Cỡ chữ không hợp lệ");
     await setSetting("fontSize", String(body.fontSize));
+  }
+  if (body.themeColor !== undefined) {
+    const hex = String(body.themeColor).trim();
+    if (!isValidHex(hex)) return jsonError("Mã màu phải dạng #RRGGBB");
+    await setSetting("themeColor", hex.toUpperCase());
   }
   if (body.moduleOrder !== undefined) {
     if (!Array.isArray(body.moduleOrder))
