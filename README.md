@@ -23,11 +23,12 @@ Web app cá nhân, kiến trúc module hóa. Trang chủ `/` là **trang tin cô
 8. **Test Mail Relay** (`/mailtest`) — gửi mail thử để kiểm tra API key và bản ghi DNS của nhà cung cấp: form nhập địa chỉ đích / tiêu đề / nội dung (text hoặc HTML), nhật ký các lần gửi kèm mã mail. Quản trị viên chỉnh cấu hình mail ngay tại đây (xem mục Gửi mail bên dưới).
 
 9. **Bài hướng dẫn** (`/articles` quản lý · `/huong-dan` công khai) — kho tài liệu kỹ thuật kiểu diễn đàn:
-   - Soạn bằng **Markdown** với khung xem trước ngay cạnh; khối lệnh có tô màu cú pháp theo đúng token màu của app (đổi theme là code đổi theo) và nút chép nhanh.
+   - **Trình soạn thảo trực quan** (TipTap): gõ đâu thấy đó, không phải học cú pháp. Thanh công cụ có tiêu đề, đậm/nghiêng/gạch, danh sách, trích dẫn, khối lệnh, canh lề, liên kết, chèn ảnh, chèn bảng. Mọi nút icon đều có nhãn trợ năng và trạng thái bật/tắt.
+   - Nội dung lưu ra **HTML**. Bài viết bằng Markdown từ trước vẫn đọc bình thường nhờ cột `format` (`HTML` | `MARKDOWN`) — mỗi định dạng đi đường render riêng.
    - **Mỗi bài tự chọn phạm vi**: `Nháp` (chỉ tác giả + admin) · `Nội bộ` (cần đăng nhập) · `Công khai` (ai vào web cũng đọc). Bài không công khai còn được đánh `noindex` để công cụ tìm kiếm bỏ qua.
    - Trang công khai xếp theo **chuyên mục → danh sách bài** (tiêu đề, người viết, lượt xem, thời gian). Bài không đủ quyền trả **404**, không lộ cả việc bài có tồn tại.
    - Slug tự sinh từ tiêu đề tiếng Việt (`Hướng dẫn tạo VPN Site-to-Site` → `huong-dan-tao-vpn-site-to-site`), trùng thì thêm hậu tố số.
-   - **Viết được bằng HTML** ngoài Markdown (chia cột, hộp cảnh báo, `<details>`, `<figure>`…). HTML đi qua `rehype-raw` rồi **bị lọc ngay** bằng `rehype-sanitize` theo danh sách cho phép ở `lib/markdown-sanitize.ts` — thứ tự plugin này là bắt buộc, đảo lại là hở XSS.
+   - **An toàn XSS**: HTML luôn bị lọc ở server theo danh sách cho phép (`lib/markdown-sanitize.ts`) trước khi hiển thị — kể cả HTML do chính trình soạn sinh ra, vì dữ liệu trong DB có thể bị sửa bằng đường khác. Thuộc tính `style` chỉ nhận đúng các giá trị canh lề; mọi giá trị khác bị bỏ (đó là đường vào của `url(javascript:)`, `expression()`, `position:fixed` che màn hình).
    - **Ảnh bìa** cho từng bài (nén bằng sharp, tối đa 1600px/~500KB), phục vụ qua route công khai `/api/anh-bai-viet/<uuid>.jpg`.
 
 **Trang chủ `/`** là trang báo: thanh chuyên mục ngang, bài nổi bật cỡ lớn ở giữa, hai cột phụ hai bên, lưới bài phía dưới. Đồng hồ thế giới chuyển sang **`/dong-ho`**, thanh đầu trang có đồng hồ thu gọn dẫn tới đó.

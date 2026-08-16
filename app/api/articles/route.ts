@@ -25,6 +25,7 @@ export async function POST(req: Request) {
   const visibility = String(body.visibility ?? "DRAFT");
   const categoryId = body.categoryId ? String(body.categoryId) : null;
   const coverImage = body.coverImage ? String(body.coverImage) : null;
+  const format = body.format === "MARKDOWN" ? "MARKDOWN" : "HTML";
 
   if (!title) return jsonError("Nhập tiêu đề bài viết");
   if (title.length > 200) return jsonError("Tiêu đề tối đa 200 ký tự");
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
       visibility,
       categoryId,
       coverImage,
+      format,
       authorId: user.id,
       publishedAt: visibility === "DRAFT" ? null : new Date(),
     },

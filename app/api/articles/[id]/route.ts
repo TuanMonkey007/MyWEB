@@ -64,6 +64,7 @@ export async function PUT(req: Request, { params }: Ctx) {
     data.categoryId = categoryId;
   }
   if (body.pinned !== undefined) data.pinned = body.pinned === true;
+  if (body.format !== undefined) data.format = body.format === "MARKDOWN" ? "MARKDOWN" : "HTML";
   if (body.coverImage !== undefined) {
     const c = body.coverImage ? String(body.coverImage) : null;
     // Ảnh cũ bị thay thì xóa khỏi đĩa, khỏi tích rác

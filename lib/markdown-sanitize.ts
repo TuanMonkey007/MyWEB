@@ -12,6 +12,18 @@ import { defaultSchema } from "rehype-sanitize";
 
 type Schema = typeof defaultSchema;
 
+/** Giá trị `style` duy nhất được phép — do trình soạn sinh ra khi canh lề */
+const CANH_LE = [
+  "text-align: left",
+  "text-align: center",
+  "text-align: right",
+  "text-align: justify",
+  "text-align:left",
+  "text-align:center",
+  "text-align:right",
+  "text-align:justify",
+];
+
 export const articleSchema: Schema = {
   ...defaultSchema,
   tagNames: [
@@ -35,8 +47,21 @@ export const articleSchema: Schema = {
   ],
   attributes: {
     ...defaultSchema.attributes,
-    // Cho phép class trên mọi thẻ để dùng tiện ích Tailwind + class tô màu code
-    "*": [...(defaultSchema.attributes?.["*"] ?? []), "className", "class", "id", "style"],
+    // Cho phép class trên mọi thẻ để dùng tiện ích Tailwind + class tô màu code.
+    //
+    // `style` KHÔNG cho tự do: đó là đường vào của url(javascript:...),
+    // expression() và nhiều lỗ hổng khác. Chỉ cho đúng các giá trị canh lề mà
+    // trình soạn sinh ra — giá trị nào khác bị bỏ nguyên thuộc tính.
+    "*": [
+      ...(defaultSchema.attributes?.["*"] ?? []),
+      "className",
+      "class",
+      "id",
+      // MỘT tuple duy nhất liệt kê mọi giá trị hợp lệ. Tách thành nhiều tuple
+      // cùng tên thuộc tính thì thư viện chỉ nhận cái đầu — các giá trị sau bị
+      // bỏ âm thầm.
+      ["style", ...CANH_LE],
+    ],
     img: [
       ...(defaultSchema.attributes?.img ?? []),
       "src",
@@ -57,15 +82,3 @@ export const articleSchema: Schema = {
     src: ["http", "https"],
   },
 };
-
-/**
- * `style` nằm trong danh sách cho phép để người viết canh chỉnh được, nhưng
- * thuộc tính này là đường dẫn cũ của nhiều lỗ hổng (url(javascript:...),
- * expression()...). Lọc thô những mẫu nguy hiểm trước khi lưu.
- */
-export function stripDangerousCss(html: string): string {
-  return html.replace(/style\s*=\s*(["'])(.*?)\1/gi, (match, quote, css: string) => {
-    const nguyHiem = /(javascript:|expression\s*\(|behavior\s*:|@import|<\/?script)/i;
-    return nguyHiem.test(css) ? "" : match;
-  });
-}

@@ -31,6 +31,7 @@ export default async function EditArticlePage({
         visibility: article.visibility,
         categoryId: article.categoryId,
         coverImage: article.coverImage,
+        format: article.format,
       }}
       categories={categories}
     />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, CalendarDays, Eye, Lock, Pencil, User as UserIcon } from "lucide-react";
-import { MarkdownView } from "@/components/articles/markdown-view";
+import { ArticleContent } from "@/components/articles/article-content";
 import { getCurrentUser } from "@/lib/auth";
 import { bumpViews, canEdit, getArticleBySlug, VISIBILITY_LABELS, type Visibility } from "@/lib/articles";
 import { getSettings } from "@/lib/settings";
@@ -81,7 +81,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </header>
 
-      <MarkdownView content={article.content} />
+      <ArticleContent content={article.content} format={article.format} />
     </article>
   );
 }

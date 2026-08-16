@@ -298,3 +298,49 @@
 .prose-article .hljs-deletion { color: var(--destructive); }
 .prose-article .hljs-emphasis { font-style: italic; }
 .prose-article .hljs-strong { font-weight: 600; }
+
+/* ── Trình soạn thảo trực quan (TipTap) ────────────────────────────────────
+   Dùng lại .prose-article nên nhìn lúc soạn giống hệt lúc đăng. Phần dưới chỉ
+   bổ sung những thứ chỉ có khi đang soạn. */
+.tiptap:focus {
+  outline: none;
+}
+/* Chỗ trống gợi ý khi bài chưa có chữ nào */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+/* Bảng lúc soạn: hiện lưới rõ để biết đang ở ô nào, kéo được mép cột */
+.tiptap table {
+  table-layout: fixed;
+  width: 100%;
+}
+.tiptap table td,
+.tiptap table th {
+  position: relative;
+  min-width: 4rem;
+}
+.tiptap .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--primary) 18%, transparent);
+  pointer-events: none;
+}
+.tiptap .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--primary);
+  cursor: col-resize;
+}
+/* Ảnh đang chọn — biết là đã bấm trúng để xoá/di chuyển */
+.tiptap img.ProseMirror-selectednode {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}

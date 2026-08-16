@@ -4,12 +4,11 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ArrowLeft, Eye, ExternalLink, ImagePlus, Loader2, Pencil, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, ImagePlus, Loader2, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -17,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MarkdownView } from "@/components/articles/markdown-view";
+import { RichEditor } from "@/components/articles/rich-editor";
 import { useCan } from "@/components/permissions-provider";
 import {
   VISIBILITIES,
@@ -25,7 +24,6 @@ import {
   VISIBILITY_LABELS,
   type Visibility,
 } from "@/lib/articles";
-import { cn } from "@/lib/utils";
 
 export type EditorArticle = {
   id: string;
@@ -36,25 +34,10 @@ export type EditorArticle = {
   visibility: string;
   categoryId: string | null;
   coverImage: string | null;
+  format: string;
 };
 
-const MAU_BAI = `## Chuẩn bị
-
-- Thiết bị A: ...
-- Thiết bị B: ...
-
-## Các bước
-
-1. Bước một
-2. Bước hai
-
-\`\`\`bash
-# ví dụ cấu hình
-config vpn ipsec phase1-interface
-\`\`\`
-
-> Lưu ý: ...
-`;
+const MAU_BAI = `<h2>Chuẩn bị</h2><ul><li>Thiết bị A: …</li><li>Thiết bị B: …</li></ul><h2>Các bước</h2><ol><li>Bước một</li><li>Bước hai</li></ol><blockquote><p>Lưu ý: …</p></blockquote>`;
 
 export function ArticleEditor({
   article,
@@ -78,8 +61,6 @@ export function ArticleEditor({
   const [uploading, setUploading] = useState(false);
   const coverRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
-  // Trên màn hẹp không đủ chỗ hai cột — cho chuyển qua lại soạn/xem trước
-  const [mobileTab, setMobileTab] = useState<"soan" | "xem">("soan");
 
   async function uploadCover(file: File) {
     setUploading(true);
@@ -111,6 +92,7 @@ export function ArticleEditor({
         visibility,
         categoryId: categoryId === "none" ? null : categoryId,
         coverImage,
+        format: "HTML",
       };
       const res = await fetch(article ? `/api/articles/${article.id}` : "/api/articles", {
         method: article ? "PUT" : "POST",
@@ -254,51 +236,20 @@ export function ArticleEditor({
         </CardContent>
       </Card>
 
-      {/* Chuyển tab chỉ hiện trên màn hẹp; từ md trở lên xem hai cột song song */}
-      <div className="flex gap-2 md:hidden">
-        {(["soan", "xem"] as const).map((t) => (
-          <Button
-            key={t}
-            size="sm"
-            variant={mobileTab === t ? "default" : "outline"}
-            onClick={() => setMobileTab(t)}
-          >
-            {t === "soan" ? <Pencil className="size-4" /> : <Eye className="size-4" />}
-            {t === "soan" ? "Soạn" : "Xem trước"}
-          </Button>
-        ))}
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className={cn("space-y-1.5", mobileTab !== "soan" && "hidden md:block")}>
-          <Label htmlFor="content" className="text-xs">
-            Nội dung (Markdown)
-          </Label>
-          <Textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={26}
-            spellCheck={false}
-            className="font-mono text-[13px] leading-relaxed"
-          />
-          <p className="text-xs text-muted-foreground">
-            Dùng <code>## Tiêu đề</code>, <code>- gạch đầu dòng</code>, <code>**đậm**</code>,
-            bảng, và ```` ```bash ```` cho khối lệnh. HTML thô bị bỏ qua để tránh XSS.
-          </p>
-        </div>
-        <div className={cn("space-y-1.5", mobileTab !== "xem" && "hidden md:block")}>
-          <Label className="text-xs">Xem trước</Label>
-          <Card className="min-h-[200px]">
-            <CardContent>
-              {content.trim() ? (
-                <MarkdownView content={content} />
-              ) : (
-                <p className="text-sm text-muted-foreground">Chưa có nội dung.</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+      <div className="space-y-1.5">
+        <Label className="text-xs">Nội dung</Label>
+        <RichEditor value={content} onChange={setContent} />
+        <p className="text-xs text-muted-foreground">
+          Gõ và định dạng trực tiếp — bôi đen chữ rồi bấm nút trên thanh công cụ.
+          Chèn ảnh, bảng, khối lệnh, liên kết đều có sẵn.
+          {article?.format === "MARKDOWN" && (
+            <span className="mt-1 block text-amber-600">
+              Bài này viết bằng Markdown từ trước. Lưu lại sẽ chuyển sang định dạng
+              mới — nội dung giữ nguyên, nhưng cú pháp Markdown (## , **đậm**) sẽ
+              thành chữ thường.
+            </span>
+          )}
+        </p>
       </div>
     </div>
   );
