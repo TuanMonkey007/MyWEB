@@ -121,6 +121,28 @@ gửi gần đây kèm mã mail của nhà cung cấp. Giới hạn 20 mail/gi�
 > Trên VPS nên ưu tiên driver HTTP API (cổng 443) vì cổng SMTP 587/465 hay bị chặn.
 > Không tự dựng mail server: IP VPS thường bị liệt vào danh sách đen, mail sẽ rơi vào spam.
 
+### Quên mật khẩu đăng nhập
+
+App chưa có chức năng "quên mật khẩu" qua mail. Khi không còn tài khoản ADMIN nào
+vào được giao diện, đặt lại từ dòng lệnh **trên máy chủ**, trong thư mục project:
+
+```bash
+npm run user:reset
+```
+
+Chạy không kèm tham số để xem danh sách tài khoản, rồi:
+
+```bash
+npm run user:reset -- admin
+```
+
+Sinh sẵn mật khẩu ngẫu nhiên mạnh và in ra màn hình (không ghi vào file nào), đồng
+thời **hủy mọi phiên đăng nhập cũ** của tài khoản đó. Muốn tự đặt thì thêm mật khẩu
+vào sau tên đăng nhập. Đăng nhập xong nên đổi lại ở trang `/account`.
+
+> Nếu còn một tài khoản ADMIN khác đăng nhập được thì không cần script này — vào
+> `/access` đặt lại mật khẩu hộ tài khoản kia nhanh hơn.
+
 ## 3. Deploy production trên Windows Server
 
 > **Hướng dẫn deploy VPS đầy đủ từng bước xem tại [DEPLOY.md](DEPLOY.md)** — kèm script tự động
