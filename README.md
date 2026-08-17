@@ -31,7 +31,16 @@ Web app cá nhân, kiến trúc module hóa. Trang chủ `/` là **trang tin cô
    - **An toàn XSS**: HTML luôn bị lọc ở server theo danh sách cho phép (`lib/markdown-sanitize.ts`) trước khi hiển thị — kể cả HTML do chính trình soạn sinh ra, vì dữ liệu trong DB có thể bị sửa bằng đường khác. Thuộc tính `style` chỉ nhận đúng các giá trị canh lề; mọi giá trị khác bị bỏ (đó là đường vào của `url(javascript:)`, `expression()`, `position:fixed` che màn hình).
    - **Ảnh bìa** cho từng bài (nén bằng sharp, tối đa 1600px/~500KB), phục vụ qua route công khai `/api/anh-bai-viet/<uuid>.jpg`.
 
+10. **Ảnh thẻ 3x4** (`/anh-the`) — chuyển ảnh bất kỳ sang khổ ảnh thẻ **hàng loạt**, phục vụ đăng ký FaceID cho công nhân:
+   - Nhận ảnh chụp kiểu gì cũng được (ngang, dọc, vuông, 16:9, ảnh điện thoại có EXIF xoay). Kéo thả nhiều ảnh cùng lúc, tối đa 200 ảnh.
+   - **Không kéo giãn**: cắt bớt phần thừa để về đúng tỷ lệ 3:4 chứ không ép ảnh, nên mặt không bị bè/dẹt. Đã kiểm chứng bằng cách vẽ hình tròn và đo lại sau khi chuyển — sai lệch tối đa 0.8% (do làm tròn điểm ảnh), trong khi kéo giãn cố ý lệch 44%.
+   - **Tự đặt khung theo khuôn mặt**: dò trọng tâm vùng màu da rồi đặt mặt vào giữa, chừa khoảng trên đầu đúng kiểu ảnh thẻ. Không dò được thì lùi về chiến lược `attention` của sharp. Ảnh nào lệch thì nhích khung bằng nút; hết chỗ dịch thì nút tự khoá kèm gợi ý "cắt sát mặt hơn".
+   - Xuất JPEG **300 DPI** (3×4cm = 354×472 px) để in ra đúng kích thước thật. Có thêm khổ 4×6 và 2×3.
+   - Tải từng ảnh hoặc **tải tất cả dạng ZIP**, giữ nguyên tên file gốc để còn khớp lại với từng công nhân. Ảnh tự xoá khỏi máy chủ sau 2 giờ.
+   - Một ảnh hỏng không làm chết cả lô — báo lỗi riêng ảnh đó, các ảnh còn lại vẫn xong.
+
 **Trang chủ `/`** là trang báo: thanh chuyên mục ngang, bài nổi bật cỡ lớn ở giữa, hai cột phụ hai bên, lưới bài phía dưới. Đồng hồ thế giới chuyển sang **`/dong-ho`**, thanh đầu trang có đồng hồ thu gọn dẫn tới đó.
+
 
 Thứ tự các module trên sidebar do admin cấu hình tại Cài đặt.
 
