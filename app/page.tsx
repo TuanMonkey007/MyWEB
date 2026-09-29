@@ -179,18 +179,30 @@ export default function PersonalLandingPage() {
       ? TOOLS_DATA
       : TOOLS_DATA.filter((tool) => tool.category === activeCategory);
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactForm.name || !contactForm.emailOrPhone || !contactForm.message) {
       toast.error("Vui lòng điền đủ Họ tên, Email/SĐT và Nội dung lời nhắn!");
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      toast.success("Cảm ơn bạn! Lời nhắn đã được ghi nhận. Tôi sẽ phản hồi sớm nhất.");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error ?? "Gửi lời nhắn thất bại. Vui lòng thử lại!");
+      }
+      toast.success("Lời nhắn của bạn đã được chuyển thẳng vào danh sách việc cần làm (Todos) của Tuấn!");
       setContactForm({ name: "", emailOrPhone: "", subject: "", message: "" });
-    }, 600);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Đã có lỗi xảy ra");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
