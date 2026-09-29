@@ -1,378 +1,583 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import {
-  CalendarDays,
+  ArrowRight,
+  ArrowUpRight,
   Check,
-  Clock,
+  CheckCircle2,
+  Code2,
+  Database,
   ExternalLink,
-  Heart,
+  FileSpreadsheet,
+  HardDrive,
+  ImageIcon,
+  Layers,
+  Lock,
   Mail,
   MapPin,
-  MessageSquare,
   Phone,
+  PiggyBank,
+  ScanFace,
+  Send,
+  ShieldCheck,
   Sparkles,
-  Star,
-  Users,
-  Utensils,
-  Wine,
+  Terminal,
+  User,
+  Wallet,
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Menu Data
-const MENU_CATEGORIES = ["All", "Starters", "Mains", "Chef Specials", "Desserts", "Wine & Cocktails"];
+// Danh mục filter bộ công cụ
+const TOOL_CATEGORIES = [
+  "Tất cả",
+  "DMS & Phân phối",
+  "Dữ liệu & Nhân sự",
+  "Tài chính & Mua sắm",
+  "Tiện ích & Bảo mật",
+] as const;
 
-const MENU_ITEMS = [
+type ToolCategory = (typeof TOOL_CATEGORIES)[number];
+
+interface ToolItem {
+  id: string;
+  title: string;
+  category: ToolCategory;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href: string;
+  tag: string;
+  highlight?: boolean;
+}
+
+const TOOLS_DATA: ToolItem[] = [
   {
-    id: 1,
-    name: "Dry-Aged Wagyu Ribeye",
-    category: "Mains",
-    price: "$78",
-    description: "45-day dry-aged Japanese A5 Wagyu, charred shallots, bone marrow jus, truffle pomme purée.",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
-    tag: "Chef's Signature",
+    id: "dms",
+    title: "Chuyển tuyến giữa các NPP",
+    category: "DMS & Phân phối",
+    description:
+      "Đổi dữ liệu tuyến từ NPP cũ sang mẫu import chuẩn cho NPP mới. Tự động sinh mã tuyến mới theo ngày và mã NVBH, ngày hiệu lực từ ngày mai.",
+    icon: FileSpreadsheet,
+    href: "/dms",
+    tag: "DMS cốt lõi",
+    highlight: true,
   },
   {
-    id: 2,
-    name: "Pan-Seared Hokkaido Scallops",
-    category: "Starters",
-    price: "$34",
-    description: "Golden brown scallops, sweet pea velouté, crispy pancetta, lemon-herb infused olive oil.",
-    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
-    tag: "Seasonal",
+    id: "faceid",
+    title: "Lọc dữ liệu chấm công FaceID",
+    category: "Dữ liệu & Nhân sự",
+    description:
+      "Làm sạch dữ liệu chấm công cổng bảo vệ: lọc quét trùng khuôn mặt, loại bỏ ID không cần thiết, sửa giờ ngoại lệ và tự động phân tách sheet theo ca.",
+    icon: ScanFace,
+    href: "/faceid",
+    tag: "Tự động hóa",
+    highlight: true,
   },
   {
-    id: 3,
-    name: "Handcrafted Black Truffle Tagliolini",
-    category: "Chef Specials",
-    price: "$46",
-    description: "House-made egg pasta, aged Parmigiano Reggiano 24 months, freshly shaved Norcia black truffles.",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
-    tag: "House Special",
+    id: "anh-the",
+    title: "Chuyển ảnh sang khổ thẻ 3×4",
+    category: "Dữ liệu & Nhân sự",
+    description:
+      "Nhận ảnh chụp mọi góc độ (ngang, dọc, điện thoại) rồi tự động dò khuôn mặt để cắt về đúng tỷ lệ 3×4. Cắt bớt phần thừa, không kéo giãn méo mặt.",
+    icon: ImageIcon,
+    href: "/anh-the",
+    tag: "Xử lý ảnh",
   },
   {
-    id: 4,
-    name: "Roasted Mediterranean Sea Bass",
-    category: "Mains",
-    price: "$52",
-    description: "Crispy skin wild sea bass, braised fennel, saffron emulsion, heirloom cherry tomatoes.",
-    image: "https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=800&q=80",
-    tag: "Gluten-Free",
+    id: "procurement",
+    title: "Quản lý Ngân sách mua sắm",
+    category: "Tài chính & Mua sắm",
+    description:
+      "Theo dõi quỹ mua hàng phân bổ 12 tháng, tổng hợp các đợt đề xuất mua sắm, kiểm soát hóa đơn VAT và tiến độ giải ngân từng hạng mục.",
+    icon: PiggyBank,
+    href: "/procurement",
+    tag: "Quản trị quỹ",
   },
   {
-    id: 5,
-    name: "Valrhona Dark Chocolate Soufflé",
-    category: "Desserts",
-    price: "$22",
-    description: "Warm 70% molten Guanaja chocolate, Grand Marnier crème anglaise, Tahitian vanilla bean gelato.",
-    image: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80",
-    tag: "Made to Order",
+    id: "finance",
+    title: "Sổ thu chi & Quản lý ví",
+    category: "Tài chính & Mua sắm",
+    description:
+      "Theo dõi dòng tiền đa ví (tiền mặt, tài khoản ngân hàng), ghi chép thu chi nhanh chóng, báo cáo phân bổ danh mục và đối soát số dư thực tế.",
+    icon: Wallet,
+    href: "/finance",
+    tag: "Dòng tiền",
   },
   {
-    id: 6,
-    name: "Reserve Barolo & Craft Cocktails",
-    category: "Wine & Cocktails",
-    price: "$26",
-    description: "Sommelier-selected Piedmont vintage, smoke-infused rosemary negroni, botanical botanicals.",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
-    tag: "Cellar Pick",
+    id: "passwords",
+    title: "Kho mật khẩu mã hóa đầu-cuối",
+    category: "Tiện ích & Bảo mật",
+    description:
+      "Lưu trữ tài khoản và thông tin mật với mã hóa AES-GCM 256-bit trực tiếp trên trình duyệt. Máy chủ chỉ lưu bản mã, tự động khóa sau 5 phút.",
+    icon: ShieldCheck,
+    href: "/passwords",
+    tag: "Zero-Knowledge",
+  },
+  {
+    id: "todos",
+    title: "Quản lý công việc & Kanban",
+    category: "Tiện ích & Bảo mật",
+    description:
+      "Bảng Kanban kéo thả trực quan kèm danh sách việc cần làm, phân loại mức độ ưu tiên Cao - Vừa - Thấp, theo dõi hạn chót deadline hiệu quả.",
+    icon: Layers,
+    href: "/todos",
+    tag: "Năng suất",
+  },
+  {
+    id: "drive",
+    title: "Kho lưu trữ file chống trùng",
+    category: "Tiện ích & Bảo mật",
+    description:
+      "Lưu trữ file và tài liệu nội bộ theo cây thư mục phân cấp. Cơ chế băm SHA-256 chống trùng lặp, chia sẻ file an toàn tốc độ cao.",
+    icon: HardDrive,
+    href: "/drive",
+    tag: "Lưu trữ số",
   },
 ];
 
-export default function RestaurantLandingPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [resForm, setResForm] = useState({
+const ARTICLES_DATA = [
+  {
+    slug: "huong-dan-chuyen-tuyen-npp",
+    title: "Hướng dẫn chuyển đổi tuyến bán hàng DMS giữa các NPP không bị lỗi định dạng",
+    category: "Hệ thống DMS",
+    summary:
+      "Quy trình chuẩn để trích xuất dữ liệu từ NPP cũ, chuẩn hóa định dạng ngày tháng, mã đơn vị và mã NVBH để nạp vào hệ thống mới trong vài phút.",
+    readTime: "5 phút đọc",
+    date: "Tháng 09, 2026",
+  },
+  {
+    slug: "quy-trinh-loc-du-lieu-faceid",
+    title: "Quy trình làm sạch và phân tách log chấm công FaceID định kỳ hàng tháng",
+    category: "Dữ liệu & Nhân sự",
+    summary:
+      "Phương pháp phát hiện và lọc bỏ các lượt quét khuôn mặt trùng lặp trong khoảng thời gian ngắn, loại trừ ID chạy thử và phân tách ca trực.",
+    readTime: "4 phút đọc",
+    date: "Tháng 09, 2026",
+  },
+  {
+    slug: "thu-thuat-excel-du-lieu-lon",
+    title: "Thủ thuật xử lý file Excel lớn với hàng trăm nghìn dòng dữ liệu bán hàng",
+    category: "Thủ thuật Dữ liệu",
+    summary:
+      "Kỹ thuật tối ưu hóa bảng tính phân phối, tránh treo máy và tự động hóa thao tác đối soát báo cáo phân phối 5.2 và 6.4.4 nhanh chóng.",
+    readTime: "7 phút đọc",
+    date: "Tháng 08, 2026",
+  },
+  {
+    slug: "bao-mat-zero-knowledge-aes-gcm",
+    title: "Ứng dụng mã hóa đầu-cuối AES-GCM bảo vệ dữ liệu bí mật trên nền tảng Web",
+    category: "Bảo mật & Công nghệ",
+    summary:
+      "Cách hiện thực mã hóa Web Crypto API phía client: dẫn xuất khóa PBKDF2 giúp lưu trữ mật khẩu an toàn tuyệt đối ngay cả khi lộ database.",
+    readTime: "6 phút đọc",
+    date: "Tháng 08, 2026",
+  },
+];
+
+export default function PersonalLandingPage() {
+  const [activeCategory, setActiveCategory] = useState<ToolCategory>("Tất cả");
+  const [contactForm, setContactForm] = useState({
     name: "",
-    phone: "",
-    date: "",
-    time: "18:00",
-    guests: "2",
+    emailOrPhone: "",
+    subject: "",
+    message: "",
   });
-  const [resSubmitted, setResSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const filteredMenu =
-    activeCategory === "All"
-      ? MENU_ITEMS
-      : MENU_ITEMS.filter((item) => item.category === activeCategory);
+  const filteredTools =
+    activeCategory === "Tất cả"
+      ? TOOLS_DATA
+      : TOOLS_DATA.filter((tool) => tool.category === activeCategory);
 
-  const handleReservation = (e: React.FormEvent) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resForm.name || !resForm.phone || !resForm.date) {
-      toast.error("Vui lòng điền đủ Tên, Số điện thoại và Ngày đặt bàn");
+    if (!contactForm.name || !contactForm.emailOrPhone || !contactForm.message) {
+      toast.error("Vui lòng điền đủ Họ tên, Email/SĐT và Nội dung lời nhắn!");
       return;
     }
-    setResSubmitted(true);
-    toast.success("Bàn của bạn đã được đặt thành công! Chúng tôi sẽ gọi xác nhận trong 15 phút.");
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      toast.success("Cảm ơn bạn! Lời nhắn đã được ghi nhận. Tôi sẽ phản hồi sớm nhất.");
+      setContactForm({ name: "", emailOrPhone: "", subject: "", message: "" });
+    }, 600);
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-[#1C1917] selection:bg-[#F25C2B] selection:text-white">
+    <div className="min-h-screen bg-[#FAF7F0] text-[#1C1917] selection:bg-[#F25C2B] selection:text-white dark:bg-[#18110B] dark:text-[#FAF7F0]">
       {/* ── TOP UTILITY STRIP ── */}
       <div className="border-b-2 border-[#1C1917] bg-[#1E140C] text-xs text-[#FAF7F0] py-2 px-4 sm:px-8">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Clock className="size-3.5 text-[#F25C2B]" /> Monday - Thursday: 11:00 AM - 10:00 PM
+            <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px]">
+              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+              Sẵn sàng kết nối & Hỗ trợ kỹ thuật
             </span>
             <span className="hidden md:inline-block text-[#F25C2B]">|</span>
-            <span className="hidden md:flex items-center gap-1.5">
-              <MapPin className="size-3.5 text-[#F25C2B]" /> 123 Gourmet Street, NYC
+            <span className="hidden md:flex items-center gap-1.5 font-medium">
+              <MapPin className="size-3.5 text-[#F25C2B]" /> Hà Nội, Việt Nam · Hữu Nghị Food
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <a href="tel:+15551234567" className="font-semibold text-[#F25C2B] hover:underline flex items-center gap-1">
-              <Phone className="size-3" /> +1 (555) 123-4567
+            <span className="text-stone-400">Email:</span>
+            <a
+              href="mailto:tuannm@huunghi.com.vn"
+              className="font-bold text-[#F25C2B] hover:underline flex items-center gap-1"
+            >
+              <Mail className="size-3.5" /> tuannm@huunghi.com.vn
             </a>
           </div>
         </div>
       </div>
 
-      {/* ── FLOATING NAVIGATION BAR (Chính xác như ảnh 2) ── */}
+      {/* ── FLOATING NAVIGATION BAR (Warm Neo-Brutalism) ── */}
       <header className="sticky top-4 z-50 px-4 sm:px-6">
-        <nav className="mx-auto max-w-6xl rounded-md border-2 border-[#1C1917] bg-[#FAF7F0] px-6 py-3.5 shadow-neo transition-all flex items-center justify-between">
+        <nav className="mx-auto max-w-6xl rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-5 py-3 shadow-neo transition-all flex items-center justify-between dark:bg-[#22170F]">
           {/* Brand Logo */}
-          <a href="#" className="font-editorial text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1917]">
-            La Maison
-          </a>
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wide text-white shadow-neo-sm">
+              T
+            </div>
+            <div className="flex flex-col">
+              <span className="font-editorial text-xl font-bold tracking-tight text-[#1C1917] leading-none dark:text-[#FAF7F0]">
+                TUANNM
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#F25C2B]">
+                Data & DMS Solutions
+              </span>
+            </div>
+          </Link>
 
           {/* Nav links */}
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#1C1917]">
-            <a href="#menu" className="hover:text-[#F25C2B] transition-colors">
-              Menu
+          <div className="hidden md:flex items-center gap-7 text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0]">
+            <a href="#hero" className="hover:text-[#F25C2B] transition-colors">
+              Trang chủ
             </a>
-            <a href="#our-story" className="hover:text-[#F25C2B] transition-colors">
-              Our Story
+            <a href="#about" className="hover:text-[#F25C2B] transition-colors">
+              Giới thiệu
             </a>
-            <a href="#reservations" className="hover:text-[#F25C2B] transition-colors">
-              Reservation
+            <a href="#tools" className="hover:text-[#F25C2B] transition-colors">
+              Bộ công cụ
+            </a>
+            <a href="#articles" className="hover:text-[#F25C2B] transition-colors">
+              Bài viết
             </a>
             <a href="#contact" className="hover:text-[#F25C2B] transition-colors">
-              Contact
+              Liên hệ
             </a>
           </div>
 
-          {/* Book a Table Button */}
-          <a
-            href="#reservations"
-            className="inline-flex cursor-pointer items-center justify-center rounded-md border-2 border-[#1C1917] bg-[#F25C2B] px-5 py-2 text-sm font-bold text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          >
-            Book a Table
-          </a>
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/huong-dan"
+              className="hidden sm:inline-flex items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-white px-3 py-1.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
+            >
+              Tài liệu
+            </Link>
+            <Link
+              href="/finance"
+              className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+            >
+              Vào Workspace <ArrowRight className="ml-1 size-3.5" />
+            </Link>
+          </div>
         </nav>
       </header>
 
-      {/* ── HERO SECTION (Chính xác theo ảnh 2) ── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-20">
+      {/* ── HERO SECTION ── */}
+      <section id="hero" className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-16">
         <div className="grid items-center gap-12 lg:grid-cols-12">
-          {/* Left Column: Copy & CTAs */}
-          <div className="space-y-6 lg:col-span-6">
-            {/* Award badge */}
-            <div className="inline-flex items-center gap-1.5 rounded-sm border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-              <Star className="size-3.5 fill-[#F25C2B] text-[#F25C2B]" />
-              Award-Winning Cuisine
+          {/* Left Column: Personal Introduction & Tagline */}
+          <div className="space-y-6 lg:col-span-7">
+            {/* Status pill badge */}
+            <div className="inline-flex items-center gap-2 rounded-xs border-2 border-[#1C1917] bg-white px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#1C1917] shadow-neo-sm dark:bg-card dark:text-foreground">
+              <Sparkles className="size-3.5 text-[#F25C2B]" />
+              Kỹ sư Dữ liệu & Giải pháp DMS · Hữu Nghị Food
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-editorial text-5xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-[#1C1917] leading-[1.05]">
-              EXPERIENCE
-              <span className="block text-[#F25C2B]">CULINARY ART</span>
+            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-[#1C1917] leading-[1.08] dark:text-[#FAF7F0]">
+              TỰ ĐỘNG HÓA QUY TRÌNH &
+              <span className="block text-[#F25C2B]">GIẢI PHÁP SỐ HÓA DỮ LIỆU</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="max-w-lg text-base sm:text-lg leading-relaxed text-stone-700">
-              Discover the finest flavors crafted with passion. Fresh ingredients, timeless recipes, and an unforgettable dining experience await you.
+            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-stone-700 font-medium dark:text-stone-300">
+              Chào bạn, tôi là <b>Nguyễn Minh Tuấn (Tuannm)</b>. Đây là không gian làm việc số và cổng
+              truy cập các tiện ích nội bộ: tự động hóa dữ liệu tuyến bán hàng DMS, làm sạch log FaceID,
+              cắt ảnh thẻ 3×4, quản trị ngân sách mua sắm và tài chính cá nhân.
             </p>
 
             {/* Action buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
-                href="#reservations"
-                className="inline-flex cursor-pointer items-center justify-center rounded-md border-2 border-[#1C1917] bg-[#F25C2B] px-7 py-3.5 text-base font-bold text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-neo-sm transition-all"
+                href="#tools"
+                className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-7 py-3 text-sm font-black uppercase tracking-wider text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               >
-                Reserve a Table
+                Khám phá Bộ Tools ({TOOLS_DATA.length})
               </a>
-              <a
-                href="#menu"
-                className="inline-flex cursor-pointer items-center justify-center rounded-md border-2 border-[#1C1917] bg-white px-7 py-3.5 text-base font-bold text-[#1C1917] shadow-neo hover:bg-[#FDF9F3] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-neo-sm transition-all"
+              <Link
+                href="/login"
+                className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-white px-6 py-3 text-sm font-bold text-[#1C1917] shadow-neo hover:bg-[#FDF9F3] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all dark:bg-card dark:text-foreground"
               >
-                View Menu
-              </a>
+                Đăng nhập Workspace
+              </Link>
             </div>
 
             {/* Meta info row */}
-            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-semibold text-stone-700">
+            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-bold text-stone-700 dark:text-stone-300">
               <div className="flex items-center gap-2">
-                <Clock className="size-4 text-[#F25C2B]" />
-                <span>Open Daily 11AM - 11PM</span>
+                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <span>100% Chạy Offline / Local Server</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="size-4 text-[#F25C2B]" />
-                <span>123 Gourmet Street, NYC</span>
+                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <span>Bảo mật AES-GCM Zero-Knowledge</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <span>Tối ưu hóa bảng tính lớn (SheetJS)</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: 4-Photo Collage & Badge (Ảnh 2) */}
-          <div className="relative lg:col-span-6">
+          {/* Right Column: 4 Bento Highlights Cards */}
+          <div className="relative lg:col-span-5">
             <div className="grid grid-cols-2 gap-3.5">
-              {/* Image 1: Table fine dining */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-200 shadow-neo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80"
-                  alt="Fine dining table"
-                  className="h-full w-full object-cover"
-                />
+              {/* Box 1: DMS Route Automation */}
+              <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-card">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-[#F25C2B] shadow-neo-sm">
+                  <FileSpreadsheet className="size-5" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                    DMS Tool
+                  </div>
+                  <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
+                    Chuyển tuyến NPP thần tốc
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                    Tự động gán mã NVBH và ngày hiệu lực cho NPP mới.
+                  </p>
+                </div>
               </div>
 
-              {/* Image 2: Sautéed delicacy */}
-              <div className="relative row-span-2 aspect-[3/4] overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-200 shadow-neo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80"
-                  alt="Delicious gourmet steak"
-                  className="h-full w-full object-cover"
-                />
+              {/* Box 2: FaceID Log Clean */}
+              <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-[#22170F]">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-[#F25C2B] shadow-neo-sm dark:bg-card">
+                  <ScanFace className="size-5" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                    Nhân sự
+                  </div>
+                  <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
+                    Lọc dữ liệu FaceID
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                    Lọc quét trùng cổng bảo vệ, sửa giờ ngoại lệ.
+                  </p>
+                </div>
               </div>
 
-              {/* Image 3: Overhead fresh plate */}
-              <div className="relative aspect-square overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-200 shadow-neo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80"
-                  alt="Fresh ingredients plate"
-                  className="h-full w-full object-cover"
-                />
+              {/* Box 3: Procurement & Budget */}
+              <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-[#22170F]">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-[#F25C2B] shadow-neo-sm dark:bg-card">
+                  <PiggyBank className="size-5" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                    Ngân sách
+                  </div>
+                  <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
+                    Quản trị quỹ mua hàng
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                    Phân bổ 12 tháng, đối soát VAT và đề xuất.
+                  </p>
+                </div>
               </div>
 
-              {/* Image 4: Chef hands prepping */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-200 shadow-neo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=700&q=80"
-                  alt="Chef preparing fresh herbs"
-                  className="h-full w-full object-cover"
-                />
+              {/* Box 4: PhotoID 3x4 */}
+              <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-card">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-[#F25C2B] shadow-neo-sm">
+                  <ImageIcon className="size-5" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                    Tiện ích
+                  </div>
+                  <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
+                    Cắt ảnh thẻ 3×4
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                    Tự dò khuôn mặt, cắt chuẩn tỷ lệ không méo.
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Floating orange badge: 15+ YEARS OF EXCELLENCE */}
-            <div className="absolute -bottom-5 right-6 z-10 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-5 py-3 text-center text-white shadow-neo">
-              <div className="font-editorial text-2xl font-black leading-none">15+</div>
-              <div className="mt-0.5 text-[10px] font-bold uppercase tracking-wider">
-                Years of Excellence
+            {/* Floating orange badge */}
+            <div className="absolute -bottom-5 right-4 z-10 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-4 py-2.5 text-center text-white shadow-neo">
+              <div className="font-editorial text-xl font-black leading-none">5+ NĂM</div>
+              <div className="mt-0.5 text-[9px] font-bold uppercase tracking-wider">
+                Vận hành & Số hóa DMS
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SECTION DIVIDER ICON ── */}
-      <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-8">
-        <div className="h-0.5 flex-1 bg-stone-300" />
+      {/* ── SECTION DIVIDER ── */}
+      <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-6">
+        <div className="h-0.5 flex-1 bg-stone-300 dark:bg-stone-800" />
         <div className="mx-4 text-[#F25C2B]">
-          <Utensils className="size-5" />
+          <Terminal className="size-5" />
         </div>
-        <div className="h-0.5 flex-1 bg-stone-300" />
+        <div className="h-0.5 flex-1 bg-stone-300 dark:bg-stone-800" />
       </div>
 
-      {/* ── CHEF STORY SECTION (Chính xác theo ảnh 1) ── */}
-      <section id="our-story" className="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+      {/* ── GIỚI THIỆU (ABOUT ME & PHILOSOPHY) ── */}
+      <section id="about" className="mx-auto max-w-7xl px-4 sm:px-6 py-14">
         <div className="grid items-center gap-12 lg:grid-cols-12">
-          {/* Left: Chef Image & Floating Quote */}
-          <div className="relative lg:col-span-6">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-200 shadow-neo-lg">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=900&q=80"
-                alt="Executive Chef Marco Bellini"
-                className="h-full w-full object-cover"
-              />
+          {/* Left: Bio card & Philosophy Quote */}
+          <div className="space-y-6 lg:col-span-6">
+            <div className="rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 shadow-neo dark:bg-card">
+              <div className="flex items-center gap-3">
+                <div className="flex size-12 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-white shadow-neo-sm font-editorial text-2xl font-black">
+                  T
+                </div>
+                <div>
+                  <h3 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
+                    Nguyễn Minh Tuấn
+                  </h3>
+                  <p className="text-xs font-bold text-[#F25C2B]">
+                    Phòng DMS & CNTT — Hữu Nghị Food
+                  </p>
+                </div>
+              </div>
+
+              <div className="my-5 border-t-2 border-[#1C1917] dark:border-stone-800" />
+
+              <div className="font-serif text-3xl font-bold leading-none text-[#F25C2B]">“</div>
+              <p className="font-serif italic text-sm sm:text-base leading-relaxed text-stone-800 dark:text-stone-200 mt-1">
+                &ldquo;Mọi quy trình thủ công lặp đi lặp lại hàng ngày trên bảng tính đều xứng đáng được tự động hóa.
+                Khi dữ liệu được chuẩn hóa ngay từ gốc, quyết định kinh doanh sẽ chính xác và áp lực vận hành
+                sẽ được giải tỏa hoàn toàn.&rdquo;
+              </p>
+
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-muted-foreground border-t border-border pt-3">
+                <span>Trọng tâm: Hiệu quả thực chiến</span>
+                <span>Phương châm: Đơn giản & Bền bỉ</span>
+              </div>
             </div>
 
-            {/* Overlapping Quote Box */}
-            <div className="relative sm:absolute -bottom-8 right-0 sm:right-6 max-w-md mt-4 sm:mt-0 rounded-xs border-2 border-[#1C1917] bg-white p-5 sm:p-6 shadow-neo">
-              <div className="font-serif text-3xl font-bold leading-none text-[#F25C2B]">“</div>
-              <p className="mt-1 font-serif italic text-xs sm:text-sm leading-relaxed text-stone-800">
-                &ldquo;Cooking is about passion, so it may look slightly temperamental in a way that it&apos;s too assertive to the naked eye.&rdquo;
-              </p>
-              <div className="mt-3 text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                — Chef Marco Bellini
+            {/* 3 Stat boxes */}
+            <div className="grid grid-cols-3 gap-3.5">
+              <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">10+</div>
+                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                  Tools thực chiến
+                </div>
+              </div>
+
+              <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">100%</div>
+                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                  Tự động hóa
+                </div>
+              </div>
+
+              <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">50K+</div>
+                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                  Dòng dữ liệu/ngày
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right: Story narrative & 3 Stats */}
-          <div className="space-y-6 lg:col-span-6 lg:pl-6">
-            <div className="space-y-3">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#F25C2B]">
-                Culinary Heritage
+          {/* Right: Narrative Story & Core Tech Stack */}
+          <div className="space-y-6 lg:col-span-6 lg:pl-4">
+            <div className="space-y-2">
+              <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+                Về bản thân & Chuyên môn
               </div>
-              <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#1C1917] leading-tight">
-                Crafted with Tradition, Inspired by Innovation
+              <h2 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-foreground leading-tight">
+                Xây dựng nền tảng giải quyết các bài toán vận hành phân phối
               </h2>
             </div>
 
-            <p className="text-sm sm:text-base leading-relaxed text-stone-700">
-              excellence in the heart of New York City. Our journey began with a simple vision: to create dishes that tell stories and bring people together.
+            <p className="text-sm leading-relaxed text-stone-700 font-medium dark:text-stone-300">
+              Với hơn 5 năm gắn bó cùng hệ thống phân phối và dữ liệu DMS tại <b>Hữu Nghị Food</b>, tôi
+              thấu hiểu sâu sắc những điểm nghẽn mà đội ngũ vận hành gặp phải: lỗi sai dữ liệu khi chuyển giao
+              nhà phân phối, thời gian đối soát chương trình khuyến mại (CTKM) kéo dài, bảng tính Excel dung lượng
+              khổng lồ thường xuyên bị treo đơ, hay dữ liệu chấm công FaceID phức tạp.
             </p>
 
-            <p className="text-sm sm:text-base leading-relaxed text-stone-700">
-              Under the guidance of Executive Chef Marco Bellini, our kitchen transforms the finest seasonal ingredients into memorable dining experiences. Every dish is a celebration of tradition, innovation, and passion.
+            <p className="text-sm leading-relaxed text-stone-700 font-medium dark:text-stone-300">
+              Hệ thống website này ra đời với mục tiêu tích hợp toàn bộ các công cụ giải quyết triệt để từng bài
+              toán cụ thể đó: từ chuyển tuyến, gộp báo cáo, đối soát 5.2 & 6.4.4 cho đến quản lý dòng tiền, theo
+              dõi ngân sách mua hàng và chia sẻ tài liệu hướng dẫn kỹ thuật.
             </p>
 
-            {/* 3 Stat boxes (Chính xác như ảnh 1) */}
-            <div className="grid grid-cols-3 gap-3.5 pt-4">
-              <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">15+</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
-                  Years
-                </div>
+            {/* Skills & Technologies badges */}
+            <div className="space-y-2.5 pt-2">
+              <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Công nghệ & Kỹ năng áp dụng
               </div>
-
-              <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">50K+</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
-                  Happy Guests
-                </div>
-              </div>
-
-              <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">3</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
-                  Michelin Stars
-                </div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "DMS & Distribution Pipelines",
+                  "Next.js 15 & React 19",
+                  "TypeScript",
+                  "Tailwind CSS Neo-Brutalism",
+                  "SheetJS / Excel Automation",
+                  "SQLite & Prisma ORM",
+                  "Canvas / Image Processing",
+                  "Web Crypto (AES-256-GCM)",
+                  "Báo cáo đối soát 5.2 / 6.4.4",
+                ].map((skill) => (
+                  <span
+                    key={skill}
+                    className="inline-flex items-center rounded-xs border-2 border-[#1C1917] bg-white px-2.5 py-1 text-xs font-bold text-foreground shadow-neo-sm dark:bg-card"
+                  >
+                    <Code2 className="mr-1 size-3 text-[#F25C2B]" />
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── MENU PREVIEW SECTION ── */}
-      <section id="menu" className="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-        <div className="text-center space-y-3 mb-12">
-          <div className="text-xs font-bold uppercase tracking-widest text-[#F25C2B]">
-            Seasonal Selection
+      {/* ── BỘ CÔNG CỤ (TOOLS & APPLICATIONS SHOWCASE) ── */}
+      <section id="tools" className="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+        <div className="text-center space-y-3 mb-10">
+          <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+            Hệ sinh thái tiện ích số
           </div>
-          <h2 className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-[#1C1917]">
-            SIGNATURE MENU
+          <h2 className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
+            BỘ CÔNG CỤ NỘI BỘ & TỰ ĐỘNG HÓA
           </h2>
-          <p className="max-w-xl mx-auto text-sm text-stone-600">
-            A harmonious symphony of organic ingredients curated by Chef Marco Bellini
+          <p className="max-w-xl mx-auto text-xs sm:text-sm text-stone-600 font-medium dark:text-stone-400">
+            Các công cụ được thiết kế chuyên biệt để tự động hóa hoàn toàn các tác vụ dữ liệu thường ngày
           </p>
 
-          {/* Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-6">
-            {MENU_CATEGORIES.map((cat) => (
+          {/* Filter Categories Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
+            {TOOL_CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`cursor-pointer rounded-sm border-2 border-[#1C1917] px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all ${
+                className={`cursor-pointer rounded-xs border-2 border-[#1C1917] px-4 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
                   activeCategory === cat
                     ? "bg-[#F25C2B] text-white shadow-neo-sm"
-                    : "bg-white text-[#1C1917] hover:bg-[#FDF9F3]"
+                    : "bg-white text-[#1C1917] hover:bg-[#FAF7F0] dark:bg-card dark:text-foreground dark:hover:bg-muted"
                 }`}
               >
                 {cat}
@@ -381,390 +586,285 @@ export default function RestaurantLandingPage() {
           </div>
         </div>
 
-        {/* Menu Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredMenu.map((item) => (
-            <div
-              key={item.id}
-              className="group flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg"
-            >
-              <div>
-                <div className="relative mb-3.5 aspect-[4/3] w-full overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-100">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {item.tag && (
-                    <span className="absolute top-2.5 right-2.5 rounded-xs border border-[#1C1917] bg-[#F25C2B] px-2 py-0.5 text-[10px] font-bold uppercase text-white shadow-neo-sm">
-                      {item.tag}
+        {/* Tools Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {filteredTools.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <div
+                key={tool.id}
+                className="group flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-5 shadow-neo transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg dark:bg-card"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2 mb-3.5">
+                    <div className="flex size-11 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] text-[#F25C2B] shadow-neo-sm dark:bg-[#22170F]">
+                      <Icon className="size-5 stroke-[2.5]" />
+                    </div>
+                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-[#F25C2B] shadow-neo-sm dark:bg-[#2C1F15]">
+                      {tool.tag}
                     </span>
-                  )}
-                </div>
+                  </div>
 
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-editorial text-lg font-bold text-[#1C1917] leading-snug">
-                    {item.name}
+                  <h3 className="font-editorial text-lg font-bold text-foreground leading-snug group-hover:text-[#F25C2B] transition-colors">
+                    {tool.title}
                   </h3>
-                  <span className="font-editorial text-lg font-bold text-[#F25C2B] tabular-nums">
-                    {item.price}
-                  </span>
+
+                  <p className="mt-2 text-xs leading-relaxed text-stone-600 font-medium dark:text-stone-400">
+                    {tool.description}
+                  </p>
                 </div>
 
-                <p className="mt-2 text-xs leading-relaxed text-stone-600">
-                  {item.description}
-                </p>
+                <div className="mt-5 pt-3.5 border-t-2 border-dashed border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase">
+                    {tool.category}
+                  </span>
+                  <Link
+                    href={tool.href}
+                    className="inline-flex items-center gap-1 text-xs font-black text-[#F25C2B] hover:underline"
+                  >
+                    Mở công cụ <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
               </div>
-
-              <div className="mt-4 pt-3 border-t-2 border-dashed border-stone-200 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-semibold uppercase text-stone-500">{item.category}</span>
-                <a href="#reservations" className="font-bold text-[#F25C2B] hover:underline flex items-center gap-1">
-                  Order at Table →
-                </a>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
-      {/* ── RESERVATIONS SECTION (Chính xác theo ảnh 1) ── */}
-      <section id="reservations" className="border-y-2 border-[#1C1917] bg-[#1E140C] text-[#FAF7F0] py-20 px-4 sm:px-6">
+      {/* ── BÀI VIẾT & HƯỚNG DẪN KỸ THUẬT (ARTICLES & KNOWLEDGE BASE) ── */}
+      <section id="articles" className="border-t-2 border-[#1C1917] bg-[#F5EFEB] dark:bg-[#1E140C] py-16 px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+                Kho kiến thức & Tài liệu
+              </div>
+              <h2 className="font-editorial text-3xl sm:text-4xl font-bold uppercase tracking-tight text-foreground mt-1">
+                BÀI VIẾT & HƯỚNG DẪN KỸ THUẬT
+              </h2>
+              <p className="text-xs sm:text-sm text-stone-600 font-medium dark:text-stone-400 mt-1">
+                Tổng hợp tài liệu vận hành DMS, thủ thuật xử lý dữ liệu lớn và các tiêu chuẩn bảo mật.
+              </p>
+            </div>
+            <Link
+              href="/huong-dan"
+              className="inline-flex items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-foreground shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card"
+            >
+              Xem toàn bộ thư viện bài viết <ArrowRight className="size-3.5 text-[#F25C2B]" />
+            </Link>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {ARTICLES_DATA.map((article) => (
+              <div
+                key={article.slug}
+                className="flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-6 shadow-neo transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg dark:bg-card"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-[#F25C2B] shadow-neo-sm dark:bg-[#2C1F15]">
+                      {article.category}
+                    </span>
+                    <span className="text-[11px] font-bold text-muted-foreground font-mono">
+                      {article.readTime}
+                    </span>
+                  </div>
+
+                  <Link href={`/huong-dan/${article.slug}`}>
+                    <h3 className="font-editorial text-xl font-bold text-foreground leading-snug hover:text-[#F25C2B] transition-colors">
+                      {article.title}
+                    </h3>
+                  </Link>
+
+                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-stone-600 font-medium dark:text-stone-400">
+                    {article.summary}
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-3.5 border-t-2 border-[#1C1917] flex items-center justify-between dark:border-stone-800">
+                  <span className="text-[11px] font-bold text-muted-foreground font-mono">
+                    {article.date} · Tuannm
+                  </span>
+                  <Link
+                    href={`/huong-dan/${article.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-black text-[#F25C2B] hover:underline"
+                  >
+                    Đọc tiếp <ArrowRight className="size-3.5" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── LIÊN HỆ & KẾT NỐI (CONTACT & SUPPORT SECTION) ── */}
+      <section id="contact" className="border-t-2 border-[#1C1917] bg-[#1E140C] text-[#FAF7F0] py-16 px-4 sm:px-6">
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 lg:grid-cols-12">
-            {/* Left Column: Book Your Table Copy */}
+            {/* Left Column: Direct contact info */}
             <div className="space-y-6 lg:col-span-6">
               <div className="flex items-center gap-3">
                 <div className="h-0.5 w-12 bg-[#F25C2B]" />
                 <span className="text-xs font-bold uppercase tracking-widest text-[#F25C2B]">
-                  Reservations
+                  Kết nối & Hỗ trợ
                 </span>
               </div>
 
-              <h2 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white leading-tight">
-                BOOK YOUR TABLE
+              <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-white leading-tight">
+                GỬI LỜI NHẮN HOẶC YÊU CẦU CÔNG CỤ
               </h2>
 
-              <p className="text-sm sm:text-base leading-relaxed text-stone-300 max-w-md">
-                Join us for an unforgettable dining experience. Reserve your table today and let us take care of the rest. For parties larger than 8, please call us directly.
+              <p className="text-xs sm:text-sm leading-relaxed text-stone-300 max-w-md font-medium">
+                Bạn cần tùy chỉnh thêm công cụ xử lý dữ liệu DMS, tối ưu báo cáo chi trả CTKM, sửa lỗi file
+                chấm công FaceID hoặc đề xuất tính năng mới? Hãy để lại lời nhắn, tôi luôn sẵn sàng hỗ trợ!
               </p>
 
-              <div className="inline-flex items-center gap-4 rounded-xs border-2 border-stone-800 bg-[#291B11] p-3 text-white">
-                <div className="flex size-10 items-center justify-center rounded-xs bg-[#F25C2B] text-white">
-                  <Phone className="size-5" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                    Direct Phone Line
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center gap-3.5 rounded-xs border-2 border-stone-800 bg-[#291B11] p-3.5">
+                  <div className="flex size-10 items-center justify-center rounded-xs bg-[#F25C2B] text-white">
+                    <Mail className="size-5" />
                   </div>
-                  <div className="font-mono text-base font-bold text-white">
-                    +1 (555) 123-4567
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                      Email công việc
+                    </div>
+                    <a href="mailto:tuannm@huunghi.com.vn" className="font-mono text-sm font-bold text-white hover:text-[#F25C2B] transition-colors">
+                      tuannm@huunghi.com.vn
+                    </a>
                   </div>
                 </div>
-              </div>
 
-              {/* Schedule Details */}
-              <div className="border-t border-stone-800 pt-6 space-y-2 text-xs text-stone-400">
-                <div className="flex justify-between max-w-sm">
-                  <span>Monday - Thursday</span>
-                  <span className="font-semibold text-white">11:00 AM - 10:00 PM</span>
-                </div>
-                <div className="flex justify-between max-w-sm">
-                  <span>Friday - Sunday</span>
-                  <span className="font-semibold text-white">10:00 AM - 11:00 PM</span>
+                <div className="flex items-center gap-3.5 rounded-xs border-2 border-stone-800 bg-[#291B11] p-3.5">
+                  <div className="flex size-10 items-center justify-center rounded-xs bg-[#F25C2B] text-white">
+                    <MapPin className="size-5" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                      Địa điểm công tác
+                    </div>
+                    <div className="text-xs font-bold text-white">
+                      Phòng DMS & CNTT — 122 Định Công, Hoàng Mai, Hà Nội
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Make a Reservation Card (Ảnh 1) */}
+            {/* Right Column: Contact Message Form */}
             <div className="lg:col-span-6">
-              <div className="mx-auto max-w-lg rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 text-[#1C1917] shadow-[6px_6px_0px_#000000]">
-                <h3 className="font-editorial text-2xl font-bold uppercase tracking-wide text-[#1C1917] pb-4 border-b-2 border-stone-100">
-                  MAKE A RESERVATION
+              <div className="mx-auto max-w-lg rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 text-[#1C1917] shadow-neo-lg dark:bg-card dark:text-foreground">
+                <h3 className="font-editorial text-2xl font-bold uppercase tracking-wide pb-4 border-b-2 border-stone-200 dark:border-stone-800">
+                  GỬI TIN NHẮN TRỰC TIẾP
                 </h3>
 
-                {resSubmitted ? (
-                  <div className="py-10 text-center space-y-3">
-                    <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                      <Check className="size-6 stroke-[3]" />
-                    </div>
-                    <div className="font-editorial text-xl font-bold text-stone-900">
-                      Cảm ơn bạn, {resForm.name}!
-                    </div>
-                    <p className="text-xs text-stone-600">
-                      Bàn {resForm.guests} người vào lúc {resForm.time}, ngày {resForm.date} đã được ghi nhận. Nhà hàng sẽ liên hệ xác nhận qua số {resForm.phone}.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => setResSubmitted(false)}
-                      className="mt-4 inline-flex cursor-pointer text-xs font-bold text-[#F25C2B] underline"
-                    >
-                      Đặt thêm bàn khác
-                    </button>
+                <form onSubmit={handleContactSubmit} className="mt-5 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Họ và tên của bạn
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      placeholder="Nguyễn Văn A"
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                    />
                   </div>
-                ) : (
-                  <form onSubmit={handleReservation} className="mt-5 space-y-4">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={resForm.name}
-                          onChange={(e) => setResForm({ ...resForm, name: e.target.value })}
-                          placeholder="Your name"
-                          className="w-full rounded-none border-2 border-[#1C1917] bg-white px-3 py-2.5 text-sm text-[#1C1917] outline-none focus:ring-2 focus:ring-[#F25C2B]"
-                        />
-                      </div>
 
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                          Phone
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={resForm.phone}
-                          onChange={(e) => setResForm({ ...resForm, phone: e.target.value })}
-                          placeholder="+1 (555) 000-0000"
-                          className="w-full rounded-none border-2 border-[#1C1917] bg-white px-3 py-2.5 text-sm text-[#1C1917] outline-none focus:ring-2 focus:ring-[#F25C2B]"
-                        />
-                      </div>
-                    </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Email hoặc Số điện thoại
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={contactForm.emailOrPhone}
+                      onChange={(e) => setContactForm({ ...contactForm, emailOrPhone: e.target.value })}
+                      placeholder="email@huunghi.com.vn hoặc 09xx..."
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                    />
+                  </div>
 
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                          Date
-                        </label>
-                        <input
-                          type="date"
-                          required
-                          value={resForm.date}
-                          onChange={(e) => setResForm({ ...resForm, date: e.target.value })}
-                          className="w-full rounded-none border-2 border-[#1C1917] bg-white px-3 py-2.5 text-sm text-[#1C1917] outline-none focus:ring-2 focus:ring-[#F25C2B]"
-                        />
-                      </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Chủ đề / Nhu cầu hỗ trợ
+                    </label>
+                    <input
+                      type="text"
+                      value={contactForm.subject}
+                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                      placeholder="Vd: Chuyển tuyến NPP, Lỗi FaceID, Góp ý tool..."
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                    />
+                  </div>
 
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                          Time
-                        </label>
-                        <select
-                          value={resForm.time}
-                          onChange={(e) => setResForm({ ...resForm, time: e.target.value })}
-                          className="w-full rounded-none border-2 border-[#1C1917] bg-white px-3 py-2.5 text-sm text-[#1C1917] outline-none focus:ring-2 focus:ring-[#F25C2B]"
-                        >
-                          <option value="11:30">11:30 AM</option>
-                          <option value="12:00">12:00 PM</option>
-                          <option value="13:00">1:00 PM</option>
-                          <option value="17:30">5:30 PM</option>
-                          <option value="18:00">6:00 PM</option>
-                          <option value="19:00">7:00 PM</option>
-                          <option value="20:00">8:00 PM</option>
-                        </select>
-                      </div>
-                    </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Nội dung lời nhắn
+                    </label>
+                    <textarea
+                      required
+                      rows={3}
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                      placeholder="Mô tả cụ thể yêu cầu hoặc thắc mắc của bạn..."
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                    />
+                  </div>
 
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
-                        Number of Guests
-                      </label>
-                      <select
-                        value={resForm.guests}
-                        onChange={(e) => setResForm({ ...resForm, guests: e.target.value })}
-                        className="w-full rounded-none border-2 border-[#1C1917] bg-white px-3 py-2.5 text-sm text-[#1C1917] outline-none focus:ring-2 focus:ring-[#F25C2B]"
-                      >
-                        <option value="1">1 Person (Solo Dining)</option>
-                        <option value="2">2 Persons (Couple)</option>
-                        <option value="4">4 Persons (Small Party)</option>
-                        <option value="6">6 Persons (Family)</option>
-                        <option value="8">8 Persons (Full Table)</option>
-                      </select>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="mt-2 w-full cursor-pointer rounded-none border-2 border-[#1C1917] bg-[#F25C2B] py-3.5 text-xs font-black uppercase tracking-widest text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-                    >
-                      Confirm Reservation
-                    </button>
-                  </form>
-                )}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="mt-2 w-full cursor-pointer rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] py-3 text-xs font-black uppercase tracking-widest text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  >
+                    <Send className="size-3.5" /> {submitting ? "Đang gửi..." : "Gửi lời nhắn ngay"}
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── TESTIMONIALS SECTION (Chính xác theo ảnh 3) ── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-        <div className="text-center space-y-3 mb-12">
-          {/* Top chat bubble icon with lines */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-0.5 w-16 bg-stone-300" />
-            <div className="rounded-full border border-stone-300 p-1 text-[#F25C2B]">
-              <MessageSquare className="size-4" />
+      {/* ── FOOTER (Warm Neo-Brutalist) ── */}
+      <footer className="border-t-2 border-[#1C1917] bg-[#140D07] text-[#FAF7F0] py-10 px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-sm font-black text-white shadow-neo-sm">
+              HNF
             </div>
-            <div className="h-0.5 w-16 bg-stone-300" />
-          </div>
-
-          <h2 className="font-editorial text-3xl sm:text-5xl font-bold uppercase tracking-tight text-[#1C1917]">
-            WHAT OUR GUESTS SAY
-          </h2>
-          <p className="text-sm text-stone-600 max-w-xl mx-auto">
-            Don&apos;t just take our word for it — hear from our valued guests
-          </p>
-        </div>
-
-        {/* 3 Testimonials Cards (Ảnh 3) */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Card 1: Sarah Mitchell */}
-          <div className="flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-7 shadow-neo">
             <div>
-              <div className="flex items-center gap-1 text-[#F25C2B] mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
+              <div className="font-editorial text-lg font-bold tracking-tight text-white">
+                TUANNM · DIGITAL SOLUTIONS
               </div>
-              <p className="text-xs sm:text-sm leading-relaxed text-stone-800 italic">
-                &ldquo;An extraordinary culinary journey. Every dish tells a story, and the attention to detail is impeccable. A must-visit for any food enthusiast.&rdquo;
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-stone-200">
-              <div className="font-bold text-sm text-[#1C1917]">Sarah Mitchell</div>
-              <div className="text-xs text-stone-500">Food Critic, NY Times</div>
-            </div>
-          </div>
-
-          {/* Card 2: James Rodriguez */}
-          <div className="flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-7 shadow-neo">
-            <div>
-              <div className="flex items-center gap-1 text-[#F25C2B] mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm leading-relaxed text-stone-800 italic">
-                &ldquo;We&apos;ve celebrated every anniversary here for the past 5 years. The ambiance, service, and food never disappoint. Simply the best in the city.&rdquo;
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-stone-200">
-              <div className="font-bold text-sm text-[#1C1917]">James Rodriguez</div>
-              <div className="text-xs text-stone-500">Regular Guest</div>
-            </div>
-          </div>
-
-          {/* Card 3: Emily Chen */}
-          <div className="flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-7 shadow-neo">
-            <div>
-              <div className="flex items-center gap-1 text-[#F25C2B] mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm leading-relaxed text-stone-800 italic">
-                &ldquo;The Wagyu ribeye is hands down the best steak I&apos;ve ever had. Chef Marco&apos;s passion shines through in every bite. Absolutely phenomenal!&rdquo;
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-stone-200">
-              <div className="font-bold text-sm text-[#1C1917]">Emily Chen</div>
-              <div className="text-xs text-stone-500">Food Blogger</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── LOCATION MAP & VISIT SECTION ── */}
-      <section id="contact" className="border-t-2 border-[#1C1917] bg-[#FDF9F3] py-20 px-4 sm:px-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-12 items-center">
-            <div className="space-y-6 lg:col-span-5">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#F25C2B]">
-                Visit Us
-              </div>
-              <h2 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
-                FIND LA MAISON IN NEW YORK
-              </h2>
-              <p className="text-sm text-stone-700 leading-relaxed">
-                Located in Manhattan&apos;s historic dining quarter, steps away from central subway connections with complimentary valet parking.
-              </p>
-
-              <div className="space-y-3 pt-2 text-sm">
-                <div className="flex items-start gap-3">
-                  <MapPin className="size-5 text-[#F25C2B] shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-bold text-[#1C1917]">123 Gourmet Street, West Village</div>
-                    <div className="text-xs text-stone-600">New York, NY 10014</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Phone className="size-5 text-[#F25C2B] shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-bold text-[#1C1917]">+1 (555) 123-4567</div>
-                    <div className="text-xs text-stone-600">Concierge & Private Dining Inquiries</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Mail className="size-5 text-[#F25C2B] shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-bold text-[#1C1917]">reservations@lamaison-nyc.com</div>
-                    <div className="text-xs text-stone-600">Guaranteed response within 2 hours</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Interactive Visual Map Card */}
-            <div className="lg:col-span-7">
-              <div className="overflow-hidden rounded-xs border-2 border-[#1C1917] bg-white p-2 shadow-neo-lg">
-                <div className="relative aspect-[16/9] w-full rounded-xs border border-stone-300 bg-[#E8E1D7] overflow-hidden">
-                  {/* Styled Map background */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80"
-                    alt="Map Location"
-                    className="h-full w-full object-cover opacity-65 contrast-125"
-                  />
-                  {/* Map Pin overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
-                    <div className="rounded-full bg-[#F25C2B] p-3 text-white border-2 border-[#1C1917] shadow-neo animate-bounce">
-                      <MapPin className="size-7" />
-                    </div>
-                    <div className="mt-2 rounded-xs border-2 border-[#1C1917] bg-white px-3.5 py-1.5 text-xs font-bold text-[#1C1917] shadow-neo-sm">
-                      La Maison NYC ★ 3 Michelin Stars
-                    </div>
-                  </div>
-                </div>
+              <div className="text-[10px] font-bold text-stone-400">
+                Phòng DMS & CNTT — Công ty Cổ phần Thực phẩm Hữu Nghị
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t-2 border-[#1C1917] bg-[#140E08] text-white py-12 px-4 sm:px-6">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <div className="font-editorial text-2xl font-bold tracking-tight">La Maison</div>
-            <p className="text-xs text-stone-400 mt-1">
-              Excellence in every dish • 123 Gourmet Street, New York, NY
-            </p>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-bold text-stone-300">
+            <a href="#hero" className="hover:text-[#F25C2B] transition-colors">
+              Trang chủ
+            </a>
+            <a href="#about" className="hover:text-[#F25C2B] transition-colors">
+              Giới thiệu
+            </a>
+            <a href="#tools" className="hover:text-[#F25C2B] transition-colors">
+              Công cụ số
+            </a>
+            <Link href="/huong-dan" className="hover:text-[#F25C2B] transition-colors">
+              Bài viết hướng dẫn
+            </Link>
+            <Link href="/login" className="text-[#F25C2B] hover:underline">
+              Đăng nhập Workspace
+            </Link>
           </div>
 
-          <div className="flex items-center gap-6 text-xs text-stone-300 font-medium">
-            <a href="#menu" className="hover:text-[#F25C2B]">Menu</a>
-            <a href="#our-story" className="hover:text-[#F25C2B]">Our Story</a>
-            <a href="#reservations" className="hover:text-[#F25C2B]">Reservations</a>
-            <a href="/login" className="hover:text-[#F25C2B]">HNF Admin</a>
-          </div>
-
-          <div className="text-xs text-stone-500">
-            © {new Date().getFullYear()} La Maison Restaurant. All rights reserved.
+          <div className="text-[11px] font-mono text-stone-500">
+            © 2026 TUANNM. Xây dựng cho hiệu suất tối đa.
           </div>
         </div>
       </footer>
