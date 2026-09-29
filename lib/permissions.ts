@@ -56,10 +56,6 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "view", label: "Xem" },
     { id: "send", label: "Gửi mail" },
   ],
-  photoid: [
-    { id: "view", label: "Xem" },
-    { id: "run", label: "Chuyển ảnh" },
-  ],
   articles: [
     { id: "view", label: "Xem" },
     { id: "create", label: "Viết bài" },
@@ -172,8 +168,8 @@ export function requiredCapability(
       pathname.startsWith("/api/budget-funds"))
   )
     return { module, cap: isRead ? "view" : "budget" };
-  // FaceID / DMS / Ảnh thẻ: mọi thao tác xử lý là "run"
-  if (module === "faceid" || module === "dms" || module === "photoid")
+  // FaceID / DMS: mọi thao tác xử lý là "run"
+  if (module === "faceid" || module === "dms")
     return { module, cap: isRead ? "view" : "run" };
   // Test Mail Relay: gửi mail là hành động riêng (tốn quota nhà cung cấp)
   if (module === "mailtest") return { module, cap: isRead ? "view" : "send" };

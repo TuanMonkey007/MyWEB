@@ -12,7 +12,6 @@ import {
   ExternalLink,
   FileSpreadsheet,
   HardDrive,
-  ImageIcon,
   Layers,
   Lock,
   Mail,
@@ -73,16 +72,6 @@ const TOOLS_DATA: ToolItem[] = [
     href: "/faceid",
     tag: "Tự động hóa",
     highlight: true,
-  },
-  {
-    id: "anh-the",
-    title: "Chuyển ảnh sang khổ thẻ 3×4",
-    category: "Dữ liệu & Nhân sự",
-    description:
-      "Nhận ảnh chụp mọi góc độ (ngang, dọc, điện thoại) rồi tự động dò khuôn mặt để cắt về đúng tỷ lệ 3×4. Cắt bớt phần thừa, không kéo giãn méo mặt.",
-    icon: ImageIcon,
-    href: "/anh-the",
-    tag: "Xử lý ảnh",
   },
   {
     id: "procurement",
@@ -307,7 +296,7 @@ export default function PersonalLandingPage() {
             <p className="max-w-xl text-base sm:text-lg leading-relaxed text-stone-700 font-medium dark:text-stone-300">
               Chào bạn, tôi là <b>Nguyễn Minh Tuấn (Tuannm)</b>. Đây là không gian làm việc số và cổng
               truy cập các tiện ích nội bộ: tự động hóa dữ liệu tuyến bán hàng DMS, làm sạch log FaceID,
-              cắt ảnh thẻ 3×4, quản trị ngân sách mua sắm và tài chính cá nhân.
+              quản trị ngân sách mua sắm và tài chính cá nhân.
             </p>
 
             {/* Action buttons */}
@@ -400,20 +389,20 @@ export default function PersonalLandingPage() {
                 </div>
               </div>
 
-              {/* Box 4: PhotoID 3x4 */}
+              {/* Box 4: Finance */}
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-card">
                 <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-[#F25C2B] shadow-neo-sm">
-                  <ImageIcon className="size-5" />
+                  <Wallet className="size-5" />
                 </div>
                 <div>
                   <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
-                    Tiện ích
+                    Dòng tiền
                   </div>
                   <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
-                    Cắt ảnh thẻ 3×4
+                    Sổ thu chi đa ví
                   </div>
                   <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
-                    Tự dò khuôn mặt, cắt chuẩn tỷ lệ không méo.
+                    Ghi chép thu chi, đối soát số dư thực tế.
                   </p>
                 </div>
               </div>

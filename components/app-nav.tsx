@@ -9,7 +9,6 @@ import {
   BookOpen,
   ClipboardList,
   HardDrive,
-  Image as ImageIcon,
   KeyRound,
   LayoutDashboard,
   LayoutGrid,
@@ -92,11 +91,6 @@ const MODULES: ModuleGroup[] = [
     id: "articles",
     label: "Bài hướng dẫn",
     items: [{ href: "/articles", label: "Quản lý bài viết", icon: BookOpen }],
-  },
-  {
-    id: "photoid",
-    label: "Ảnh thẻ 3x4",
-    items: [{ href: "/anh-the", label: "Chuyển ảnh", icon: ImageIcon }],
   },
 ];
 
