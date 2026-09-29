@@ -43,83 +43,83 @@
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.3);
-  --radius-2xl: calc(var(--radius) * 1.7);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.8);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-3xl: calc(var(--radius) * 2.0);
+  --radius-4xl: calc(var(--radius) * 2.5);
 }
 
-/* ── Modern Premium Theme Palette ──────────────────────────────────────────
-   Phong cách hiện đại, tinh gọn với chiều sâu thị giác (Visual Depth):
-   - Nền sáng: Trắng ngà - Slate cao cấp, thẻ nổi khối với viền siêu mảnh & bóng đa tầng
-   - Nền tối: Deep Cosmic Slate sang trọng, gradient phát quang tinh tế
-   - Tối ưu chuẩn WCAG AA cho độ tương phản và khả năng đọc */
+/* ── HNF DMS Enterprise Design System ──────────────────────────────────────
+   Bản sắc Hữu Nghị Food (HNF):
+   - Đỏ mận chủ đạo (Burgundy/Crimson): #881337 / #9f1239 / #be123c
+   - Nền Slate 50 sạch sẽ, độ tương phản cao, số liệu dạng Excel chuyên nghiệp
+   - Các khối KPI màu sắc phân định rõ: Rose, Blue, Indigo, Amber, Emerald */
 :root {
-  --background: oklch(0.985 0.004 250); /* #F8FAFC */
-  --foreground: oklch(0.19 0.04 265); /* #0F172A */
-  --card: oklch(1 0 0); /* Pure White */
-  --card-foreground: oklch(0.19 0.04 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.19 0.04 265);
-  --primary: var(--tl-primary, oklch(0.52 0.22 272)); /* Indigo hiện đại */
-  --primary-foreground: var(--tl-primary-foreground, oklch(1 0 0));
-  --secondary: oklch(0.965 0.008 250);
-  --secondary-foreground: oklch(0.27 0.035 260);
-  --muted: oklch(0.962 0.006 250); /* #F1F5F9 */
-  --muted-foreground: oklch(0.50 0.04 260); /* Đạt tương phản cao */
-  --accent: var(--tl-accent, oklch(0.96 0.02 270));
-  --accent-foreground: var(--tl-accent-foreground, oklch(0.50 0.22 272));
-  --destructive: oklch(0.58 0.24 27);
-  --border: oklch(0.92 0.01 255); /* Viền thanh mảnh mềm mại */
-  --input: oklch(0.92 0.01 255);
-  --ring: var(--tl-ring, oklch(0.58 0.20 272));
-  --chart-1: var(--tl-chart-1, oklch(0.58 0.20 272));
-  --chart-2: oklch(0.68 0.16 162);
-  --chart-3: oklch(0.76 0.17 70);
-  --chart-4: oklch(0.63 0.23 340);
-  --chart-5: oklch(0.65 0.15 235);
-  --radius: 0.75rem; /* Bo góc mềm mại hiện đại */
-  --sidebar: oklch(0.995 0.002 250);
-  --sidebar-foreground: oklch(0.20 0.04 265);
-  --sidebar-primary: var(--tl-sidebar-primary, oklch(0.52 0.22 272));
-  --sidebar-primary-foreground: var(--tl-sidebar-primary-foreground, oklch(1 0 0));
-  --sidebar-accent: var(--tl-sidebar-accent, oklch(0.955 0.025 270));
-  --sidebar-accent-foreground: var(--tl-sidebar-accent-foreground, oklch(0.50 0.22 272));
-  --sidebar-border: oklch(0.93 0.01 255);
-  --sidebar-ring: var(--tl-sidebar-ring, oklch(0.58 0.20 272));
+  --background: #f8fafc; /* Slate 50 */
+  --foreground: #1e293b; /* Slate 800 */
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #9f1239; /* HNF Crimson Red */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9; /* Slate 100 */
+  --secondary-foreground: #334155;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #fff1f2; /* Rose 50 */
+  --accent-foreground: #9f1239;
+  --destructive: #be123c;
+  --border: #e2e8f0; /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #be123c;
+  --chart-1: #9f1239;
+  --chart-2: #2563eb;
+  --chart-3: #d97706;
+  --chart-4: #059669;
+  --chart-5: #7c3aed;
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1e293b;
+  --sidebar-primary: #9f1239;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fff1f2;
+  --sidebar-accent-foreground: #9f1239;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #be123c;
 }
 
 .dark {
-  --background: oklch(0.14 0.025 265); /* Deep dark navy slate */
-  --foreground: oklch(0.96 0.01 260); /* Crystal white */
-  --card: oklch(0.18 0.03 265); /* Elevated surface */
-  --card-foreground: oklch(0.96 0.01 260);
-  --popover: oklch(0.18 0.03 265);
-  --popover-foreground: oklch(0.96 0.01 260);
-  --primary: var(--td-primary, oklch(0.68 0.16 272)); /* Vibrant indigo */
-  --primary-foreground: var(--td-primary-foreground, oklch(0.14 0.025 265));
-  --secondary: oklch(0.24 0.03 262);
-  --secondary-foreground: oklch(0.95 0.01 260);
-  --muted: oklch(0.22 0.03 262);
-  --muted-foreground: oklch(0.72 0.035 260);
-  --accent: var(--td-accent, oklch(0.26 0.045 266));
-  --accent-foreground: var(--td-accent-foreground, oklch(0.72 0.16 272));
-  --destructive: oklch(0.68 0.20 22);
-  --border: oklch(0.28 0.03 262); /* Luminous crisp border */
-  --input: oklch(0.28 0.03 262);
-  --ring: var(--td-ring, oklch(0.68 0.16 272));
-  --chart-1: var(--td-chart-1, oklch(0.68 0.16 272));
-  --chart-2: oklch(0.70 0.16 162);
-  --chart-3: oklch(0.77 0.17 70);
-  --chart-4: oklch(0.64 0.23 340);
-  --chart-5: oklch(0.66 0.15 235);
-  --sidebar: oklch(0.16 0.028 265);
-  --sidebar-foreground: oklch(0.96 0.01 260);
-  --sidebar-primary: var(--td-sidebar-primary, oklch(0.68 0.16 272));
-  --sidebar-primary-foreground: var(--td-sidebar-primary-foreground, oklch(0.14 0.025 265));
-  --sidebar-accent: var(--td-sidebar-accent, oklch(0.25 0.045 266));
-  --sidebar-accent-foreground: var(--td-sidebar-accent-foreground, oklch(0.72 0.16 272));
-  --sidebar-border: oklch(0.26 0.03 262);
-  --sidebar-ring: var(--td-sidebar-ring, oklch(0.68 0.16 272));
+  --background: #0f172a; /* Slate 900 */
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  --primary: #fb7185; /* Rose 400 */
+  --primary-foreground: #4c0519;
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #4c0519;
+  --accent-foreground: #fda4af;
+  --destructive: #f43f5e;
+  --border: #334155;
+  --input: #334155;
+  --ring: #fb7185;
+  --chart-1: #fb7185;
+  --chart-2: #60a5fa;
+  --chart-3: #fbbf24;
+  --chart-4: #34d399;
+  --chart-5: #a78bfa;
+  --sidebar: #0b1329;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #fb7185;
+  --sidebar-primary-foreground: #4c0519;
+  --sidebar-accent: #4c0519;
+  --sidebar-accent-foreground: #fda4af;
+  --sidebar-border: #334155;
+  --sidebar-ring: #fb7185;
 }
 
 @layer base {
@@ -141,92 +141,79 @@
 }
 
 @layer utilities {
-  /* Hiệu ứng kính mờ (Glassmorphism) */
-  .glass-panel {
-    background: color-mix(in oklab, var(--card) 80%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  /* HNF Header Gradient */
+  .bg-hnf-gradient {
+    background: linear-gradient(135deg, #4c0519 0%, #881337 50%, #9f1239 100%);
+  }
+
+  /* DMS Specific KPI Cards */
+  .kpi-rose {
+    background-color: #fff1f2;
+    border: 1px solid #ffe4e6;
+  }
+  .kpi-blue {
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+  }
+  .kpi-indigo {
+    background-color: #eef2ff;
+    border: 1px solid #e0e7ff;
+  }
+  .kpi-amber {
+    background-color: #fefce8;
+    border: 1px solid #fef08a;
+  }
+  .kpi-emerald {
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
   }
   
-  .glass-nav {
-    background: color-mix(in oklab, var(--background) 82%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
+  .dark .kpi-rose {
+    background-color: rgba(136, 19, 55, 0.25);
+    border: 1px solid rgba(244, 63, 94, 0.3);
   }
-
-  /* Nền ambient mờ ảo hiện đại */
-  .ambient-mesh {
-    background-image: 
-      radial-gradient(at 0% 0%, color-mix(in oklab, var(--primary) 12%, transparent) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, color-mix(in oklab, var(--primary) 8%, transparent) 0px, transparent 50%);
+  .dark .kpi-blue {
+    background-color: rgba(30, 58, 138, 0.25);
+    border: 1px solid rgba(96, 165, 250, 0.3);
   }
-
-  /* Gradient viền phát sáng nhẹ */
-  .glow-border {
-    position: relative;
+  .dark .kpi-indigo {
+    background-color: rgba(49, 46, 129, 0.25);
+    border: 1px solid rgba(165, 180, 252, 0.3);
   }
-  .glow-border::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(to bottom right, color-mix(in oklab, var(--primary) 30%, transparent), transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  .dark .kpi-amber {
+    background-color: rgba(120, 53, 15, 0.25);
+    border: 1px solid rgba(251, 191, 36, 0.3);
   }
-
-  /* Màu ngữ nghĩa có độ tương phản cao */
-  .dark .text-emerald-600,
-  .dark .text-emerald-700,
-  .dark .text-green-700 {
-    color: oklch(0.77 0.17 163);
-  }
-  .dark .text-amber-600,
-  .dark .text-amber-700 {
-    color: oklch(0.83 0.18 84);
-  }
-  .dark .text-red-600 {
-    color: oklch(0.72 0.19 25);
+  .dark .kpi-emerald {
+    background-color: rgba(6, 78, 59, 0.25);
+    border: 1px solid rgba(52, 211, 153, 0.3);
   }
 }
 
 @layer components {
-  /* Card Design: Tối ưu phân tầng & bóng đa lớp */
   [data-slot="card"] {
-    box-shadow:
-      0 1px 3px 0 color-mix(in oklab, var(--foreground) 4%, transparent),
-      0 4px 12px -2px color-mix(in oklab, var(--foreground) 3%, transparent);
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   }
   .dark [data-slot="card"] {
-    box-shadow: 
-      0 1px 2px 0 rgba(0, 0, 0, 0.4),
-      0 4px 16px -2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   }
   
-  /* Scrollbar tinh tế */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #f1f5f9;
   }
   ::-webkit-scrollbar-thumb {
-    background: color-mix(in oklab, var(--muted-foreground) 25%, transparent);
-    border-radius: 9999px;
+    background: #cbd5e1;
+    border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+    background: #94a3b8;
   }
 }
 
-/* ── Typography & Prose Articles (Markdown) ──────────────────────────────── */
 .prose-article {
   font-size: 0.95rem;
   line-height: 1.8;
@@ -245,24 +232,13 @@
   scroll-margin-top: 5rem;
   color: var(--foreground);
 }
-.prose-article h1 { font-size: 1.85rem; }
-.prose-article h2 { font-size: 1.45rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
-.prose-article h3 { font-size: 1.2rem; }
-.prose-article h4 { font-size: 1.05rem; }
-.prose-article > * + h1,
-.prose-article > * + h2,
-.prose-article > * + h3 {
-  margin-top: 2.25rem;
-}
+.prose-article h1 { font-size: 1.75rem; }
+.prose-article h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+.prose-article h3 { font-size: 1.15rem; }
 .prose-article a {
   color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 1.5px solid color-mix(in oklab, var(--primary) 40%, transparent);
-  transition: border-color 0.15s ease;
-}
-.prose-article a:hover {
-  border-bottom-color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .prose-article ul,
 .prose-article ol {
@@ -270,136 +246,53 @@
 }
 .prose-article ul { list-style: disc; }
 .prose-article ol { list-style: decimal; }
-.prose-article li + li { margin-top: 0.4rem; }
+.prose-article li + li { margin-top: 0.35rem; }
 .prose-article li::marker { color: var(--primary); }
 .prose-article blockquote {
   border-left: 3px solid var(--primary);
-  background: color-mix(in oklab, var(--primary) 4%, transparent);
-  border-radius: 0 0.5rem 0.5rem 0;
-  padding: 0.75rem 1rem;
+  padding: 0.25rem 0 0.25rem 1rem;
   color: var(--muted-foreground);
   font-style: italic;
 }
 .prose-article :not(pre) > code {
   background: var(--muted);
   border: 1px solid var(--border);
-  border-radius: 0.375rem;
-  padding: 0.15rem 0.4rem;
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.35rem;
   font-size: 0.85em;
   font-family: var(--font-mono);
   color: var(--primary);
 }
 .prose-article pre {
-  background: color-mix(in oklab, var(--card) 95%, black);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  background: #1e293b;
+  color: #f8fafc;
+  border-radius: 0.5rem;
   padding: 1rem;
   overflow-x: auto;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-.prose-article pre code {
-  font-family: var(--font-mono);
-  background: none;
-  border: 0;
-  padding: 0;
-  white-space: pre;
 }
 .prose-article table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
 }
 .prose-article th,
 .prose-article td {
   border: 1px solid var(--border);
-  padding: 0.65rem 0.85rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
 }
 .prose-article th {
-  background: var(--muted);
-  font-weight: 600;
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #334155;
+}
+.dark .prose-article th {
+  background: #334155;
+  color: #f8fafc;
 }
 .prose-article img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.06);
-}
-.prose-article hr {
-  border: 0;
-  border-top: 1px solid var(--border);
-  margin: 2.5rem 0;
-}
-
-/* Highlight.js syntax highlighting with theme tokens */
-.prose-article .hljs-comment,
-.prose-article .hljs-quote { color: var(--muted-foreground); font-style: italic; }
-.prose-article .hljs-keyword,
-.prose-article .hljs-selector-tag,
-.prose-article .hljs-literal,
-.prose-article .hljs-section,
-.prose-article .hljs-doctag,
-.prose-article .hljs-type { color: var(--chart-4); font-weight: 600; }
-.prose-article .hljs-string,
-.prose-article .hljs-regexp,
-.prose-article .hljs-addition { color: var(--chart-2); }
-.prose-article .hljs-number,
-.prose-article .hljs-symbol,
-.prose-article .hljs-bullet { color: var(--chart-3); }
-.prose-article .hljs-title,
-.prose-article .hljs-name,
-.prose-article .hljs-selector-id,
-.prose-article .hljs-selector-class { color: var(--chart-1); font-weight: 600; }
-.prose-article .hljs-attr,
-.prose-article .hljs-attribute,
-.prose-article .hljs-variable,
-.prose-article .hljs-template-variable { color: var(--chart-5); }
-.prose-article .hljs-built_in,
-.prose-article .hljs-class .hljs-title { color: var(--chart-1); font-weight: 600; }
-.prose-article .hljs-deletion { color: var(--destructive); }
-.prose-article .hljs-emphasis { font-style: italic; }
-.prose-article .hljs-strong { font-weight: 700; }
-
-/* ── TipTap Rich Editor ──────────────────────────────────────────────────── */
-.tiptap:focus {
-  outline: none;
-}
-.tiptap p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  color: var(--muted-foreground);
-  float: left;
-  height: 0;
-  pointer-events: none;
-}
-.tiptap table {
-  table-layout: fixed;
-  width: 100%;
-}
-.tiptap table td,
-.tiptap table th {
-  position: relative;
-  min-width: 4rem;
-}
-.tiptap .selectedCell::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: color-mix(in oklab, var(--primary) 18%, transparent);
-  pointer-events: none;
-}
-.tiptap .column-resize-handle {
-  position: absolute;
-  right: -2px;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--primary);
-  cursor: col-resize;
-}
-.tiptap img.ProseMirror-selectednode {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
 }

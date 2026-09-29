@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Clock, LayoutDashboard, LogIn, PenLine, Sparkles } from "lucide-react";
+import { Clock, LayoutDashboard, LogIn, PenLine } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 function dangKy(callback: () => void) {
@@ -23,55 +23,58 @@ export function SiteHeader({
   const now = giay === null ? null : new Date(giay * 1000);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-primary-foreground shadow-sm shadow-primary/25 transition-transform duration-200 group-hover:scale-105">
-            <Sparkles className="size-4.5" />
-          </div>
-          <span className="text-base sm:text-lg font-bold tracking-tight text-foreground">
-            {platformName}
-          </span>
-        </Link>
+    <header className="bg-gradient-to-r from-[#4c0519] via-[#881337] to-[#9f1239] text-white shadow-md sticky top-0 z-50">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+        {/* Brand & HNF Badge */}
+        <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="bg-white text-[#881337] px-2.5 py-1 rounded-xl shadow font-black text-lg tracking-wider">
+              HNF
+            </div>
+            <div>
+              <div className="text-base sm:text-lg font-bold tracking-tight text-white uppercase">
+                {platformName}
+              </div>
+              <p className="text-[11px] text-rose-200 hidden sm:block">
+                Hệ thống Quản trị & Điều hành Dữ liệu Tập trung
+              </p>
+            </div>
+          </Link>
+        </div>
 
-        {/* World Clock Pill */}
-        <Link
-          href="/dong-ho"
-          className="hidden sm:flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs text-muted-foreground shadow-2xs hover:border-border hover:bg-accent/60 hover:text-foreground transition-all duration-150"
-          title="Xem đồng hồ thế giới"
-        >
-          <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-          <Clock className="size-3.5" />
-          {now ? (
-            <span className="tabular-nums font-medium">
-              {now.toLocaleTimeString("vi-VN")} ·{" "}
-              {now.toLocaleDateString("vi-VN", {
-                weekday: "short",
-                day: "2-digit",
-                month: "2-digit",
-              })}
-            </span>
-          ) : (
-            <span className="inline-block w-36" />
-          )}
-        </Link>
+        {/* Live Status Badge */}
+        <div className="hidden md:flex items-center space-x-2">
+          <Link
+            href="/dong-ho"
+            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-rose-950/60 text-rose-200 border border-rose-500/30 hover:bg-rose-950/80 transition-colors"
+            title="Đồng hồ hệ thống"
+          >
+            <span className="w-2 h-2 mr-2 bg-emerald-400 rounded-full animate-pulse" />
+            <Clock className="size-3.5 mr-1" />
+            {now ? (
+              <span className="tabular-nums">
+                {now.toLocaleTimeString("vi-VN")} · {now.toLocaleDateString("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit" })}
+              </span>
+            ) : (
+              <span className="inline-block w-28" />
+            )}
+          </Link>
+        </div>
 
-        {/* Actions & Theme */}
-        <div className="flex items-center gap-2 sm:gap-3 text-sm">
+        {/* Actions */}
+        <div className="flex items-center gap-2.5 text-xs sm:text-sm">
           <ThemeToggle />
           {isLoggedIn ? (
             <div className="flex items-center gap-2">
               <Link
                 href="/finance"
-                className="inline-flex items-center gap-1.5 rounded-xl border border-border/70 bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 px-3 py-1.5 font-bold transition-all text-xs"
               >
-                <LayoutDashboard className="size-3.5" />
-                <span className="hidden sm:inline">Workspace</span>
+                <LayoutDashboard className="size-3.5" /> Workspace
               </Link>
               <Link
                 href="/articles"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 font-bold shadow-xs transition-all text-xs"
               >
                 <PenLine className="size-3.5" /> Viết bài
               </Link>
@@ -79,7 +82,7 @@ export function SiteHeader({
           ) : (
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-white text-[#881337] hover:bg-rose-50 px-3.5 py-1.5 font-bold shadow-sm transition-all text-xs"
             >
               <LogIn className="size-3.5" /> Đăng nhập
             </Link>

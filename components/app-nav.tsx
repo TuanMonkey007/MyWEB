@@ -22,7 +22,6 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Wallet,
-  Sparkles,
 } from "lucide-react";
 import {
   Sheet,
@@ -43,7 +42,6 @@ type NavItem = {
 
 type ModuleGroup = { id: string; label: string; items: NavItem[] };
 
-// Platform module hóa — id khớp lib/modules.ts, nav chỉ hiện module user được cấp
 const MODULES: ModuleGroup[] = [
   {
     id: "finance",
@@ -105,7 +103,6 @@ const MODULES: ModuleGroup[] = [
   },
 ];
 
-// Khu quản trị (chỉ ADMIN)
 const adminItems: NavItem[] = [
   { href: "/access", label: "Phân quyền", icon: ShieldCheck },
   { href: "/settings", label: "Cài đặt", icon: Settings },
@@ -122,7 +119,6 @@ function isActive(pathname: string, item: NavItem): boolean {
   return item.exact ? pathname === item.href : pathname.startsWith(item.href);
 }
 
-// Lọc module theo quyền + sắp theo thứ tự admin cấu hình
 function visibleModules(allowed: string[], order?: string[]): ModuleGroup[] {
   const shown = MODULES.filter((m) => allowed.includes(m.id));
   if (!order?.length) return shown;
@@ -133,7 +129,6 @@ function visibleModules(allowed: string[], order?: string[]): ModuleGroup[] {
   });
 }
 
-// Nhóm module đang mở theo URL (mặc định: nhóm đầu được cấp)
 function currentModule(pathname: string, mods: ModuleGroup[]): ModuleGroup | null {
   return (
     mods.find((m) =>
@@ -151,22 +146,14 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
     <Link
       href={item.href}
       className={cn(
-        "group/link relative flex items-center gap-3 rounded-xl px-3 py-2 text-[13.5px] transition-all duration-150",
+        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors",
         active
-          ? "bg-primary text-primary-foreground font-medium shadow-xs shadow-primary/25"
-          : "font-normal text-muted-foreground hover:bg-accent/70 hover:text-foreground active:scale-[0.99]"
+          ? "bg-[#9f1239] text-white font-bold shadow-sm"
+          : "font-medium text-slate-600 hover:bg-rose-50 hover:text-[#9f1239] dark:text-slate-300 dark:hover:bg-slate-800"
       )}
     >
-      <Icon
-        className={cn(
-          "size-4 shrink-0 transition-transform duration-150",
-          active ? "text-primary-foreground" : "text-muted-foreground/80 group-hover/link:text-foreground"
-        )}
-      />
+      <Icon className={cn("size-4 shrink-0", active ? "text-white" : "text-slate-400 group-hover:text-[#9f1239]")} />
       <span className="truncate">{item.label}</span>
-      {active && (
-        <span className="ml-auto size-1.5 rounded-full bg-primary-foreground/80" />
-      )}
     </Link>
   );
 }
@@ -186,28 +173,28 @@ export function AppSidebar({
   const mods = visibleModules(allowedModules, moduleOrder);
 
   return (
-    <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border/70 bg-sidebar/95 backdrop-blur-xs select-none">
-      {/* Brand Header */}
-      <div className="flex h-16 items-center gap-2.5 border-b border-border/60 px-4">
+    <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 select-none">
+      {/* Brand Header — HNF Deep Red Gradient */}
+      <div className="flex h-15 items-center gap-2.5 bg-gradient-to-r from-[#4c0519] via-[#881337] to-[#9f1239] px-4 text-white shadow-sm">
         {faviconPath ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={`/api/branding/favicon?v=${encodeURIComponent(faviconPath)}`}
             alt=""
-            className="size-8 rounded-xl object-contain border border-border/60 shadow-2xs"
+            className="size-7 rounded-lg object-contain bg-white p-0.5"
           />
         ) : (
-          <div className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-400 text-primary-foreground shadow-xs shadow-primary/30">
-            <Sparkles className="size-4" />
+          <div className="bg-white text-[#881337] px-2 py-0.5 rounded-lg shadow font-black text-sm tracking-wider">
+            HNF
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <div className="truncate font-semibold text-sm tracking-tight text-foreground">
+          <div className="truncate font-bold text-sm tracking-tight text-white">
             {platformName}
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Workspace</span>
+          <div className="flex items-center gap-1.5 text-[10px] text-rose-200">
+            <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Hệ thống Quản trị</span>
           </div>
         </div>
       </div>
@@ -215,8 +202,8 @@ export function AppSidebar({
       {/* Navigation List */}
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
         {mods.map((mod) => (
-          <div key={mod.id} className="mt-3.5 space-y-0.5 first:mt-0">
-            <div className="px-3 pb-1 text-[10.5px] font-bold uppercase tracking-wider text-muted-foreground/60">
+          <div key={mod.id} className="mt-3 space-y-0.5 first:mt-0">
+            <div className="px-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               {mod.label}
             </div>
             {mod.items.map((item) => (
@@ -226,9 +213,9 @@ export function AppSidebar({
         ))}
 
         {isAdmin && (
-          <div className="mt-4 border-t border-border/50 pt-3 space-y-0.5">
-            <div className="px-3 pb-1 text-[10.5px] font-bold uppercase tracking-wider text-muted-foreground/60">
-              Quản trị hệ thống
+          <div className="mt-4 border-t border-slate-200 pt-3 space-y-0.5 dark:border-slate-800">
+            <div className="px-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Quản trị
             </div>
             {adminItems.map((item) => (
               <SidebarLink key={item.href} item={item} pathname={pathname} />
@@ -238,34 +225,29 @@ export function AppSidebar({
       </nav>
 
       {/* User Footer */}
-      <div className="p-3 border-t border-border/60 bg-muted/20">
-        <div className="flex items-center gap-1.5 rounded-xl border border-border/60 bg-card/60 p-1.5 shadow-2xs backdrop-blur-xs">
+      <div className="border-t border-slate-200 p-2.5 bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
+        <div className="flex items-center gap-1.5">
           <Link
             href="/account"
             className={cn(
-              "flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors",
+              "flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-semibold transition-colors",
               pathname === "/account"
-                ? "bg-accent text-accent-foreground font-semibold"
-                : "text-foreground/80 hover:bg-accent/80 hover:text-foreground"
+                ? "bg-rose-100 text-[#9f1239]"
+                : "text-slate-700 hover:bg-slate-200/70 dark:text-slate-300"
             )}
             title="Tài khoản của tôi"
           >
-            <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <CircleUser className="size-3.5" />
-            </div>
+            <CircleUser className="size-4 shrink-0 text-[#9f1239]" />
             <span className="truncate">{userName}</span>
           </Link>
-          <div className="flex items-center gap-0.5 shrink-0">
-            <ThemeToggle />
-            <LogoutButton iconOnly />
-          </div>
+          <ThemeToggle />
+          <LogoutButton iconOnly />
         </div>
       </div>
     </aside>
   );
 }
 
-// Bottom nav mobile: floating modern pill
 export function AppBottomNav({
   allowedModules,
   isAdmin,
@@ -279,7 +261,7 @@ export function AppBottomNav({
 
   return (
     <>
-      <nav className="md:hidden fixed inset-x-3 bottom-3 z-40 flex items-center justify-around rounded-2xl border border-border/80 bg-background/90 backdrop-blur-xl shadow-lg shadow-black/10 p-1">
+      <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 flex border-t border-slate-200 bg-white shadow-lg dark:bg-slate-900 dark:border-slate-800">
         {(mod?.items ?? []).map((item) => {
           const Icon = item.icon;
           const active = isActive(pathname, item);
@@ -288,10 +270,8 @@ export function AppBottomNav({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex min-w-0 flex-1 flex-col items-center gap-1 py-1.5 text-[10px] rounded-xl transition-all duration-150",
-                active
-                  ? "text-primary font-semibold bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground"
+                "flex min-w-0 flex-1 flex-col items-center gap-0.5 py-2 text-[10px] transition-colors",
+                active ? "text-[#9f1239] font-bold bg-rose-50/60" : "text-slate-600 hover:text-[#9f1239]"
               )}
             >
               <Icon className="size-4.5" />
@@ -302,7 +282,7 @@ export function AppBottomNav({
         <button
           type="button"
           onClick={() => setMenuOpen(true)}
-          className="flex min-w-0 flex-1 flex-col items-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground rounded-xl transition-colors cursor-pointer"
+          className="flex min-w-0 flex-1 flex-col items-center gap-0.5 py-2 text-[10px] text-slate-600 hover:text-[#9f1239]"
         >
           <LayoutGrid className="size-4.5" />
           <span>Menu</span>
@@ -310,17 +290,17 @@ export function AppBottomNav({
       </nav>
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent side="bottom" className="max-h-[80dvh] overflow-y-auto rounded-t-3xl border-border/70 p-5">
-          <SheetHeader className="pb-3 border-b border-border/50">
-            <SheetTitle className="text-base font-semibold">Tất cả module hệ thống</SheetTitle>
+        <SheetContent side="bottom" className="max-h-[80dvh] overflow-y-auto rounded-t-2xl p-4">
+          <SheetHeader className="pb-3 border-b border-slate-100">
+            <SheetTitle className="text-base font-bold text-slate-800">Tất cả module</SheetTitle>
           </SheetHeader>
-          <div className="grid gap-5 pt-3">
+          <div className="grid gap-4 pt-3">
             {mods.map((m) => (
-              <div key={m.id} className="space-y-2">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/70">
+              <div key={m.id}>
+                <div className="pb-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   {m.label}
                 </div>
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-3 gap-2">
                   {m.items.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(pathname, item);
@@ -330,13 +310,13 @@ export function AppBottomNav({
                         href={item.href}
                         onClick={() => setMenuOpen(false)}
                         className={cn(
-                          "flex flex-col items-center gap-2 rounded-xl border p-3 text-xs font-medium transition-all duration-150 active:scale-95",
+                          "flex flex-col items-center gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all",
                           active
-                            ? "border-primary/50 bg-primary/10 text-primary shadow-2xs"
-                            : "border-border/60 bg-card/60 text-muted-foreground hover:bg-accent hover:text-foreground"
+                            ? "border-[#9f1239] bg-rose-50 text-[#9f1239]"
+                            : "border-slate-200 text-slate-600 hover:bg-slate-50"
                         )}
                       >
-                        <Icon className="size-5 text-primary" />
+                        <Icon className="size-5" />
                         <span className="truncate text-center">{item.label}</span>
                       </Link>
                     );
@@ -344,36 +324,6 @@ export function AppBottomNav({
                 </div>
               </div>
             ))}
-            <div className="flex items-center justify-between gap-2 border-t border-border/60 pt-4">
-              <Link
-                href="/account"
-                onClick={() => setMenuOpen(false)}
-                className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground hover:text-foreground font-medium"
-              >
-                <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <CircleUser className="size-4" />
-                </div>
-                <span className="truncate">{userName}</span>
-              </Link>
-              <div className="flex shrink-0 items-center gap-2">
-                {isAdmin &&
-                  adminItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium rounded-lg border border-border/60 px-2.5 py-1.5"
-                      >
-                        <Icon className="size-3.5" /> {item.label}
-                      </Link>
-                    );
-                  })}
-                <ThemeToggle />
-                <LogoutButton iconOnly />
-              </div>
-            </div>
           </div>
         </SheetContent>
       </Sheet>
