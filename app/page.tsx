@@ -28,6 +28,7 @@ function NhanRiengTu({ visibility }: { visibility: string }) {
   );
 }
 
+/** Bài chủ đạo: Card lớn, ảnh tràn viền bo góc, hover zoom nhẹ */
 function BaiNoiBat({ a }: { a: ArticleListItem }) {
   const img = anhBia(a.coverImage);
   return (
@@ -84,6 +85,7 @@ function BaiNoiBat({ a }: { a: ArticleListItem }) {
   );
 }
 
+/** Bài phụ cột trái */
 function BaiCotTrai({ a }: { a: ArticleListItem }) {
   const img = anhBia(a.coverImage);
   return (
@@ -123,6 +125,7 @@ function BaiCotTrai({ a }: { a: ArticleListItem }) {
   );
 }
 
+/** Bài cột phải: Tiêu đề bên trái, ảnh nhỏ bên phải */
 function BaiCotPhai({ a }: { a: ArticleListItem }) {
   const img = anhBia(a.coverImage);
   return (
@@ -201,6 +204,7 @@ export default async function TrangChu() {
           </div>
         ) : (
           <>
+            {/* Lưới 3 cột: Phụ trái · Chủ đạo giữa · Danh sách phải */}
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.8fr)_minmax(0,1fr)] items-start">
               <div className="order-2 space-y-3 lg:order-1">
                 {cotTrai.map((a) => (

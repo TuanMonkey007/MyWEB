@@ -43,6 +43,7 @@ type NavItem = {
 
 type ModuleGroup = { id: string; label: string; items: NavItem[] };
 
+// Platform module hóa — id khớp lib/modules.ts, nav chỉ hiện module user được cấp
 const MODULES: ModuleGroup[] = [
   {
     id: "finance",
@@ -104,6 +105,7 @@ const MODULES: ModuleGroup[] = [
   },
 ];
 
+// Khu quản trị (chỉ ADMIN)
 const adminItems: NavItem[] = [
   { href: "/access", label: "Phân quyền", icon: ShieldCheck },
   { href: "/settings", label: "Cài đặt", icon: Settings },
@@ -120,6 +122,7 @@ function isActive(pathname: string, item: NavItem): boolean {
   return item.exact ? pathname === item.href : pathname.startsWith(item.href);
 }
 
+// Lọc module theo quyền + sắp theo thứ tự admin cấu hình
 function visibleModules(allowed: string[], order?: string[]): ModuleGroup[] {
   const shown = MODULES.filter((m) => allowed.includes(m.id));
   if (!order?.length) return shown;
@@ -130,6 +133,7 @@ function visibleModules(allowed: string[], order?: string[]): ModuleGroup[] {
   });
 }
 
+// Nhóm module đang mở theo URL (mặc định: nhóm đầu được cấp)
 function currentModule(pathname: string, mods: ModuleGroup[]): ModuleGroup | null {
   return (
     mods.find((m) =>
@@ -183,6 +187,7 @@ export function AppSidebar({
 
   return (
     <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border/70 bg-sidebar/95 backdrop-blur-xs select-none">
+      {/* Brand Header */}
       <div className="flex h-16 items-center gap-2.5 border-b border-border/60 px-4">
         {faviconPath ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -207,6 +212,7 @@ export function AppSidebar({
         </div>
       </div>
 
+      {/* Navigation List */}
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
         {mods.map((mod) => (
           <div key={mod.id} className="mt-3.5 space-y-0.5 first:mt-0">
@@ -231,6 +237,7 @@ export function AppSidebar({
         )}
       </nav>
 
+      {/* User Footer */}
       <div className="p-3 border-t border-border/60 bg-muted/20">
         <div className="flex items-center gap-1.5 rounded-xl border border-border/60 bg-card/60 p-1.5 shadow-2xs backdrop-blur-xs">
           <Link
@@ -258,6 +265,7 @@ export function AppSidebar({
   );
 }
 
+// Bottom nav mobile: floating modern pill
 export function AppBottomNav({
   allowedModules,
   isAdmin,

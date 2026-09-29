@@ -21,6 +21,7 @@ export default async function MainLayout({
   return (
     <PermissionsProvider permissions={clientPermissions(user)} isAdmin={user.role === "ADMIN"}>
       <div className="flex min-h-dvh w-full bg-background relative overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+        {/* Subtle Ambient Top Glow */}
         <div className="pointer-events-none fixed -top-32 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="pointer-events-none fixed top-1/3 -left-32 h-80 w-80 rounded-full bg-indigo-500/5 blur-3xl" />
 

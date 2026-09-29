@@ -48,23 +48,28 @@
   --radius-4xl: calc(var(--radius) * 2.8);
 }
 
+/* ── Modern Premium Theme Palette ──────────────────────────────────────────
+   Phong cách hiện đại, tinh gọn với chiều sâu thị giác (Visual Depth):
+   - Nền sáng: Trắng ngà - Slate cao cấp, thẻ nổi khối với viền siêu mảnh & bóng đa tầng
+   - Nền tối: Deep Cosmic Slate sang trọng, gradient phát quang tinh tế
+   - Tối ưu chuẩn WCAG AA cho độ tương phản và khả năng đọc */
 :root {
-  --background: oklch(0.985 0.004 250);
-  --foreground: oklch(0.19 0.04 265);
-  --card: oklch(1 0 0);
+  --background: oklch(0.985 0.004 250); /* #F8FAFC */
+  --foreground: oklch(0.19 0.04 265); /* #0F172A */
+  --card: oklch(1 0 0); /* Pure White */
   --card-foreground: oklch(0.19 0.04 265);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.19 0.04 265);
-  --primary: var(--tl-primary, oklch(0.52 0.22 272));
+  --primary: var(--tl-primary, oklch(0.52 0.22 272)); /* Indigo hiện đại */
   --primary-foreground: var(--tl-primary-foreground, oklch(1 0 0));
   --secondary: oklch(0.965 0.008 250);
   --secondary-foreground: oklch(0.27 0.035 260);
-  --muted: oklch(0.962 0.006 250);
-  --muted-foreground: oklch(0.50 0.04 260);
+  --muted: oklch(0.962 0.006 250); /* #F1F5F9 */
+  --muted-foreground: oklch(0.50 0.04 260); /* Đạt tương phản cao */
   --accent: var(--tl-accent, oklch(0.96 0.02 270));
   --accent-foreground: var(--tl-accent-foreground, oklch(0.50 0.22 272));
   --destructive: oklch(0.58 0.24 27);
-  --border: oklch(0.92 0.01 255);
+  --border: oklch(0.92 0.01 255); /* Viền thanh mảnh mềm mại */
   --input: oklch(0.92 0.01 255);
   --ring: var(--tl-ring, oklch(0.58 0.20 272));
   --chart-1: var(--tl-chart-1, oklch(0.58 0.20 272));
@@ -72,7 +77,7 @@
   --chart-3: oklch(0.76 0.17 70);
   --chart-4: oklch(0.63 0.23 340);
   --chart-5: oklch(0.65 0.15 235);
-  --radius: 0.75rem;
+  --radius: 0.75rem; /* Bo góc mềm mại hiện đại */
   --sidebar: oklch(0.995 0.002 250);
   --sidebar-foreground: oklch(0.20 0.04 265);
   --sidebar-primary: var(--tl-sidebar-primary, oklch(0.52 0.22 272));
@@ -84,13 +89,13 @@
 }
 
 .dark {
-  --background: oklch(0.14 0.025 265);
-  --foreground: oklch(0.96 0.01 260);
-  --card: oklch(0.18 0.03 265);
+  --background: oklch(0.14 0.025 265); /* Deep dark navy slate */
+  --foreground: oklch(0.96 0.01 260); /* Crystal white */
+  --card: oklch(0.18 0.03 265); /* Elevated surface */
   --card-foreground: oklch(0.96 0.01 260);
   --popover: oklch(0.18 0.03 265);
   --popover-foreground: oklch(0.96 0.01 260);
-  --primary: var(--td-primary, oklch(0.68 0.16 272));
+  --primary: var(--td-primary, oklch(0.68 0.16 272)); /* Vibrant indigo */
   --primary-foreground: var(--td-primary-foreground, oklch(0.14 0.025 265));
   --secondary: oklch(0.24 0.03 262);
   --secondary-foreground: oklch(0.95 0.01 260);
@@ -99,7 +104,7 @@
   --accent: var(--td-accent, oklch(0.26 0.045 266));
   --accent-foreground: var(--td-accent-foreground, oklch(0.72 0.16 272));
   --destructive: oklch(0.68 0.20 22);
-  --border: oklch(0.28 0.03 262);
+  --border: oklch(0.28 0.03 262); /* Luminous crisp border */
   --input: oklch(0.28 0.03 262);
   --ring: var(--td-ring, oklch(0.68 0.16 272));
   --chart-1: var(--td-chart-1, oklch(0.68 0.16 272));
@@ -136,6 +141,7 @@
 }
 
 @layer utilities {
+  /* Hiệu ứng kính mờ (Glassmorphism) */
   .glass-panel {
     background: color-mix(in oklab, var(--card) 80%, transparent);
     backdrop-filter: blur(12px);
@@ -150,12 +156,14 @@
     border-bottom: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
   }
 
+  /* Nền ambient mờ ảo hiện đại */
   .ambient-mesh {
     background-image: 
       radial-gradient(at 0% 0%, color-mix(in oklab, var(--primary) 12%, transparent) 0px, transparent 50%),
       radial-gradient(at 100% 100%, color-mix(in oklab, var(--primary) 8%, transparent) 0px, transparent 50%);
   }
 
+  /* Gradient viền phát sáng nhẹ */
   .glow-border {
     position: relative;
   }
@@ -172,6 +180,7 @@
     pointer-events: none;
   }
 
+  /* Màu ngữ nghĩa có độ tương phản cao */
   .dark .text-emerald-600,
   .dark .text-emerald-700,
   .dark .text-green-700 {
@@ -187,6 +196,7 @@
 }
 
 @layer components {
+  /* Card Design: Tối ưu phân tầng & bóng đa lớp */
   [data-slot="card"] {
     box-shadow:
       0 1px 3px 0 color-mix(in oklab, var(--foreground) 4%, transparent),
@@ -199,6 +209,7 @@
       0 4px 16px -2px rgba(0, 0, 0, 0.5);
   }
   
+  /* Scrollbar tinh tế */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -215,6 +226,7 @@
   }
 }
 
+/* ── Typography & Prose Articles (Markdown) ──────────────────────────────── */
 .prose-article {
   font-size: 0.95rem;
   line-height: 1.8;
@@ -322,6 +334,7 @@
   margin: 2.5rem 0;
 }
 
+/* Highlight.js syntax highlighting with theme tokens */
 .prose-article .hljs-comment,
 .prose-article .hljs-quote { color: var(--muted-foreground); font-style: italic; }
 .prose-article .hljs-keyword,
@@ -350,6 +363,7 @@
 .prose-article .hljs-emphasis { font-style: italic; }
 .prose-article .hljs-strong { font-weight: 700; }
 
+/* ── TipTap Rich Editor ──────────────────────────────────────────────────── */
 .tiptap:focus {
   outline: none;
 }

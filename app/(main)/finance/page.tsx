@@ -32,6 +32,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-7">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/50 pb-5">
         <div>
           <div className="flex items-center gap-2">
@@ -58,7 +59,9 @@ export default async function DashboardPage() {
         />
       </div>
 
+      {/* Top 3 Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-3">
+        {/* Tổng tài sản */}
         <Card className="relative overflow-hidden border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card shadow-xs">
           <div className="pointer-events-none absolute -right-6 -top-6 size-24 rounded-full bg-primary/15 blur-2xl" />
           <CardHeader className="pb-2">
@@ -81,6 +84,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
+        {/* Tổng thu tháng */}
         <Card className="relative overflow-hidden border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-card to-card shadow-xs">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
@@ -102,6 +106,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
+        {/* Tổng chi tháng */}
         <Card className="relative overflow-hidden border-rose-500/20 bg-gradient-to-br from-rose-500/5 via-card to-card shadow-xs">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
@@ -124,6 +129,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
+      {/* Charts Section */}
       <div className="grid gap-5 lg:grid-cols-2">
         <Card className="shadow-xs">
           <CardHeader className="pb-3 border-b border-border/40">
@@ -156,6 +162,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
+      {/* Wallets Breakdown */}
       <Card className="shadow-xs">
         <CardHeader className="border-b border-border/40 pb-4">
           <div className="flex items-center justify-between">

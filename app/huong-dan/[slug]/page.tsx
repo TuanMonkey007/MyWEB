@@ -34,6 +34,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-4xl space-y-8">
+      {/* Navigation & Actions */}
       <div className="flex items-center justify-between border-b border-border/50 pb-4">
         <Link
           href="/huong-dan"
@@ -51,6 +52,7 @@ export default async function ArticlePage({ params }: Props) {
         )}
       </div>
 
+      {/* Article Header */}
       <header className="space-y-4 rounded-3xl border border-border/70 bg-gradient-to-br from-primary/5 via-card to-card p-6 sm:p-8 shadow-xs">
         {article.category && (
           <span className="inline-flex items-center rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
@@ -92,6 +94,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </header>
 
+      {/* Article Body */}
       <div className="rounded-3xl border border-border/70 bg-card p-6 sm:p-10 shadow-xs">
         <ArticleContent content={article.content} format={article.format} />
       </div>

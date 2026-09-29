@@ -36,10 +36,12 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-dvh items-center justify-center p-4 overflow-hidden bg-background">
+      {/* Aurora Ambient Background Orbs */}
       <div className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-primary/15 blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 size-[32rem] rounded-full bg-indigo-500/15 blur-[120px]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
 
+      {/* Main Glassmorphism Auth Card */}
       <div className="relative w-full max-w-md">
         <div className="rounded-3xl border border-border/70 bg-card/85 p-7 sm:p-9 shadow-2xl backdrop-blur-xl transition-all">
           <div className="text-center space-y-2">

@@ -45,6 +45,7 @@ export default async function HuongDanPage({
 
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div className="rounded-3xl border border-border/70 bg-gradient-to-br from-primary/5 via-card to-card p-6 sm:p-8 shadow-xs">
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
           <BookOpen className="size-4" /> Tài liệu & Hướng dẫn kỹ thuật
@@ -72,6 +73,7 @@ export default async function HuongDanPage({
         </div>
       )}
 
+      {/* Categories Group Sections */}
       <div className="space-y-6">
         {groups.map((g) => (
           <section
