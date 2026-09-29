@@ -146,21 +146,19 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
     <Link
       href={item.href}
       className={cn(
-        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors",
+        "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs transition-colors",
         active
           ? "bg-primary/10 text-primary dark:bg-rose-500/15 dark:text-rose-300 font-bold border-l-2 border-primary"
-          : "font-medium text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          : "font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
       )}
     >
-      <Icon className={cn("size-4 shrink-0", active ? "text-primary dark:text-rose-400" : "text-muted-foreground")} />
+      <Icon className={cn("size-3.5 shrink-0", active ? "text-primary dark:text-rose-400" : "text-muted-foreground")} />
       <span className="truncate">{item.label}</span>
     </Link>
   );
 }
 
 export function AppSidebar({
-  platformName = "Platform cá nhân",
-  faviconPath = null,
   allowedModules,
   isAdmin,
   userName,
@@ -173,37 +171,11 @@ export function AppSidebar({
   const mods = visibleModules(allowedModules, moduleOrder);
 
   return (
-    <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground select-none">
-      {/* Brand Header — Đồng bộ liền mạch với thanh sidebar */}
-      <div className="flex h-14 items-center gap-2.5 border-b border-sidebar-border px-4">
-        {faviconPath ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={`/api/branding/favicon?v=${encodeURIComponent(faviconPath)}`}
-            alt=""
-            className="size-6 rounded object-contain"
-          />
-        ) : (
-          <div className="bg-[#9f1239] text-white dark:bg-rose-500/20 dark:text-rose-400 dark:border dark:border-rose-500/30 px-2 py-0.5 rounded font-black text-xs tracking-wider shadow-2xs">
-            HNF
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-bold text-sm tracking-tight text-sidebar-foreground">
-            {platformName}
-          </div>
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Hệ thống Quản trị</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation List */}
+    <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-border bg-sidebar text-sidebar-foreground select-none">
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2.5">
         {mods.map((mod) => (
-          <div key={mod.id} className="mt-3 space-y-0.5 first:mt-0">
-            <div className="px-3 pb-1 text-[10.5px] font-bold uppercase tracking-wider text-muted-foreground/60">
+          <div key={mod.id} className="mt-2.5 space-y-0.5 first:mt-1">
+            <div className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
               {mod.label}
             </div>
             {mod.items.map((item) => (
@@ -213,8 +185,8 @@ export function AppSidebar({
         ))}
 
         {isAdmin && (
-          <div className="mt-4 border-t border-sidebar-border pt-3 space-y-0.5">
-            <div className="px-3 pb-1 text-[10.5px] font-bold uppercase tracking-wider text-muted-foreground/60">
+          <div className="mt-3.5 border-t border-border pt-2.5 space-y-0.5">
+            <div className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
               Quản trị
             </div>
             {adminItems.map((item) => (
@@ -223,27 +195,6 @@ export function AppSidebar({
           </div>
         )}
       </nav>
-
-      {/* User Footer */}
-      <div className="border-t border-sidebar-border p-2.5 bg-sidebar">
-        <div className="flex items-center gap-1.5">
-          <Link
-            href="/account"
-            className={cn(
-              "flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-semibold transition-colors",
-              pathname === "/account"
-                ? "bg-sidebar-accent text-sidebar-accent-foreground font-bold"
-                : "text-sidebar-foreground/80 hover:bg-sidebar-accent"
-            )}
-            title="Tài khoản của tôi"
-          >
-            <CircleUser className="size-4 shrink-0 text-primary" />
-            <span className="truncate">{userName}</span>
-          </Link>
-          <ThemeToggle />
-          <LogoutButton iconOnly />
-        </div>
-      </div>
     </aside>
   );
 }
@@ -261,7 +212,7 @@ export function AppBottomNav({
 
   return (
     <>
-      <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 flex border-t border-sidebar-border bg-sidebar shadow-lg">
+      <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-sidebar shadow-lg">
         {(mod?.items ?? []).map((item) => {
           const Icon = item.icon;
           const active = isActive(pathname, item);
@@ -271,7 +222,7 @@ export function AppBottomNav({
               href={item.href}
               className={cn(
                 "flex min-w-0 flex-1 flex-col items-center gap-0.5 py-2 text-[10px] transition-colors",
-                active ? "text-primary font-bold bg-sidebar-accent" : "text-muted-foreground hover:text-foreground"
+                active ? "text-primary font-bold bg-muted" : "text-muted-foreground hover:text-foreground"
               )}
             >
               <Icon className="size-4.5" />

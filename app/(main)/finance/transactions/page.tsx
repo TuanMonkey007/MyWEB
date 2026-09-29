@@ -49,11 +49,22 @@ export default async function TransactionsPage({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Giao dịch</h1>
-          <p className="text-sm text-muted-foreground">{rows.length} giao dịch</p>
+      {/* Top Header Card */}
+      <div className="bg-card rounded-2xl border border-border p-4 sm:p-5 shadow-xs flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-3">
+          <span className="w-8 h-8 bg-rose-50 text-[#881337] dark:bg-rose-950/40 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-sm">
+            💳
+          </span>
+          <div>
+            <h1 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
+              Quản Lý Lịch Sử Giao Dịch
+            </h1>
+            <p className="text-xs text-muted-foreground">
+              {rows.length} giao dịch được ghi nhận trong hệ thống
+            </p>
+          </div>
         </div>
+
         <QuickAddButtons
           wallets={walletOptions}
           expenseCategories={expenseCategories}
@@ -61,17 +72,21 @@ export default async function TransactionsPage({
         />
       </div>
 
-      <Suspense>
-        <TransactionFilters
-          wallets={walletOptions}
-          categories={categories.map((c) => ({
-            id: c.id,
-            name: c.name,
-            kind: c.kind,
-          }))}
-        />
-      </Suspense>
+      {/* Filter Bar */}
+      <div className="bg-card rounded-xl border border-border p-3.5 shadow-xs">
+        <Suspense>
+          <TransactionFilters
+            wallets={walletOptions}
+            categories={categories.map((c) => ({
+              id: c.id,
+              name: c.name,
+              kind: c.kind,
+            }))}
+          />
+        </Suspense>
+      </div>
 
+      {/* Transactions Table */}
       <TransactionTable
         rows={rows}
         wallets={walletOptions}
