@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -48,63 +48,62 @@
   --radius-4xl: calc(var(--radius) * 2.5);
 }
 
-/* ── HNF DMS Enterprise Design System ──────────────────────────────────────
-   Bản sắc Hữu Nghị Food (HNF):
-   - Đỏ mận chủ đạo (Burgundy/Crimson): #881337 / #9f1239 / #be123c
-   - Nền Slate 50 sạch sẽ, độ tương phản cao, số liệu dạng Excel chuyên nghiệp
-   - Các khối KPI màu sắc phân định rõ: Rose, Blue, Indigo, Amber, Emerald */
+/* ── Harmonious Balanced Palette (Dịu mắt, đồng bộ 100% Nav & Nội dung) ── */
 :root {
   --background: #f8fafc; /* Slate 50 */
-  --foreground: #1e293b; /* Slate 800 */
+  --foreground: #1e293b; /* Slate 800 - dịu mắt */
   --card: #ffffff;
   --card-foreground: #1e293b;
   --popover: #ffffff;
   --popover-foreground: #1e293b;
-  --primary: #9f1239; /* HNF Crimson Red */
+  --primary: #9f1239; /* HNF Crimson - sâu lắng */
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9; /* Slate 100 */
   --secondary-foreground: #334155;
   --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #fff1f2; /* Rose 50 */
+  --muted-foreground: #64748b; /* Slate 500 */
+  --accent: #fff1f2; /* Rose 50 dịu */
   --accent-foreground: #9f1239;
   --destructive: #be123c;
   --border: #e2e8f0; /* Slate 200 */
   --input: #e2e8f0;
-  --ring: #be123c;
+  --ring: #9f1239;
   --chart-1: #9f1239;
   --chart-2: #2563eb;
   --chart-3: #d97706;
   --chart-4: #059669;
   --chart-5: #7c3aed;
   --radius: 0.625rem;
+
+  /* SIDEBAR LIGHT: Cùng tông Slate sạch với nội dung */
   --sidebar: #ffffff;
   --sidebar-foreground: #1e293b;
   --sidebar-primary: #9f1239;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #fff1f2;
+  --sidebar-accent: #f8fafc;
   --sidebar-accent-foreground: #9f1239;
   --sidebar-border: #e2e8f0;
-  --sidebar-ring: #be123c;
+  --sidebar-ring: #9f1239;
 }
 
 .dark {
+  /* DARK MODE: SIDEBAR VÀ CONTENT DÙNG CHUNG HỆ MÀU SLATE TRẦM ẤM, KHÔNG LỆCH PHA! */
   --background: #0f172a; /* Slate 900 */
-  --foreground: #f8fafc;
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
+  --foreground: #e2e8f0; /* Slate 200 - dịu mắt, không trắng toát */
+  --card: #1e293b; /* Slate 800 */
+  --card-foreground: #e2e8f0;
   --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-  --primary: #fb7185; /* Rose 400 */
+  --popover-foreground: #e2e8f0;
+  --primary: #fb7185; /* Rose 400 dịu mắt trên nền tối */
   --primary-foreground: #4c0519;
-  --secondary: #334155;
-  --secondary-foreground: #f8fafc;
-  --muted: #334155;
-  --muted-foreground: #94a3b8;
-  --accent: #4c0519;
+  --secondary: #334155; /* Slate 700 */
+  --secondary-foreground: #e2e8f0;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8; /* Slate 400 */
+  --accent: #334155;
   --accent-foreground: #fda4af;
   --destructive: #f43f5e;
-  --border: #334155;
+  --border: #334155; /* Slate 700 */
   --input: #334155;
   --ring: #fb7185;
   --chart-1: #fb7185;
@@ -112,13 +111,15 @@
   --chart-3: #fbbf24;
   --chart-4: #34d399;
   --chart-5: #a78bfa;
-  --sidebar: #0b1329;
-  --sidebar-foreground: #f8fafc;
+
+  /* SIDEBAR DARK: Đồng bộ tuyệt đối với background #0f172a và card #1e293b */
+  --sidebar: #0f172a; /* Slate 900 - liền mạch hoàn hảo với nền trang */
+  --sidebar-foreground: #e2e8f0;
   --sidebar-primary: #fb7185;
   --sidebar-primary-foreground: #4c0519;
-  --sidebar-accent: #4c0519;
+  --sidebar-accent: #1e293b;
   --sidebar-accent-foreground: #fda4af;
-  --sidebar-border: #334155;
+  --sidebar-border: #1e293b;
   --sidebar-ring: #fb7185;
 }
 
@@ -141,52 +142,12 @@
 }
 
 @layer utilities {
-  /* HNF Header Gradient */
-  .bg-hnf-gradient {
-    background: linear-gradient(135deg, #4c0519 0%, #881337 50%, #9f1239 100%);
+  /* Dịu mắt trên nền tối, không neon */
+  .dark .text-red-600 {
+    color: #f87171 !important;
   }
-
-  /* DMS Specific KPI Cards */
-  .kpi-rose {
-    background-color: #fff1f2;
-    border: 1px solid #ffe4e6;
-  }
-  .kpi-blue {
-    background-color: #eff6ff;
-    border: 1px solid #dbeafe;
-  }
-  .kpi-indigo {
-    background-color: #eef2ff;
-    border: 1px solid #e0e7ff;
-  }
-  .kpi-amber {
-    background-color: #fefce8;
-    border: 1px solid #fef08a;
-  }
-  .kpi-emerald {
-    background-color: #ecfdf5;
-    border: 1px solid #a7f3d0;
-  }
-  
-  .dark .kpi-rose {
-    background-color: rgba(136, 19, 55, 0.25);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-  }
-  .dark .kpi-blue {
-    background-color: rgba(30, 58, 138, 0.25);
-    border: 1px solid rgba(96, 165, 250, 0.3);
-  }
-  .dark .kpi-indigo {
-    background-color: rgba(49, 46, 129, 0.25);
-    border: 1px solid rgba(165, 180, 252, 0.3);
-  }
-  .dark .kpi-amber {
-    background-color: rgba(120, 53, 15, 0.25);
-    border: 1px solid rgba(251, 191, 36, 0.3);
-  }
-  .dark .kpi-emerald {
-    background-color: rgba(6, 78, 59, 0.25);
-    border: 1px solid rgba(52, 211, 153, 0.3);
+  .dark .text-emerald-600 {
+    color: #34d399 !important;
   }
 }
 
@@ -195,7 +156,7 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   }
   .dark [data-slot="card"] {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   }
   
   ::-webkit-scrollbar {
@@ -203,14 +164,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 4px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+  .dark ::-webkit-scrollbar-thumb {
+    background: #334155;
   }
 }
 
@@ -229,46 +190,12 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.35;
-  scroll-margin-top: 5rem;
   color: var(--foreground);
 }
-.prose-article h1 { font-size: 1.75rem; }
-.prose-article h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
-.prose-article h3 { font-size: 1.15rem; }
 .prose-article a {
   color: var(--primary);
   text-decoration: underline;
   text-underline-offset: 2px;
-}
-.prose-article ul,
-.prose-article ol {
-  padding-left: 1.5rem;
-}
-.prose-article ul { list-style: disc; }
-.prose-article ol { list-style: decimal; }
-.prose-article li + li { margin-top: 0.35rem; }
-.prose-article li::marker { color: var(--primary); }
-.prose-article blockquote {
-  border-left: 3px solid var(--primary);
-  padding: 0.25rem 0 0.25rem 1rem;
-  color: var(--muted-foreground);
-  font-style: italic;
-}
-.prose-article :not(pre) > code {
-  background: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 0.3rem;
-  padding: 0.1rem 0.35rem;
-  font-size: 0.85em;
-  font-family: var(--font-mono);
-  color: var(--primary);
-}
-.prose-article pre {
-  background: #1e293b;
-  color: #f8fafc;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  overflow-x: auto;
 }
 .prose-article table {
   width: 100%;
@@ -282,17 +209,6 @@
   text-align: left;
 }
 .prose-article th {
-  background: #f1f5f9;
+  background: var(--muted);
   font-weight: 700;
-  color: #334155;
-}
-.dark .prose-article th {
-  background: #334155;
-  color: #f8fafc;
-}
-.prose-article img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border);
 }
