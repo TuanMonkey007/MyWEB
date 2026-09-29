@@ -7,7 +7,6 @@ import {
   Maximize2,
   Gauge,
   Info,
-  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,6 +17,7 @@ import {
   MarketOverviewCards,
   type MarketTickerData,
 } from "./market-overview-cards";
+import { AdditionalChartsSection } from "./additional-charts";
 
 type ViewTab = "split" | "gold" | "btc" | "technical";
 
@@ -139,7 +139,7 @@ export function MarketsView({
         </div>
       </div>
 
-      {/* 4. Chart Views according to Tab */}
+      {/* 4. Main Chart Views according to Tab */}
 
       {/* TAB 1: SPLIT VIEW (Song song 2 biểu đồ) */}
       {activeTab === "split" && (
@@ -371,6 +371,9 @@ export function MarketsView({
           </div>
         </div>
       )}
+
+      {/* 5. Additional Charts Section (Dynamic Load & Render Below) */}
+      <AdditionalChartsSection />
     </div>
   );
 }

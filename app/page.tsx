@@ -262,9 +262,6 @@ export default function PersonalLandingPage() {
             <a href="#tools" className="hover:text-primary transition-colors">
               Bộ công cụ
             </a>
-            <Link href="/markets" className="hover:text-primary transition-colors">
-              Giá Vàng & BTC
-            </Link>
             <a href="#articles" className="hover:text-primary transition-colors">
               Bài viết
             </a>
