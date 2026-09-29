@@ -2,12 +2,9 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Clock, LogIn, Newspaper, PenLine } from "lucide-react";
+import { Clock, LayoutDashboard, LogIn, PenLine, Sparkles } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-// Đồng hồ là nguồn dữ liệu NGOÀI React, nên dùng useSyncExternalStore thay vì
-// setState trong useEffect (kiểu đó gây render dây chuyền và bị lint chặn).
-// Ảnh chụp phía server trả null → render chỗ giữ chỗ, tránh lệch hydration do
-// máy chủ và trình duyệt khác múi giờ.
 function dangKy(callback: () => void) {
   const id = setInterval(callback, 1000);
   return () => clearInterval(id);
@@ -15,9 +12,6 @@ function dangKy(callback: () => void) {
 const giayHienTai = () => Math.floor(Date.now() / 1000);
 const khongCoOServer = () => null;
 
-// Thanh đầu trang công khai. Giống trang báo: thương hiệu bên trái, ngày giờ ở
-// giữa, lối đăng nhập bên phải. Đồng hồ thu gọn dẫn sang trang đồng hồ thế giới
-// đầy đủ ở /dong-ho.
 export function SiteHeader({
   platformName,
   isLoggedIn,
@@ -29,48 +23,66 @@ export function SiteHeader({
   const now = giay === null ? null : new Date(giay * 1000);
 
   return (
-    <div className="border-b bg-card">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link href="/" className="flex items-center gap-2">
-          <Newspaper className="size-6 text-primary" />
-          <span className="text-lg font-bold tracking-tight">{platformName}</span>
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md transition-colors">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-primary-foreground shadow-sm shadow-primary/25 transition-transform duration-200 group-hover:scale-105">
+            <Sparkles className="size-4.5" />
+          </div>
+          <span className="text-base sm:text-lg font-bold tracking-tight text-foreground">
+            {platformName}
+          </span>
         </Link>
 
         <Link
           href="/dong-ho"
-          className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="hidden sm:flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs text-muted-foreground shadow-2xs hover:border-border hover:bg-accent/60 hover:text-foreground transition-all duration-150"
           title="Xem đồng hồ thế giới"
         >
-          <Clock className="size-4" />
+          <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+          <Clock className="size-3.5" />
           {now ? (
-            <span className="tabular-nums">
+            <span className="tabular-nums font-medium">
               {now.toLocaleTimeString("vi-VN")} ·{" "}
-              {now.toLocaleDateString("vi-VN", { weekday: "long", day: "2-digit", month: "2-digit" })}
+              {now.toLocaleDateString("vi-VN", {
+                weekday: "short",
+                day: "2-digit",
+                month: "2-digit",
+              })}
             </span>
           ) : (
-            // giữ chỗ đúng bề ngang để không giật layout khi giờ hiện ra
-            <span className="inline-block w-44" />
+            <span className="inline-block w-36" />
           )}
         </Link>
 
-        <div className="ml-auto flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-2 sm:gap-3 text-sm">
+          <ThemeToggle />
           {isLoggedIn ? (
-            <Link
-              href="/articles"
-              className="flex items-center gap-1.5 text-primary underline-offset-2 hover:underline"
-            >
-              <PenLine className="size-4" /> Viết bài
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/finance"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-border/70 bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+              >
+                <LayoutDashboard className="size-3.5" />
+                <span className="hidden sm:inline">Workspace</span>
+              </Link>
+              <Link
+                href="/articles"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+              >
+                <PenLine className="size-3.5" /> Viết bài
+              </Link>
+            </div>
           ) : (
             <Link
               href="/login"
-              className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
             >
-              <LogIn className="size-4" /> Đăng nhập
+              <LogIn className="size-3.5" /> Đăng nhập
             </Link>
           )}
         </div>
       </div>
-    </div>
+    </header>
   );
 }

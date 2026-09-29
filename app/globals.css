@@ -7,9 +7,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* --app-font do layout.tsx đặt theo font admin chọn trong Cài đặt.
-     Có chuỗi dự phòng để nếu biến thiếu thì vẫn ra sans-serif hệ thống,
-     không rơi về serif như trước. */
   --font-sans: var(--app-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif);
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
   --font-heading: var(--font-sans);
@@ -45,100 +42,93 @@
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-xl: calc(var(--radius) * 1.3);
+  --radius-2xl: calc(var(--radius) * 1.7);
   --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 2.8);
 }
 
-/* ── Bộ màu: nền trung tính hơi ngả lam (slate) + màu nhấn chàm ──────────────
-   Ba mặt phẳng tách bạch để mắt có chỗ bám: nền xám nhạt < thẻ trắng < sidebar.
-   Màu nhấn dùng chàm chứ không dùng xanh lá, để xanh lá/vàng/đỏ giữ nguyên
-   nghĩa trạng thái (thành công / cảnh báo / lỗi) trong các module.
-   Mọi cặp chữ–nền đã kiểm tra đạt WCAG AA (≥4.5:1). */
 :root {
-  --background: oklch(0.984 0.003 247.86); /* #F8FAFC nền hơi xám */
-  --foreground: oklch(0.208 0.040 265.75); /* #0F172A */
-  --card: oklch(1 0 0); /* thẻ trắng — nổi lên trên nền */
-  --card-foreground: oklch(0.208 0.040 265.75);
+  --background: oklch(0.985 0.004 250);
+  --foreground: oklch(0.19 0.04 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.04 265);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.208 0.040 265.75);
-  --primary: var(--tl-primary, oklch(0.511 0.230 276.97)); /* #4F46E5 chàm */
+  --popover-foreground: oklch(0.19 0.04 265);
+  --primary: var(--tl-primary, oklch(0.52 0.22 272));
   --primary-foreground: var(--tl-primary-foreground, oklch(1 0 0));
-  --secondary: oklch(0.968 0.007 247.9);
-  --secondary-foreground: oklch(0.279 0.037 260.03);
-  --muted: oklch(0.968 0.007 247.9); /* #F1F5F9 */
-  --muted-foreground: oklch(0.524 0.046 258.77); /* #5A6B85 — 5.4:1, đạt chuẩn */
-  --accent: var(--tl-accent, oklch(0.962 0.018 272.31)); /* #EEF2FF nền hover ngả chàm */
-  --accent-foreground: var(--tl-accent-foreground, oklch(0.511 0.230 276.97));
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.51); /* #E2E8F0 */
-  --input: oklch(0.929 0.013 255.51);
-  --ring: var(--tl-ring, oklch(0.585 0.204 277.12));
-  /* Biểu đồ: bộ màu phân loại thật, thay 5 sắc xám cũ không phân biệt được */
-  --chart-1: var(--tl-chart-1, oklch(0.585 0.204 277.12)); /* chàm */
-  --chart-2: oklch(0.696 0.150 162.48); /* ngọc */
-  --chart-3: oklch(0.769 0.166 70.08); /* hổ phách */
-  --chart-4: oklch(0.627 0.229 341.2); /* hồng sen */
-  --chart-5: oklch(0.646 0.153 232.66); /* lam trời */
-  --radius: 0.625rem;
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.208 0.040 265.75);
-  --sidebar-primary: var(--tl-sidebar-primary, oklch(0.511 0.230 276.97));
+  --secondary: oklch(0.965 0.008 250);
+  --secondary-foreground: oklch(0.27 0.035 260);
+  --muted: oklch(0.962 0.006 250);
+  --muted-foreground: oklch(0.50 0.04 260);
+  --accent: var(--tl-accent, oklch(0.96 0.02 270));
+  --accent-foreground: var(--tl-accent-foreground, oklch(0.50 0.22 272));
+  --destructive: oklch(0.58 0.24 27);
+  --border: oklch(0.92 0.01 255);
+  --input: oklch(0.92 0.01 255);
+  --ring: var(--tl-ring, oklch(0.58 0.20 272));
+  --chart-1: var(--tl-chart-1, oklch(0.58 0.20 272));
+  --chart-2: oklch(0.68 0.16 162);
+  --chart-3: oklch(0.76 0.17 70);
+  --chart-4: oklch(0.63 0.23 340);
+  --chart-5: oklch(0.65 0.15 235);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.995 0.002 250);
+  --sidebar-foreground: oklch(0.20 0.04 265);
+  --sidebar-primary: var(--tl-sidebar-primary, oklch(0.52 0.22 272));
   --sidebar-primary-foreground: var(--tl-sidebar-primary-foreground, oklch(1 0 0));
-  --sidebar-accent: var(--tl-sidebar-accent, oklch(0.962 0.018 272.31));
-  --sidebar-accent-foreground: var(--tl-sidebar-accent-foreground, oklch(0.511 0.230 276.97));
-  --sidebar-border: oklch(0.929 0.013 255.51);
-  --sidebar-ring: var(--tl-sidebar-ring, oklch(0.585 0.204 277.12));
+  --sidebar-accent: var(--tl-sidebar-accent, oklch(0.955 0.025 270));
+  --sidebar-accent-foreground: var(--tl-sidebar-accent-foreground, oklch(0.50 0.22 272));
+  --sidebar-border: oklch(0.93 0.01 255);
+  --sidebar-ring: var(--tl-sidebar-ring, oklch(0.58 0.20 272));
 }
 
 .dark {
-  --background: oklch(0.180 0.032 266.62); /* #0B1120 */
-  --foreground: oklch(0.945 0.012 259.82); /* #E8EDF5 */
-  --card: oklch(0.236 0.037 263.47); /* #151E30 — sáng hơn nền, thẻ nổi lên */
-  --card-foreground: oklch(0.945 0.012 259.82);
-  --popover: oklch(0.236 0.037 263.47);
-  --popover-foreground: oklch(0.945 0.012 259.82);
-  --primary: var(--td-primary, oklch(0.680 0.158 276.93)); /* #818CF8 chàm nhạt hơn cho nền tối */
-  --primary-foreground: var(--td-primary-foreground, oklch(0.180 0.032 266.62));
-  --secondary: oklch(0.279 0.037 260.03);
-  --secondary-foreground: oklch(0.945 0.012 259.82);
-  --muted: oklch(0.279 0.037 260.03); /* #1E293B */
-  --muted-foreground: oklch(0.731 0.036 259.41); /* #9BA9BF — 7.0:1 */
-  --accent: var(--td-accent, oklch(0.288 0.051 264.58)); /* #1E2A44 */
-  --accent-foreground: var(--td-accent-foreground, oklch(0.680 0.158 276.93));
-  --destructive: oklch(0.704 0.191 22.216);
-  /* Viền đặc thay vì trắng-10%: trước đây viền gần như tàng hình trên nền tối */
-  --border: oklch(0.330 0.036 258.33); /* #2A3648 */
-  --input: oklch(0.330 0.036 258.33);
-  --ring: var(--td-ring, oklch(0.680 0.158 276.93));
-  --chart-1: var(--td-chart-1, oklch(0.680 0.158 276.93));
-  --chart-2: oklch(0.696 0.150 162.48);
-  --chart-3: oklch(0.769 0.166 70.08);
-  --chart-4: oklch(0.627 0.229 341.2);
-  --chart-5: oklch(0.646 0.153 232.66);
-  --sidebar: oklch(0.201 0.034 263.36); /* #0E1626 — mặt phẳng thứ ba */
-  --sidebar-foreground: oklch(0.945 0.012 259.82);
-  --sidebar-primary: var(--td-sidebar-primary, oklch(0.680 0.158 276.93));
-  --sidebar-primary-foreground: var(--td-sidebar-primary-foreground, oklch(0.180 0.032 266.62));
-  --sidebar-accent: var(--td-sidebar-accent, oklch(0.288 0.051 264.58));
-  --sidebar-accent-foreground: var(--td-sidebar-accent-foreground, oklch(0.680 0.158 276.93));
-  --sidebar-border: oklch(0.330 0.036 258.33);
-  --sidebar-ring: var(--td-sidebar-ring, oklch(0.680 0.158 276.93));
+  --background: oklch(0.14 0.025 265);
+  --foreground: oklch(0.96 0.01 260);
+  --card: oklch(0.18 0.03 265);
+  --card-foreground: oklch(0.96 0.01 260);
+  --popover: oklch(0.18 0.03 265);
+  --popover-foreground: oklch(0.96 0.01 260);
+  --primary: var(--td-primary, oklch(0.68 0.16 272));
+  --primary-foreground: var(--td-primary-foreground, oklch(0.14 0.025 265));
+  --secondary: oklch(0.24 0.03 262);
+  --secondary-foreground: oklch(0.95 0.01 260);
+  --muted: oklch(0.22 0.03 262);
+  --muted-foreground: oklch(0.72 0.035 260);
+  --accent: var(--td-accent, oklch(0.26 0.045 266));
+  --accent-foreground: var(--td-accent-foreground, oklch(0.72 0.16 272));
+  --destructive: oklch(0.68 0.20 22);
+  --border: oklch(0.28 0.03 262);
+  --input: oklch(0.28 0.03 262);
+  --ring: var(--td-ring, oklch(0.68 0.16 272));
+  --chart-1: var(--td-chart-1, oklch(0.68 0.16 272));
+  --chart-2: oklch(0.70 0.16 162);
+  --chart-3: oklch(0.77 0.17 70);
+  --chart-4: oklch(0.64 0.23 340);
+  --chart-5: oklch(0.66 0.15 235);
+  --sidebar: oklch(0.16 0.028 265);
+  --sidebar-foreground: oklch(0.96 0.01 260);
+  --sidebar-primary: var(--td-sidebar-primary, oklch(0.68 0.16 272));
+  --sidebar-primary-foreground: var(--td-sidebar-primary-foreground, oklch(0.14 0.025 265));
+  --sidebar-accent: var(--td-sidebar-accent, oklch(0.25 0.045 266));
+  --sidebar-accent-foreground: var(--td-sidebar-accent-foreground, oklch(0.72 0.16 272));
+  --sidebar-border: oklch(0.26 0.03 262);
+  --sidebar-ring: var(--td-sidebar-ring, oklch(0.68 0.16 272));
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/40;
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
-  /* Số liệu dùng chữ số đều bề ngang — cột tiền/giờ thẳng hàng, không nhảy
-     khi giá trị đổi (Inter có sẵn tabular-nums) */
   table,
   [data-slot="table"] {
     font-variant-numeric: tabular-nums;
@@ -146,71 +136,121 @@
 }
 
 @layer utilities {
-  /* Màu ngữ nghĩa (tiền, cảnh báo, lỗi) đang viết cứng theo thang nền sáng —
-     emerald-700 / amber-600 / red-600 — nên trên nền tối chỉ đạt ~3.5:1, dưới
-     chuẩn 4.5:1. Mà đây lại chính là các con số tiền, chỗ quan trọng nhất.
-     Nâng sang sắc 400 cho riêng nền tối, sửa ở một chỗ thay vì 13 file.
-     Về lâu dài nên đổi hẳn sang token --success / --warning / --danger. */
+  .glass-panel {
+    background: color-mix(in oklab, var(--card) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  }
+  
+  .glass-nav {
+    background: color-mix(in oklab, var(--background) 82%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
+  }
+
+  .ambient-mesh {
+    background-image: 
+      radial-gradient(at 0% 0%, color-mix(in oklab, var(--primary) 12%, transparent) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, color-mix(in oklab, var(--primary) 8%, transparent) 0px, transparent 50%);
+  }
+
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(to bottom right, color-mix(in oklab, var(--primary) 30%, transparent), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
   .dark .text-emerald-600,
   .dark .text-emerald-700,
   .dark .text-green-700 {
-    color: oklch(0.765 0.177 163.22);
+    color: oklch(0.77 0.17 163);
   }
   .dark .text-amber-600,
   .dark .text-amber-700 {
-    color: oklch(0.828 0.189 84.43);
+    color: oklch(0.83 0.18 84);
   }
   .dark .text-red-600 {
-    color: oklch(0.704 0.191 22.22);
+    color: oklch(0.72 0.19 25);
   }
 }
 
 @layer components {
-  /* Thẻ nổi nhẹ khỏi nền thay vì chỉ có viền — tạo tầng thứ hai cho mắt bám.
-     Nền tối dùng bóng đậm hơn vì bóng nhạt vô hình trên nền tối. */
   [data-slot="card"] {
     box-shadow:
-      0 1px 2px 0 oklch(0.208 0.04 265.75 / 6%),
-      0 1px 3px 0 oklch(0.208 0.04 265.75 / 4%);
+      0 1px 3px 0 color-mix(in oklab, var(--foreground) 4%, transparent),
+      0 4px 12px -2px color-mix(in oklab, var(--foreground) 3%, transparent);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .dark [data-slot="card"] {
-    box-shadow: 0 1px 3px 0 oklch(0 0 0 / 35%);
+    box-shadow: 
+      0 1px 2px 0 rgba(0, 0, 0, 0.4),
+      0 4px 16px -2px rgba(0, 0, 0, 0.5);
+  }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--muted-foreground) 25%, transparent);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
   }
 }
-/* ── Kiểu chữ cho nội dung bài hướng dẫn (Markdown) ────────────────────────
-   Tự viết thay vì dùng plugin typography: chỉ cần chừng này quy tắc, mà lại
-   bám đúng token màu nên tự hợp cả nền sáng lẫn nền tối. */
+
 .prose-article {
-  font-size: 0.9375rem;
-  line-height: 1.75;
+  font-size: 0.95rem;
+  line-height: 1.8;
   color: var(--foreground);
 }
 .prose-article > * + * {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 .prose-article h1,
 .prose-article h2,
 .prose-article h3,
 .prose-article h4 {
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
-  scroll-margin-top: 5rem; /* nhảy tới mục không bị thanh trên che */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  scroll-margin-top: 5rem;
+  color: var(--foreground);
 }
-.prose-article h1 { font-size: 1.625rem; }
-.prose-article h2 { font-size: 1.3rem; }
-.prose-article h3 { font-size: 1.1rem; }
-.prose-article h4 { font-size: 1rem; }
+.prose-article h1 { font-size: 1.85rem; }
+.prose-article h2 { font-size: 1.45rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+.prose-article h3 { font-size: 1.2rem; }
+.prose-article h4 { font-size: 1.05rem; }
 .prose-article > * + h1,
 .prose-article > * + h2,
 .prose-article > * + h3 {
-  margin-top: 2rem;
-  padding-top: 0.25rem;
+  margin-top: 2.25rem;
 }
 .prose-article a {
   color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1.5px solid color-mix(in oklab, var(--primary) 40%, transparent);
+  transition: border-color 0.15s ease;
+}
+.prose-article a:hover {
+  border-bottom-color: var(--primary);
 }
 .prose-article ul,
 .prose-article ol {
@@ -218,22 +258,32 @@
 }
 .prose-article ul { list-style: disc; }
 .prose-article ol { list-style: decimal; }
-.prose-article li + li { margin-top: 0.35rem; }
-.prose-article li::marker { color: var(--muted-foreground); }
+.prose-article li + li { margin-top: 0.4rem; }
+.prose-article li::marker { color: var(--primary); }
 .prose-article blockquote {
   border-left: 3px solid var(--primary);
-  padding: 0.25rem 0 0.25rem 1rem;
+  background: color-mix(in oklab, var(--primary) 4%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.75rem 1rem;
   color: var(--muted-foreground);
+  font-style: italic;
 }
-/* mã lẻ trong câu — khác hẳn khối mã để không nhầm */
 .prose-article :not(pre) > code {
   background: var(--muted);
   border: 1px solid var(--border);
-  border-radius: 0.3rem;
-  padding: 0.1rem 0.35rem;
+  border-radius: 0.375rem;
+  padding: 0.15rem 0.4rem;
   font-size: 0.85em;
   font-family: var(--font-mono);
-  white-space: nowrap;
+  color: var(--primary);
+}
+.prose-article pre {
+  background: color-mix(in oklab, var(--card) 95%, black);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 .prose-article pre code {
   font-family: var(--font-mono);
@@ -246,11 +296,13 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 .prose-article th,
 .prose-article td {
   border: 1px solid var(--border);
-  padding: 0.5rem 0.75rem;
+  padding: 0.65rem 0.85rem;
   text-align: left;
 }
 .prose-article th {
@@ -260,17 +312,16 @@
 .prose-article img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   border: 1px solid var(--border);
+  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.06);
 }
 .prose-article hr {
   border: 0;
   border-top: 1px solid var(--border);
-  margin: 2rem 0;
+  margin: 2.5rem 0;
 }
 
-/* Tô màu cú pháp: dùng token của app nên đổi theme là code đổi theo, khỏi phải
-   nạp 2 file CSS của highlight.js rồi tự đổi qua lại */
 .prose-article .hljs-comment,
 .prose-article .hljs-quote { color: var(--muted-foreground); font-style: italic; }
 .prose-article .hljs-keyword,
@@ -278,7 +329,7 @@
 .prose-article .hljs-literal,
 .prose-article .hljs-section,
 .prose-article .hljs-doctag,
-.prose-article .hljs-type { color: var(--chart-4); }
+.prose-article .hljs-type { color: var(--chart-4); font-weight: 600; }
 .prose-article .hljs-string,
 .prose-article .hljs-regexp,
 .prose-article .hljs-addition { color: var(--chart-2); }
@@ -288,24 +339,20 @@
 .prose-article .hljs-title,
 .prose-article .hljs-name,
 .prose-article .hljs-selector-id,
-.prose-article .hljs-selector-class { color: var(--chart-1); font-weight: 500; }
+.prose-article .hljs-selector-class { color: var(--chart-1); font-weight: 600; }
 .prose-article .hljs-attr,
 .prose-article .hljs-attribute,
 .prose-article .hljs-variable,
 .prose-article .hljs-template-variable { color: var(--chart-5); }
 .prose-article .hljs-built_in,
-.prose-article .hljs-class .hljs-title { color: var(--chart-1); }
+.prose-article .hljs-class .hljs-title { color: var(--chart-1); font-weight: 600; }
 .prose-article .hljs-deletion { color: var(--destructive); }
 .prose-article .hljs-emphasis { font-style: italic; }
-.prose-article .hljs-strong { font-weight: 600; }
+.prose-article .hljs-strong { font-weight: 700; }
 
-/* ── Trình soạn thảo trực quan (TipTap) ────────────────────────────────────
-   Dùng lại .prose-article nên nhìn lúc soạn giống hệt lúc đăng. Phần dưới chỉ
-   bổ sung những thứ chỉ có khi đang soạn. */
 .tiptap:focus {
   outline: none;
 }
-/* Chỗ trống gợi ý khi bài chưa có chữ nào */
 .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   color: var(--muted-foreground);
@@ -313,7 +360,6 @@
   height: 0;
   pointer-events: none;
 }
-/* Bảng lúc soạn: hiện lưới rõ để biết đang ở ô nào, kéo được mép cột */
 .tiptap table {
   table-layout: fixed;
   width: 100%;
@@ -339,7 +385,6 @@
   background: var(--primary);
   cursor: col-resize;
 }
-/* Ảnh đang chọn — biết là đã bấm trúng để xoá/di chuyển */
 .tiptap img.ProseMirror-selectednode {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
