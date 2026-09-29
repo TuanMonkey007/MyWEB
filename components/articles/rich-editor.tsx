@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -52,6 +53,14 @@ export function RichEditor({
       },
     },
   });
+
+  // Đồng bộ nội dung khi giá trị value thay đổi từ chế độ HTML
+  useEffect(() => {
+    if (!editor) return;
+    if (editor.getHTML() !== value) {
+      editor.commands.setContent(value, { emitUpdate: false });
+    }
+  }, [editor, value]);
 
   if (!editor) {
     return <div className="min-h-[480px] animate-pulse rounded-lg border bg-muted/40" />;

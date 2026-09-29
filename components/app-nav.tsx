@@ -140,11 +140,11 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
       className={cn(
         "group flex min-h-9 items-center gap-3 rounded-xs px-3 py-2 text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring cursor-pointer",
         active
-          ? "border-2 border-[#1C1917] bg-[#F25C2B] font-bold text-white shadow-neo-sm dark:border-white/80"
+          ? "border-2 border-[#1C1917] bg-primary font-bold text-primary-foreground shadow-neo-sm dark:border-white/80"
           : "border-2 border-transparent font-bold text-stone-700 hover:border-[#1C1917] hover:bg-white hover:text-[#1C1917] hover:shadow-neo-sm dark:text-stone-300 dark:hover:border-white/80 dark:hover:bg-card dark:hover:text-white"
       )}
     >
-      <Icon className={cn("size-4 shrink-0", active ? "text-white" : "text-stone-600 group-hover:text-[#1C1917] dark:text-stone-400 dark:group-hover:text-white")} />
+      <Icon className={cn("size-4 shrink-0", active ? "text-primary-foreground" : "text-stone-600 group-hover:text-[#1C1917] dark:text-stone-400 dark:group-hover:text-white")} />
       <span className="truncate">{item.label}</span>
     </Link>
   );

@@ -194,7 +194,7 @@ export default function PersonalLandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-[#1C1917] selection:bg-[#F25C2B] selection:text-white dark:bg-[#18110B] dark:text-[#FAF7F0]">
+    <div className="min-h-screen bg-[#FAF7F0] text-[#1C1917] selection:bg-primary selection:text-white dark:bg-[#18110B] dark:text-[#FAF7F0]">
       {/* ── TOP UTILITY STRIP ── */}
       <div className="border-b-2 border-[#1C1917] bg-[#1E140C] text-xs text-[#FAF7F0] py-2 px-4 sm:px-8">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2">
@@ -203,16 +203,16 @@ export default function PersonalLandingPage() {
               <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
               Sẵn sàng kết nối & Hỗ trợ kỹ thuật
             </span>
-            <span className="hidden md:inline-block text-[#F25C2B]">|</span>
+            <span className="hidden md:inline-block text-primary">|</span>
             <span className="hidden md:flex items-center gap-1.5 font-medium">
-              <MapPin className="size-3.5 text-[#F25C2B]" /> Hà Nội, Việt Nam · Hữu Nghị Food
+              <MapPin className="size-3.5 text-primary" /> Hà Nội, Việt Nam · Hữu Nghị Food
             </span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-stone-400">Email:</span>
             <a
               href="mailto:tuannm@huunghi.com.vn"
-              className="font-bold text-[#F25C2B] hover:underline flex items-center gap-1"
+              className="font-bold text-primary hover:underline flex items-center gap-1"
             >
               <Mail className="size-3.5" /> tuannm@huunghi.com.vn
             </a>
@@ -225,14 +225,14 @@ export default function PersonalLandingPage() {
         <nav className="mx-auto max-w-6xl rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-5 py-3 shadow-neo transition-all flex items-center justify-between dark:bg-[#22170F]">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wide text-white shadow-neo-sm">
+            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-xs font-black tracking-wide text-primary-foreground shadow-neo-sm">
               T
             </div>
             <div className="flex flex-col">
               <span className="font-editorial text-xl font-bold tracking-tight text-[#1C1917] leading-none dark:text-[#FAF7F0]">
                 TUANNM
               </span>
-              <span className="text-[10px] font-black uppercase tracking-wider text-[#F25C2B]">
+              <span className="text-[10px] font-black uppercase tracking-wider text-primary">
                 Data & DMS Solutions
               </span>
             </div>
@@ -240,19 +240,19 @@ export default function PersonalLandingPage() {
 
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-7 text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0]">
-            <a href="#hero" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#hero" className="hover:text-primary transition-colors">
               Trang chủ
             </a>
-            <a href="#about" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#about" className="hover:text-primary transition-colors">
               Giới thiệu
             </a>
-            <a href="#tools" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#tools" className="hover:text-primary transition-colors">
               Bộ công cụ
             </a>
-            <a href="#articles" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#articles" className="hover:text-primary transition-colors">
               Bài viết
             </a>
-            <a href="#contact" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#contact" className="hover:text-primary transition-colors">
               Liên hệ
             </a>
           </div>
@@ -260,14 +260,14 @@ export default function PersonalLandingPage() {
           {/* Action buttons */}
           <div className="flex items-center gap-2">
             <Link
-              href="/huong-dan"
+              href="/bai-viet"
               className="hidden sm:inline-flex items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-white px-3 py-1.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
             >
               Tài liệu
             </Link>
             <Link
               href="/finance"
-              className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+              className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary px-4 py-1.5 text-xs font-black uppercase tracking-wider text-primary-foreground shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
             >
               Vào Workspace <ArrowRight className="ml-1 size-3.5" />
             </Link>
@@ -282,14 +282,14 @@ export default function PersonalLandingPage() {
           <div className="space-y-6 lg:col-span-7">
             {/* Status pill badge */}
             <div className="inline-flex items-center gap-2 rounded-xs border-2 border-[#1C1917] bg-white px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#1C1917] shadow-neo-sm dark:bg-card dark:text-foreground">
-              <Sparkles className="size-3.5 text-[#F25C2B]" />
+              <Sparkles className="size-3.5 text-primary" />
               Kỹ sư Dữ liệu & Giải pháp DMS · Hữu Nghị Food
             </div>
 
             {/* Main Headline */}
             <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-[#1C1917] leading-[1.08] dark:text-[#FAF7F0]">
               TỰ ĐỘNG HÓA QUY TRÌNH &
-              <span className="block text-[#F25C2B]">GIẢI PHÁP SỐ HÓA DỮ LIỆU</span>
+              <span className="block text-primary">GIẢI PHÁP SỐ HÓA DỮ LIỆU</span>
             </h1>
 
             {/* Subtitle */}
@@ -303,7 +303,7 @@ export default function PersonalLandingPage() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#tools"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-7 py-3 text-sm font-black uppercase tracking-wider text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                className="inline-flex cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary px-7 py-3 text-sm font-black uppercase tracking-wider text-primary-foreground shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               >
                 Khám phá Bộ Tools ({TOOLS_DATA.length})
               </a>
@@ -318,15 +318,15 @@ export default function PersonalLandingPage() {
             {/* Meta info row */}
             <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-bold text-stone-700 dark:text-stone-300">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <CheckCircle2 className="size-4 text-primary" />
                 <span>100% Chạy Offline / Local Server</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <CheckCircle2 className="size-4 text-primary" />
                 <span>Bảo mật AES-GCM Zero-Knowledge</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-[#F25C2B]" />
+                <CheckCircle2 className="size-4 text-primary" />
                 <span>Tối ưu hóa bảng tính lớn (SheetJS)</span>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default function PersonalLandingPage() {
             <div className="grid grid-cols-2 gap-3.5">
               {/* Box 1: DMS Route Automation */}
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-card">
-                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-[#F25C2B] shadow-neo-sm">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-primary shadow-neo-sm">
                   <FileSpreadsheet className="size-5" />
                 </div>
                 <div>
@@ -355,7 +355,7 @@ export default function PersonalLandingPage() {
 
               {/* Box 2: FaceID Log Clean */}
               <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-[#22170F]">
-                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-[#F25C2B] shadow-neo-sm dark:bg-card">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-primary shadow-neo-sm dark:bg-card">
                   <ScanFace className="size-5" />
                 </div>
                 <div>
@@ -373,7 +373,7 @@ export default function PersonalLandingPage() {
 
               {/* Box 3: Procurement & Budget */}
               <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-[#22170F]">
-                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-[#F25C2B] shadow-neo-sm dark:bg-card">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-white text-primary shadow-neo-sm dark:bg-card">
                   <PiggyBank className="size-5" />
                 </div>
                 <div>
@@ -391,7 +391,7 @@ export default function PersonalLandingPage() {
 
               {/* Box 4: Finance */}
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo flex flex-col justify-between aspect-square dark:bg-card">
-                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-[#F25C2B] shadow-neo-sm">
+                <div className="flex size-10 items-center justify-center rounded-xs border border-[#1C1917] bg-[#FDF1EA] text-primary shadow-neo-sm">
                   <Wallet className="size-5" />
                 </div>
                 <div>
@@ -409,7 +409,7 @@ export default function PersonalLandingPage() {
             </div>
 
             {/* Floating orange badge */}
-            <div className="absolute -bottom-5 right-4 z-10 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-4 py-2.5 text-center text-white shadow-neo">
+            <div className="absolute -bottom-5 right-4 z-10 rounded-xs border-2 border-[#1C1917] bg-primary px-4 py-2.5 text-center text-primary-foreground shadow-neo">
               <div className="font-editorial text-xl font-black leading-none">5+ NĂM</div>
               <div className="mt-0.5 text-[9px] font-bold uppercase tracking-wider">
                 Vận hành & Số hóa DMS
@@ -422,7 +422,7 @@ export default function PersonalLandingPage() {
       {/* ── SECTION DIVIDER ── */}
       <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-6">
         <div className="h-0.5 flex-1 bg-stone-300 dark:bg-stone-800" />
-        <div className="mx-4 text-[#F25C2B]">
+        <div className="mx-4 text-primary">
           <Terminal className="size-5" />
         </div>
         <div className="h-0.5 flex-1 bg-stone-300 dark:bg-stone-800" />
@@ -435,14 +435,14 @@ export default function PersonalLandingPage() {
           <div className="space-y-6 lg:col-span-6">
             <div className="rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 shadow-neo dark:bg-card">
               <div className="flex items-center gap-3">
-                <div className="flex size-12 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-white shadow-neo-sm font-editorial text-2xl font-black">
+                <div className="flex size-12 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-primary-foreground shadow-neo-sm font-editorial text-2xl font-black">
                   T
                 </div>
                 <div>
                   <h3 className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
                     Nguyễn Minh Tuấn
                   </h3>
-                  <p className="text-xs font-bold text-[#F25C2B]">
+                  <p className="text-xs font-bold text-primary">
                     Phòng DMS & CNTT — Hữu Nghị Food
                   </p>
                 </div>
@@ -450,7 +450,7 @@ export default function PersonalLandingPage() {
 
               <div className="my-5 border-t-2 border-[#1C1917] dark:border-stone-800" />
 
-              <div className="font-serif text-3xl font-bold leading-none text-[#F25C2B]">“</div>
+              <div className="font-serif text-3xl font-bold leading-none text-primary">“</div>
               <p className="font-serif italic text-sm sm:text-base leading-relaxed text-stone-800 dark:text-stone-200 mt-1">
                 &ldquo;Mọi quy trình thủ công lặp đi lặp lại hàng ngày trên bảng tính đều xứng đáng được tự động hóa.
                 Khi dữ liệu được chuẩn hóa ngay từ gốc, quyết định kinh doanh sẽ chính xác và áp lực vận hành
@@ -466,21 +466,21 @@ export default function PersonalLandingPage() {
             {/* 3 Stat boxes */}
             <div className="grid grid-cols-3 gap-3.5">
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">10+</div>
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">10+</div>
                 <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Tools thực chiến
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">100%</div>
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">100%</div>
                 <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Tự động hóa
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
-                <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">50K+</div>
+                <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">50K+</div>
                 <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Dòng dữ liệu/ngày
                 </div>
@@ -491,7 +491,7 @@ export default function PersonalLandingPage() {
           {/* Right: Narrative Story & Core Tech Stack */}
           <div className="space-y-6 lg:col-span-6 lg:pl-4">
             <div className="space-y-2">
-              <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+              <div className="text-xs font-black uppercase tracking-widest text-primary">
                 Về bản thân & Chuyên môn
               </div>
               <h2 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-foreground leading-tight">
@@ -533,7 +533,7 @@ export default function PersonalLandingPage() {
                     key={skill}
                     className="inline-flex items-center rounded-xs border-2 border-[#1C1917] bg-white px-2.5 py-1 text-xs font-bold text-foreground shadow-neo-sm dark:bg-card"
                   >
-                    <Code2 className="mr-1 size-3 text-[#F25C2B]" />
+                    <Code2 className="mr-1 size-3 text-primary" />
                     {skill}
                   </span>
                 ))}
@@ -546,7 +546,7 @@ export default function PersonalLandingPage() {
       {/* ── BỘ CÔNG CỤ (TOOLS & APPLICATIONS SHOWCASE) ── */}
       <section id="tools" className="mx-auto max-w-7xl px-4 sm:px-6 py-16">
         <div className="text-center space-y-3 mb-10">
-          <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+          <div className="text-xs font-black uppercase tracking-widest text-primary">
             Hệ sinh thái tiện ích số
           </div>
           <h2 className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
@@ -565,7 +565,7 @@ export default function PersonalLandingPage() {
                 onClick={() => setActiveCategory(cat)}
                 className={`cursor-pointer rounded-xs border-2 border-[#1C1917] px-4 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
                   activeCategory === cat
-                    ? "bg-[#F25C2B] text-white shadow-neo-sm"
+                    ? "bg-primary text-primary-foreground shadow-neo-sm"
                     : "bg-white text-[#1C1917] hover:bg-[#FAF7F0] dark:bg-card dark:text-foreground dark:hover:bg-muted"
                 }`}
               >
@@ -586,15 +586,15 @@ export default function PersonalLandingPage() {
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-3.5">
-                    <div className="flex size-11 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] text-[#F25C2B] shadow-neo-sm dark:bg-[#22170F]">
+                    <div className="flex size-11 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] text-primary shadow-neo-sm dark:bg-[#22170F]">
                       <Icon className="size-5 stroke-[2.5]" />
                     </div>
-                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-[#F25C2B] shadow-neo-sm dark:bg-[#2C1F15]">
+                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                       {tool.tag}
                     </span>
                   </div>
 
-                  <h3 className="font-editorial text-lg font-bold text-foreground leading-snug group-hover:text-[#F25C2B] transition-colors">
+                  <h3 className="font-editorial text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
                     {tool.title}
                   </h3>
 
@@ -609,7 +609,7 @@ export default function PersonalLandingPage() {
                   </span>
                   <Link
                     href={tool.href}
-                    className="inline-flex items-center gap-1 text-xs font-black text-[#F25C2B] hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-black text-primary hover:underline"
                   >
                     Mở công cụ <ArrowUpRight className="size-3.5" />
                   </Link>
@@ -625,7 +625,7 @@ export default function PersonalLandingPage() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
-              <div className="text-xs font-black uppercase tracking-widest text-[#F25C2B]">
+              <div className="text-xs font-black uppercase tracking-widest text-primary">
                 Kho kiến thức & Tài liệu
               </div>
               <h2 className="font-editorial text-3xl sm:text-4xl font-bold uppercase tracking-tight text-foreground mt-1">
@@ -636,10 +636,10 @@ export default function PersonalLandingPage() {
               </p>
             </div>
             <Link
-              href="/huong-dan"
+              href="/bai-viet"
               className="inline-flex items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-foreground shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card"
             >
-              Xem toàn bộ thư viện bài viết <ArrowRight className="size-3.5 text-[#F25C2B]" />
+              Xem toàn bộ thư viện bài viết <ArrowRight className="size-3.5 text-primary" />
             </Link>
           </div>
 
@@ -651,7 +651,7 @@ export default function PersonalLandingPage() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-[#F25C2B] shadow-neo-sm dark:bg-[#2C1F15]">
+                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                       {article.category}
                     </span>
                     <span className="text-[11px] font-bold text-muted-foreground font-mono">
@@ -659,8 +659,8 @@ export default function PersonalLandingPage() {
                     </span>
                   </div>
 
-                  <Link href={`/huong-dan/${article.slug}`}>
-                    <h3 className="font-editorial text-xl font-bold text-foreground leading-snug hover:text-[#F25C2B] transition-colors">
+                  <Link href={`/bai-viet/${article.slug}`}>
+                    <h3 className="font-editorial text-xl font-bold text-foreground leading-snug hover:text-primary transition-colors">
                       {article.title}
                     </h3>
                   </Link>
@@ -675,8 +675,8 @@ export default function PersonalLandingPage() {
                     {article.date} · Tuannm
                   </span>
                   <Link
-                    href={`/huong-dan/${article.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-black text-[#F25C2B] hover:underline"
+                    href={`/bai-viet/${article.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-black text-primary hover:underline"
                   >
                     Đọc tiếp <ArrowRight className="size-3.5" />
                   </Link>
@@ -694,8 +694,8 @@ export default function PersonalLandingPage() {
             {/* Left Column: Direct contact info */}
             <div className="space-y-6 lg:col-span-6">
               <div className="flex items-center gap-3">
-                <div className="h-0.5 w-12 bg-[#F25C2B]" />
-                <span className="text-xs font-bold uppercase tracking-widest text-[#F25C2B]">
+                <div className="h-0.5 w-12 bg-primary" />
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">
                   Kết nối & Hỗ trợ
                 </span>
               </div>
@@ -711,21 +711,21 @@ export default function PersonalLandingPage() {
 
               <div className="space-y-3 pt-2">
                 <div className="flex items-center gap-3.5 rounded-xs border-2 border-stone-800 bg-[#291B11] p-3.5">
-                  <div className="flex size-10 items-center justify-center rounded-xs bg-[#F25C2B] text-white">
+                  <div className="flex size-10 items-center justify-center rounded-xs bg-primary text-primary-foreground">
                     <Mail className="size-5" />
                   </div>
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
                       Email công việc
                     </div>
-                    <a href="mailto:tuannm@huunghi.com.vn" className="font-mono text-sm font-bold text-white hover:text-[#F25C2B] transition-colors">
+                    <a href="mailto:tuannm@huunghi.com.vn" className="font-mono text-sm font-bold text-white hover:text-primary transition-colors">
                       tuannm@huunghi.com.vn
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3.5 rounded-xs border-2 border-stone-800 bg-[#291B11] p-3.5">
-                  <div className="flex size-10 items-center justify-center rounded-xs bg-[#F25C2B] text-white">
+                  <div className="flex size-10 items-center justify-center rounded-xs bg-primary text-primary-foreground">
                     <MapPin className="size-5" />
                   </div>
                   <div>
@@ -758,7 +758,7 @@ export default function PersonalLandingPage() {
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                       placeholder="Nguyễn Văn A"
-                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-primary dark:bg-[#18110B]"
                     />
                   </div>
 
@@ -772,7 +772,7 @@ export default function PersonalLandingPage() {
                       value={contactForm.emailOrPhone}
                       onChange={(e) => setContactForm({ ...contactForm, emailOrPhone: e.target.value })}
                       placeholder="email@huunghi.com.vn hoặc 09xx..."
-                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-primary dark:bg-[#18110B]"
                     />
                   </div>
 
@@ -785,7 +785,7 @@ export default function PersonalLandingPage() {
                       value={contactForm.subject}
                       onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                       placeholder="Vd: Chuyển tuyến NPP, Lỗi FaceID, Góp ý tool..."
-                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-primary dark:bg-[#18110B]"
                     />
                   </div>
 
@@ -799,14 +799,14 @@ export default function PersonalLandingPage() {
                       value={contactForm.message}
                       onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                       placeholder="Mô tả cụ thể yêu cầu hoặc thắc mắc của bạn..."
-                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-[#F25C2B] dark:bg-[#18110B]"
+                      className="w-full rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-primary dark:bg-[#18110B]"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="mt-2 w-full cursor-pointer rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] py-3 text-xs font-black uppercase tracking-widest text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
+                    className="mt-2 w-full cursor-pointer rounded-xs border-2 border-[#1C1917] bg-primary py-3 text-xs font-black uppercase tracking-widest text-primary-foreground shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
                   >
                     <Send className="size-3.5" /> {submitting ? "Đang gửi..." : "Gửi lời nhắn ngay"}
                   </button>
@@ -821,7 +821,7 @@ export default function PersonalLandingPage() {
       <footer className="border-t-2 border-[#1C1917] bg-[#140D07] text-[#FAF7F0] py-10 px-4 sm:px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-sm font-black text-white shadow-neo-sm">
+            <div className="flex size-9 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-sm font-black text-white shadow-neo-sm">
               HNF
             </div>
             <div>
@@ -835,19 +835,19 @@ export default function PersonalLandingPage() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-bold text-stone-300">
-            <a href="#hero" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#hero" className="hover:text-primary transition-colors">
               Trang chủ
             </a>
-            <a href="#about" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#about" className="hover:text-primary transition-colors">
               Giới thiệu
             </a>
-            <a href="#tools" className="hover:text-[#F25C2B] transition-colors">
+            <a href="#tools" className="hover:text-primary transition-colors">
               Công cụ số
             </a>
-            <Link href="/huong-dan" className="hover:text-[#F25C2B] transition-colors">
+            <Link href="/bai-viet" className="hover:text-primary transition-colors">
               Bài viết hướng dẫn
             </Link>
-            <Link href="/login" className="text-[#F25C2B] hover:underline">
+            <Link href="/login" className="text-primary hover:underline">
               Đăng nhập Workspace
             </Link>
           </div>

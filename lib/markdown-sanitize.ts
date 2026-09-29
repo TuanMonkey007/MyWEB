@@ -44,6 +44,11 @@ export const articleSchema: Schema = {
     "abbr",
     "kbd",
     "time",
+    // nhúng media an toàn
+    "iframe",
+    "video",
+    "audio",
+    "source",
   ],
   attributes: {
     ...defaultSchema.attributes,
@@ -62,6 +67,10 @@ export const articleSchema: Schema = {
       // bỏ âm thầm.
       ["style", ...CANH_LE],
     ],
+    iframe: ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "title"],
+    video: ["src", "controls", "width", "height", "autoplay", "loop", "muted", "poster"],
+    audio: ["src", "controls", "autoplay", "loop", "muted"],
+    source: ["src", "type"],
     img: [
       ...(defaultSchema.attributes?.img ?? []),
       "src",

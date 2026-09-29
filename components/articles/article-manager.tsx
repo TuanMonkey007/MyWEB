@@ -101,15 +101,15 @@ export function ArticleManager({
             Quản lý bài viết & Hướng dẫn
           </h1>
           <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
-            Viết tài liệu kỹ thuật bằng Markdown. Bài công khai hiện ở{" "}
-            <Link href="/huong-dan" className="text-[#F25C2B] underline-offset-2 hover:underline font-bold">
-              /huong-dan
+            Viết tài liệu kỹ thuật & chia sẻ kiến thức. Bài công khai hiện ở{" "}
+            <Link href="/bai-viet" className="text-primary underline-offset-2 hover:underline font-bold">
+              /bai-viet
             </Link>{" "}
             cho cả người chưa đăng nhập.
           </p>
         </div>
         <div className="ml-auto flex gap-2">
-          <Link href="/huong-dan" target="_blank">
+          <Link href="/bai-viet" target="_blank">
             <Button variant="outline">
               <Eye className="size-4" /> Xem trang công khai
             </Button>

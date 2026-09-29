@@ -29,7 +29,7 @@ export default async function MainLayout({
           <div className="flex h-full w-full items-center justify-between px-4 sm:px-6">
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wider text-white shadow-neo-sm">
+                <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-xs font-black tracking-wider text-primary-foreground shadow-neo-sm">
                   HNF
                 </div>
                 <div>
@@ -48,7 +48,7 @@ export default async function MainLayout({
                 href="/account"
                 className="hidden min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-2.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground sm:flex"
               >
-                <CircleUser className="size-3.5 text-[#F25C2B]" />
+                <CircleUser className="size-3.5 text-primary" />
                 <span>{nav.userName}</span>
               </Link>
               <div className="hidden h-5 w-0.5 bg-[#1C1917] sm:block dark:bg-stone-700" />

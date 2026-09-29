@@ -31,7 +31,7 @@ export function SiteHeader({
             href="/"
             className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wide text-white shadow-neo-sm">
+            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-xs font-black tracking-wide text-primary-foreground shadow-neo-sm">
               HNF
             </div>
             <div>
@@ -53,7 +53,7 @@ export function SiteHeader({
             title="Đồng hồ hệ thống"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-[#1C1917]" />
-            <Clock className="size-3.5 text-[#F25C2B]" />
+            <Clock className="size-3.5 text-primary" />
             {now ? (
               <span className="tabular-nums font-mono">
                 {now.toLocaleTimeString("vi-VN")} ·{" "}
@@ -79,11 +79,11 @@ export function SiteHeader({
                 href="/finance"
                 className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-3 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
               >
-                <LayoutDashboard className="size-3.5 text-[#F25C2B]" /> Workspace
+                <LayoutDashboard className="size-3.5 text-primary" /> Workspace
               </Link>
               <Link
                 href="/articles"
-                className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-3 text-xs font-bold text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-primary px-3 text-xs font-bold text-primary-foreground shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
               >
                 <PenLine className="size-3.5" /> Viết bài
               </Link>
@@ -91,7 +91,7 @@ export function SiteHeader({
           ) : (
             <Link
               href="/login"
-              className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-3.5 text-xs font-bold text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
+              className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-primary px-3.5 text-xs font-bold text-primary-foreground shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
             >
               <LogIn className="size-3.5" /> Đăng nhập
             </Link>

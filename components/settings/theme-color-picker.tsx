@@ -13,6 +13,7 @@ import {
   deriveTheme,
   isValidHex,
   themeContrast,
+  themeStyleVars,
 } from "@/lib/theme-color";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +38,11 @@ export function ThemeColorPicker({ current }: { current: string }) {
       });
       if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Lưu thất bại");
       toast.success("Đã đổi màu giao diện");
-      router.refresh();
+      const vars = themeStyleVars(color.toUpperCase());
+      for (const [k, v] of Object.entries(vars)) {
+        document.documentElement.style.setProperty(`--${k}`, v);
+      }
+      window.location.reload();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Lỗi");
     } finally {

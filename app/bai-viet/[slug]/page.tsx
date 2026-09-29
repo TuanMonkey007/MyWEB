@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ArticlePage({ params }: Props) {
+export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
   const user = await getCurrentUser();
   const article = await getArticleBySlug(user, slug);
@@ -36,15 +36,15 @@ export default async function ArticlePage({ params }: Props) {
     <article className="mx-auto max-w-4xl space-y-6">
       <div className="flex items-center justify-between border-b-2 border-[#1C1917] pb-3 dark:border-stone-800">
         <Link
-          href="/huong-dan"
+          href="/bai-viet"
           className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-all rounded-xs border-2 border-transparent hover:border-[#1C1917] px-2 py-1"
         >
-          <ArrowLeft className="size-3.5" /> Tất cả bài hướng dẫn
+          <ArrowLeft className="size-3.5" /> Tất cả bài viết
         </Link>
         {canEdit(user, article) && (
           <Link
             href={`/articles/${article.id}`}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#F25C2B] hover:bg-[#E8592A] transition-all rounded-xs border-2 border-[#1C1917] px-3 py-1 shadow-neo-sm"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-primary-foreground bg-primary hover:bg-primary/90 transition-all rounded-xs border-2 border-[#1C1917] px-3 py-1 shadow-neo-sm"
           >
             <Pencil className="size-3" /> Sửa bài viết
           </Link>
@@ -53,7 +53,7 @@ export default async function ArticlePage({ params }: Props) {
 
       <header className="space-y-3 rounded-sm border-2 border-[#1C1917] bg-white p-5 sm:p-6 shadow-neo dark:bg-card">
         {article.category && (
-          <span className="inline-flex items-center rounded-xs border border-[#1C1917] bg-[#F25C2B] px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-white shadow-neo-sm">
+          <span className="inline-flex items-center rounded-xs border border-[#1C1917] bg-primary px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-primary-foreground shadow-neo-sm">
             {article.category.name}
           </span>
         )}
@@ -68,11 +68,11 @@ export default async function ArticlePage({ params }: Props) {
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-3 border-t-2 border-[#1C1917] text-xs text-muted-foreground dark:border-stone-800">
           <span className="flex items-center gap-1.5 font-bold text-foreground">
-            <UserIcon className="size-3.5 text-[#F25C2B]" />
+            <UserIcon className="size-3.5 text-primary" />
             {article.author.displayName || article.author.username}
           </span>
           <span className="flex items-center gap-1.5 font-medium font-mono">
-            <CalendarDays className="size-3.5 text-[#F25C2B]" />
+            <CalendarDays className="size-3.5 text-primary" />
             {(article.publishedAt ?? article.createdAt).toLocaleDateString("vi-VN", {
               year: "numeric",
               month: "numeric",
@@ -80,7 +80,7 @@ export default async function ArticlePage({ params }: Props) {
             })}
           </span>
           <span className="flex items-center gap-1.5 font-bold text-foreground">
-            <Eye className="size-3.5 text-[#F25C2B]" />
+            <Eye className="size-3.5 text-primary" />
             {article.views + 1} lượt xem
           </span>
           {article.visibility !== "PUBLIC" && (

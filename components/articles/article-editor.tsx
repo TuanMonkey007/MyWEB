@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ArrowLeft, ExternalLink, ImagePlus, Loader2, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink, Eye, ImagePlus, Loader2, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RichEditor } from "@/components/articles/rich-editor";
+import { HtmlEditor } from "@/components/articles/html-editor";
 import { useCan } from "@/components/permissions-provider";
+import { cn } from "@/lib/utils";
 import {
   VISIBILITIES,
   VISIBILITY_HINTS,
@@ -61,6 +63,7 @@ export function ArticleEditor({
   const [uploading, setUploading] = useState(false);
   const coverRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
+  const [editorMode, setEditorMode] = useState<"visual" | "html">("visual");
 
   async function uploadCover(file: File) {
     setUploading(true);
@@ -123,7 +126,7 @@ export function ArticleEditor({
           {article ? "Sửa bài viết" : "Viết bài mới"}
         </h1>
         {article && visibility !== "DRAFT" && (
-          <Link href={`/huong-dan/${article.slug}`} target="_blank">
+          <Link href={`/bai-viet/${article.slug}`} target="_blank">
             <Button variant="outline" size="sm">
               <ExternalLink className="size-4" /> Xem trang thật
             </Button>
@@ -236,17 +239,52 @@ export function ArticleEditor({
         </CardContent>
       </Card>
 
-      <div className="space-y-1.5">
-        <Label className="text-xs">Nội dung</Label>
-        <RichEditor value={content} onChange={setContent} />
+      <div className="space-y-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <Label className="text-xs font-bold uppercase tracking-wider text-foreground">
+            Nội dung bài viết
+          </Label>
+          <div className="flex items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-[#F5EFEB] p-0.5 shadow-neo-sm dark:bg-[#1E140C] dark:border-stone-800">
+            <button
+              type="button"
+              onClick={() => setEditorMode("visual")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 text-xs font-bold transition-all rounded-xs cursor-pointer",
+                editorMode === "visual"
+                  ? "border border-[#1C1917] bg-white text-foreground shadow-neo-sm dark:bg-card dark:text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Eye className="size-3.5 text-primary" /> Soạn trực quan (Visual)
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditorMode("html")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 text-xs font-bold transition-all rounded-xs cursor-pointer",
+                editorMode === "html"
+                  ? "border border-[#1C1917] bg-[#1C1917] text-white shadow-neo-sm dark:bg-card dark:text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Code2 className="size-3.5 text-primary" /> Mã nguồn HTML
+            </button>
+          </div>
+        </div>
+
+        {editorMode === "visual" ? (
+          <RichEditor value={content} onChange={setContent} />
+        ) : (
+          <HtmlEditor value={content} onChange={setContent} />
+        )}
+
         <p className="text-xs text-muted-foreground">
-          Gõ và định dạng trực tiếp — bôi đen chữ rồi bấm nút trên thanh công cụ.
-          Chèn ảnh, bảng, khối lệnh, liên kết đều có sẵn.
+          {editorMode === "visual"
+            ? "Gõ và định dạng trực tiếp — bôi đen chữ rồi bấm nút trên thanh công cụ. Chèn ảnh, bảng, khối lệnh, liên kết đều có sẵn."
+            : "Chế độ sửa trực tiếp HTML — bạn có thể viết thẻ HTML, nhúng class Tailwind, tạo bảng tùy chỉnh hoặc dán code từ bên ngoài vào."}
           {article?.format === "MARKDOWN" && (
-            <span className="mt-1 block text-amber-600">
-              Bài này viết bằng Markdown từ trước. Lưu lại sẽ chuyển sang định dạng
-              mới — nội dung giữ nguyên, nhưng cú pháp Markdown (## , **đậm**) sẽ
-              thành chữ thường.
+            <span className="mt-1 block text-amber-600 font-bold">
+              Bài này viết bằng Markdown từ trước. Lưu lại sẽ chuyển sang định dạng HTML mới — nội dung giữ nguyên.
             </span>
           )}
         </p>
