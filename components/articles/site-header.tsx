@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Clock, LayoutDashboard, LogIn, PenLine } from "lucide-react";
+import { Clock, LayoutDashboard, LogIn, PenLine, TrendingUp } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 function dangKy(callback: () => void) {
@@ -45,8 +45,16 @@ export function SiteHeader({
           </Link>
         </div>
 
-        {/* Live Status Badge */}
+        {/* Live Status Badges (Public: Markets & Clock) */}
         <div className="hidden md:flex items-center space-x-2">
+          <Link
+            href="/markets"
+            className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-2.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
+            title="Biểu đồ Giá Vàng & Bitcoin"
+          >
+            <TrendingUp className="size-3.5 text-amber-500" />
+            <span>Giá Vàng & BTC</span>
+          </Link>
           <Link
             href="/dong-ho"
             className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-2.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
@@ -71,6 +79,15 @@ export function SiteHeader({
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {/* Mobile quick link to markets */}
+          <Link
+            href="/markets"
+            className="md:hidden inline-flex min-h-8 items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-white px-2 text-xs font-bold text-[#1C1917] shadow-neo-sm dark:bg-card dark:text-foreground"
+          >
+            <TrendingUp className="size-3.5 text-amber-500" />
+            <span>Giá Vàng</span>
+          </Link>
+
           <ThemeToggle />
           <div className="hidden h-5 w-0.5 bg-[#1C1917] sm:block dark:bg-stone-700" />
           {isLoggedIn ? (

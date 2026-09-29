@@ -27,8 +27,6 @@ export const MODULE_PATH_PREFIXES: [string, ModuleId][] = [
   ["/api/categories", "finance"],
   ["/api/upload", "finance"],
   ["/api/images", "finance"],
-  ["/markets", "markets"],
-  ["/api/markets", "markets"],
   ["/procurement", "procurement"],
   ["/api/budget-years", "procurement"],
   ["/api/budget-groups", "procurement"],

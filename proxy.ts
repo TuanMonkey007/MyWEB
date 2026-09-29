@@ -5,7 +5,7 @@ import { ADMIN_PATH_PREFIXES } from "@/lib/modules";
 import { homeFor, requiredCapability, userCan } from "@/lib/permissions";
 
 // Cổng phân quyền của platform (Next 16 proxy chạy Node runtime → dùng được Prisma):
-// - Public: landing "/", /login, API đăng nhập, favicon
+// - Public: landing "/", /login, /dong-ho, /markets, /gia-vang, API đăng nhập, favicon
 // - Đã đăng nhập: chặn theo QUYỀN CHI TIẾT (view/create/edit/delete + đặc biệt)
 //   ứng với method+path; khu /access, /settings, /api/users chỉ ADMIN
 export default async function proxy(req: NextRequest) {
@@ -14,11 +14,20 @@ export default async function proxy(req: NextRequest) {
   if (
     pathname === "/" ||
     pathname === "/dong-ho" ||
+    // Khu thị trường, giá vàng & bitcoin công khai (không cần đăng nhập)
+    pathname === "/markets" ||
+    pathname.startsWith("/markets/") ||
+    pathname === "/gia-vang" ||
+    pathname.startsWith("/gia-vang/") ||
+    pathname === "/api/markets/tickers" ||
+    pathname.startsWith("/api/markets/") ||
     // Khu bài hướng dẫn công khai. Trang tự lọc theo quyền xem (lib/articles
     // visibleWhere): chưa đăng nhập chỉ thấy bài PUBLIC, đăng nhập rồi thấy
     // thêm bài nội bộ. Không có API công khai — trang đọc thẳng từ DB.
     pathname === "/huong-dan" ||
     pathname.startsWith("/huong-dan/") ||
+    pathname === "/bai-viet" ||
+    pathname.startsWith("/bai-viet/") ||
     // Ảnh bìa bài viết — trang công khai cần hiện được cho khách
     pathname.startsWith("/api/anh-bai-viet/") ||
     pathname.startsWith("/api/auth/login") ||
