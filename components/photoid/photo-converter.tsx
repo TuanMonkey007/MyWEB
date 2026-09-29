@@ -150,10 +150,10 @@ export function PhotoConverter() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-          <ImageIcon className="size-6" /> Chuyển ảnh sang khổ thẻ
+        <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+          <ImageIcon className="size-5 text-primary" /> Chuyển ảnh sang khổ thẻ
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Nhận ảnh chụp kiểu gì cũng được (ngang, dọc, vuông, ảnh điện thoại) rồi cắt
           về đúng khổ 3×4 — <b>cắt bớt phần thừa chứ không kéo giãn</b>, nên mặt không
           bị méo. Tự dò khuôn mặt để đặt khung; ảnh nào lệch thì nhích lại bằng tay.
@@ -352,7 +352,7 @@ export function PhotoConverter() {
             </div>
 
             <p className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Check className="size-3.5 text-emerald-600" />
+              <Check className="size-3.5 text-primary" />
               Ảnh giữ trên máy chủ 2 giờ rồi tự xoá. Tải về trước khi đóng trang.
             </p>
           </CardContent>

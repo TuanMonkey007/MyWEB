@@ -35,7 +35,7 @@ export function QuickAddButtons({
           onClick={() => setOpen("expense")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-700 border border-rose-200/80 hover:bg-rose-500/20 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/40 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-rose-500/20 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-500/20 dark:text-rose-400 transition-colors disabled:opacity-50"
         >
           <Minus className="size-3.5" /> Khoản chi
         </button>
@@ -44,7 +44,7 @@ export function QuickAddButtons({
           onClick={() => setOpen("income")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-700 border border-emerald-200/80 hover:bg-emerald-500/20 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/40 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-400 transition-colors disabled:opacity-50"
         >
           <Plus className="size-3.5" /> Khoản thu
         </button>
@@ -53,10 +53,48 @@ export function QuickAddButtons({
           onClick={() => setOpen("transfer")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200/80 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
         >
           <ArrowLeftRight className="size-3.5" /> Chuyển khoản
         </button>
       </div>
 
-      <Dialog open={open === "expense"} onOpenChange={(o) => !o && close()}>\n        <DialogContent className=\"sm:max-w-md\">\n          <DialogHeader>\n            <DialogTitle>Thêm khoản chi</DialogTitle>\n          </DialogHeader>\n          <TransactionForm\n            kind=\"expense\"\n            wallets={wallets}\n            categories={expenseCategories}\n            onDone={close}\n          />\n        </DialogContent>\n      </Dialog>\n\n      <Dialog open={open === \"income\"} onOpenChange={(o) => !o && close()}>\n        <DialogContent className=\"sm:max-w-md\">\n          <DialogHeader>\n            <DialogTitle>Thêm khoản thu</DialogTitle>\n          </DialogHeader>\n          <TransactionForm\n            kind=\"income\"\n            wallets={wallets}\n            categories={incomeCategories}\n            onDone={close}\n          />\n        </DialogContent>\n      </Dialog>\n\n      <Dialog open={open === \"transfer\"} onOpenChange={(o) => !o && close()}>\n        <DialogContent className=\"sm:max-w-md\">\n          <DialogHeader>\n            <DialogTitle>Chuyển khoản nội bộ</DialogTitle>\n          </DialogHeader>\n          <TransferForm wallets={wallets} onDone={close} />\n        </DialogContent>\n      </Dialog>\n    </>\n  );\n}\n
+      <Dialog open={open === "expense"} onOpenChange={(o) => !o && close()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Thêm khoản chi</DialogTitle>
+          </DialogHeader>
+          <TransactionForm
+            kind="expense"
+            wallets={wallets}
+            categories={expenseCategories}
+            onDone={close}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={open === "income"} onOpenChange={(o) => !o && close()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Thêm khoản thu</DialogTitle>
+          </DialogHeader>
+          <TransactionForm
+            kind="income"
+            wallets={wallets}
+            categories={incomeCategories}
+            onDone={close}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={open === "transfer"} onOpenChange={(o) => !o && close()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Chuyển khoản nội bộ</DialogTitle>
+          </DialogHeader>
+          <TransferForm wallets={wallets} onDone={close} />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}

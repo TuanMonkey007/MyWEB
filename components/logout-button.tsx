@@ -26,6 +26,7 @@ export function LogoutButton({
         size="icon"
         className="size-8 text-muted-foreground"
         title="Đăng xuất"
+        aria-label="Đăng xuất"
         onClick={handleLogout}
       >
         <LogOut className="size-4" />

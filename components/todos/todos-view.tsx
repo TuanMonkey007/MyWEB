@@ -33,9 +33,22 @@ const VIEW_KEY = "todos-view";
 
 function PriorityBadge({ priority }: { priority: string }) {
   if (priority === "HIGH")
-    return <Badge className="bg-red-600 text-white">Cao</Badge>;
-  if (priority === "LOW") return <Badge variant="secondary">Thấp</Badge>;
-  return <Badge className="bg-amber-500 text-white">Vừa</Badge>;
+    return (
+      <Badge className="bg-destructive/10 text-destructive border border-destructive/20 text-[10px] font-semibold">
+        Cao
+      </Badge>
+    );
+  if (priority === "LOW")
+    return (
+      <Badge variant="secondary" className="text-[10px]">
+        Thấp
+      </Badge>
+    );
+  return (
+    <Badge className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 text-[10px] font-semibold">
+      Vừa
+    </Badge>
+  );
 }
 
 function DueDate({ todo }: { todo: TodoDTO }) {
@@ -44,7 +57,7 @@ function DueDate({ todo }: { todo: TodoDTO }) {
     <span
       className={cn(
         "inline-flex items-center gap-1 text-xs",
-        isOverdue(todo) ? "font-medium text-red-600" : "text-muted-foreground"
+        isOverdue(todo) ? "font-medium text-destructive" : "text-muted-foreground"
       )}
     >
       <CalendarDays className="size-3.5" />
@@ -76,7 +89,6 @@ export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
     localStorage.setItem(VIEW_KEY, v);
   }
 
-  // Đổi trạng thái lạc quan (tick checkbox, kéo thả, nút mũi tên)
   async function setStatus(todo: TodoDTO, status: TodoStatus) {
     if (todo.status === status) return;
     setTodos((ts) =>
@@ -131,27 +143,29 @@ export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Việc cần làm</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+            Việc cần làm
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             {openTodos.length} việc đang mở · {doneTodos.length} đã xong
           </p>
         </div>
-        <div className="flex rounded-md border p-0.5">
+        <div className="flex rounded-md border border-border bg-muted/40 p-0.5">
           <Button
             variant={view === "list" ? "default" : "ghost"}
             size="sm"
-            className="h-8"
+            className="h-7 text-xs"
             onClick={() => switchView("list")}
           >
-            <List className="size-4" /> Danh sách
+            <List className="size-3.5" /> Danh sách
           </Button>
           <Button
             variant={view === "kanban" ? "default" : "ghost"}
             size="sm"
-            className="h-8"
+            className="h-7 text-xs"
             onClick={() => switchView("kanban")}
           >
-            <Kanban className="size-4" /> Kanban
+            <Kanban className="size-3.5" /> Kanban
           </Button>
         </div>
       </div>
@@ -162,13 +176,16 @@ export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
           onChange={(e) => setQuickTitle(e.target.value)}
           placeholder={canCreate ? "Thêm việc mới rồi nhấn Enter..." : NO_PERM}
           disabled={!canCreate}
+          className="h-9 text-xs sm:text-sm"
         />
         <Button
           type="submit"
+          size="sm"
           disabled={!canCreate || adding || !quickTitle.trim()}
           title={canCreate ? undefined : NO_PERM}
+          className="h-9 text-xs"
         >
-          <Plus className="size-4" /> Thêm
+          <Plus className="size-3.5" /> Thêm
         </Button>
       </form>
 
@@ -213,26 +230,26 @@ function ChecklistView({
 
   if (todos.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed py-16 text-center text-sm text-muted-foreground">
+      <div className="rounded-lg border border-dashed border-border bg-card py-16 text-center text-sm text-muted-foreground">
         Chưa có việc nào — thêm việc đầu tiên ở ô phía trên.
       </div>
     );
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {sections.map(
         ({ status, todos: items }) =>
           items.length > 0 && (
             <div key={status}>
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {TODO_STATUS_LABELS[status]} ({items.length})
               </h2>
-              <ul className="divide-y rounded-lg border">
+              <ul className="divide-y divide-border/60 rounded-lg border border-border bg-card shadow-xs">
                 {items.map((t) => (
                   <li
                     key={t.id}
-                    className="flex cursor-pointer items-center gap-3 px-3 py-2.5 hover:bg-accent/50"
+                    className="flex cursor-pointer items-center gap-3 px-3.5 py-2.5 hover:bg-muted/30 transition-colors"
                     onClick={() => onOpen(t)}
                   >
                     <input
@@ -240,19 +257,19 @@ function ChecklistView({
                       checked={t.status === "DONE"}
                       onChange={() => onToggle(t)}
                       onClick={(e) => e.stopPropagation()}
-                      className="size-4 shrink-0 accent-primary"
+                      className="size-4 shrink-0 rounded accent-primary cursor-pointer"
                     />
                     <div className="min-w-0 flex-1">
                       <div
                         className={cn(
-                          "truncate font-medium",
+                          "truncate text-xs sm:text-sm font-medium text-foreground",
                           t.status === "DONE" && "text-muted-foreground line-through"
                         )}
                       >
                         {t.title}
                       </div>
                       {t.notes && (
-                        <div className="truncate text-xs text-muted-foreground">
+                        <div className="truncate text-[11px] text-muted-foreground">
                           {t.notes}
                         </div>
                       )}
@@ -297,7 +314,7 @@ function KanbanView({
           <div
             key={status}
             className={cn(
-              "rounded-lg border bg-muted/30 p-2 transition-colors",
+              "rounded-lg border border-border bg-card/60 p-2.5 transition-colors shadow-xs",
               dragOver === status && "border-primary bg-primary/5"
             )}
             onDragOver={(e) => {
@@ -313,7 +330,7 @@ function KanbanView({
               if (todo) onMove(todo, status);
             }}
           >
-            <h2 className="px-1 pb-2 pt-1 text-sm font-semibold">
+            <h2 className="px-1 pb-2 pt-0.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {TODO_STATUS_LABELS[status]}{" "}
               <span className="font-normal text-muted-foreground">({items.length})</span>
             </h2>
@@ -326,11 +343,11 @@ function KanbanView({
                     draggable
                     onDragStart={(e) => e.dataTransfer.setData("text/todo-id", t.id)}
                     onClick={() => onOpen(t)}
-                    className="cursor-grab gap-1.5 p-3 active:cursor-grabbing"
+                    className="cursor-grab gap-1.5 p-3 active:cursor-grabbing hover:border-border transition-colors shadow-xs rounded-md"
                   >
                     <div
                       className={cn(
-                        "text-sm font-medium",
+                        "text-xs sm:text-sm font-medium text-foreground",
                         t.status === "DONE" && "text-muted-foreground line-through"
                       )}
                     >
@@ -372,7 +389,7 @@ function KanbanView({
                 );
               })}
               {items.length === 0 && (
-                <div className="rounded-md border border-dashed py-6 text-center text-xs text-muted-foreground">
+                <div className="rounded-md border border-dashed border-border py-6 text-center text-xs text-muted-foreground">
                   Kéo việc vào đây
                 </div>
               )}

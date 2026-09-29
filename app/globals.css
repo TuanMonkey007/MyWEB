@@ -48,79 +48,76 @@
   --radius-4xl: calc(var(--radius) * 2.5);
 }
 
-/* ── Harmonious Balanced Palette (Dịu mắt, đồng bộ 100% Nav & Nội dung) ── */
+/* Neutral application surfaces; the selected accent is injected by theme-color.ts. */
 :root {
-  --background: #f8fafc; /* Slate 50 */
-  --foreground: #1e293b; /* Slate 800 - dịu mắt */
+  --background: #f7f8fa;
+  --foreground: #182230;
   --card: #ffffff;
-  --card-foreground: #1e293b;
+  --card-foreground: #182230;
   --popover: #ffffff;
-  --popover-foreground: #1e293b;
-  --primary: #9f1239; /* HNF Crimson - sâu lắng */
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9; /* Slate 100 */
-  --secondary-foreground: #334155;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b; /* Slate 500 */
-  --accent: #fff1f2; /* Rose 50 dịu */
-  --accent-foreground: #9f1239;
-  --destructive: #be123c;
-  --border: #e2e8f0; /* Slate 200 */
-  --input: #e2e8f0;
-  --ring: #9f1239;
-  --chart-1: #9f1239;
+  --popover-foreground: #182230;
+  --primary: var(--tl-primary, #4338ca);
+  --primary-foreground: var(--tl-primary-foreground, #ffffff);
+  --secondary: #eef1f5;
+  --secondary-foreground: #344054;
+  --muted: #f1f3f6;
+  --muted-foreground: #667085;
+  --accent: var(--tl-accent, #eef2ff);
+  --accent-foreground: var(--tl-accent-foreground, #3730a3);
+  --destructive: #c2413a;
+  --border: #dde2ea;
+  --input: #cfd6e1;
+  --ring: var(--tl-ring, #6366f1);
+  --chart-1: var(--tl-chart-1, #6366f1);
   --chart-2: #2563eb;
   --chart-3: #d97706;
   --chart-4: #059669;
   --chart-5: #7c3aed;
-  --radius: 0.625rem;
+  --radius: 0.5rem;
 
-  /* SIDEBAR LIGHT: Cùng tông Slate sạch với nội dung */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1e293b;
-  --sidebar-primary: #9f1239;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f8fafc;
-  --sidebar-accent-foreground: #9f1239;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #9f1239;
+  --sidebar: #f4f6f8;
+  --sidebar-foreground: #182230;
+  --sidebar-primary: var(--tl-sidebar-primary, #4338ca);
+  --sidebar-primary-foreground: var(--tl-sidebar-primary-foreground, #ffffff);
+  --sidebar-accent: var(--tl-sidebar-accent, #eef2ff);
+  --sidebar-accent-foreground: var(--tl-sidebar-accent-foreground, #3730a3);
+  --sidebar-border: #dde2ea;
+  --sidebar-ring: var(--tl-sidebar-ring, #6366f1);
 }
 
 .dark {
-  /* DARK MODE: SIDEBAR VÀ CONTENT DÙNG CHUNG HỆ MÀU SLATE TRẦM ẤM, KHÔNG LỆCH PHA! */
-  --background: #0f172a; /* Slate 900 */
-  --foreground: #e2e8f0; /* Slate 200 - dịu mắt, không trắng toát */
-  --card: #1e293b; /* Slate 800 */
-  --card-foreground: #e2e8f0;
-  --popover: #1e293b;
-  --popover-foreground: #e2e8f0;
-  --primary: #fb7185; /* Rose 400 dịu mắt trên nền tối */
-  --primary-foreground: #4c0519;
-  --secondary: #334155; /* Slate 700 */
-  --secondary-foreground: #e2e8f0;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8; /* Slate 400 */
-  --accent: #334155;
-  --accent-foreground: #fda4af;
-  --destructive: #f43f5e;
-  --border: #334155; /* Slate 700 */
-  --input: #334155;
-  --ring: #fb7185;
-  --chart-1: #fb7185;
+  --background: #151719;
+  --foreground: #f0f2f5;
+  --card: #1d2024;
+  --card-foreground: #f0f2f5;
+  --popover: #1d2024;
+  --popover-foreground: #f0f2f5;
+  --primary: var(--td-primary, #a5b4fc);
+  --primary-foreground: var(--td-primary-foreground, #111827);
+  --secondary: #292d32;
+  --secondary-foreground: #e4e7ec;
+  --muted: #22262b;
+  --muted-foreground: #a7b0bd;
+  --accent: var(--td-accent, #29283d);
+  --accent-foreground: var(--td-accent-foreground, #c7d2fe);
+  --destructive: #f87171;
+  --border: #30353c;
+  --input: #3a4048;
+  --ring: var(--td-ring, #a5b4fc);
+  --chart-1: var(--td-chart-1, #a5b4fc);
   --chart-2: #60a5fa;
   --chart-3: #fbbf24;
   --chart-4: #34d399;
   --chart-5: #a78bfa;
 
-  /* SIDEBAR DARK: Đồng bộ tuyệt đối với background #0f172a và card #1e293b */
-  --sidebar: #0f172a; /* Slate 900 - liền mạch hoàn hảo với nền trang */
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #fb7185;
-  --sidebar-primary-foreground: #4c0519;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #fda4af;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #fb7185;
+  --sidebar: #191c20;
+  --sidebar-foreground: #f0f2f5;
+  --sidebar-primary: var(--td-sidebar-primary, #a5b4fc);
+  --sidebar-primary-foreground: var(--td-sidebar-primary-foreground, #111827);
+  --sidebar-accent: var(--td-sidebar-accent, #29283d);
+  --sidebar-accent-foreground: var(--td-sidebar-accent-foreground, #c7d2fe);
+  --sidebar-border: #30353c;
+  --sidebar-ring: var(--td-sidebar-ring, #a5b4fc);
 }
 
 @layer base {
@@ -130,6 +127,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
   }
   html {
     @apply font-sans;
@@ -142,7 +140,6 @@
 }
 
 @layer utilities {
-  /* Dịu mắt trên nền tối, không neon */
   .dark .text-red-600 {
     color: #f87171 !important;
   }
@@ -153,10 +150,10 @@
 
 @layer components {
   [data-slot="card"] {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
   }
   .dark [data-slot="card"] {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
   }
   
   ::-webkit-scrollbar {

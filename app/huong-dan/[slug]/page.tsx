@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, CalendarDays, Eye, Lock, Pencil, Sparkles, User as UserIcon } from "lucide-react";
+import { ArrowLeft, CalendarDays, Eye, Lock, Pencil, User as UserIcon } from "lucide-react";
 import { ArticleContent } from "@/components/articles/article-content";
 import { getCurrentUser } from "@/lib/auth";
 import { bumpViews, canEdit, getArticleBySlug, VISIBILITY_LABELS, type Visibility } from "@/lib/articles";
@@ -33,51 +33,49 @@ export default async function ArticlePage({ params }: Props) {
   await bumpViews(article.id);
 
   return (
-    <article className="mx-auto max-w-4xl space-y-8">
-      {/* Navigation & Actions */}
-      <div className="flex items-center justify-between border-b border-border/50 pb-4">
+    <article className="mx-auto max-w-4xl space-y-6">
+      <div className="flex items-center justify-between border-b border-border pb-3">
         <Link
           href="/huong-dan"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors rounded-lg px-2.5 py-1.5 hover:bg-muted/50"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md px-2 py-1 hover:bg-muted"
         >
           <ArrowLeft className="size-3.5" /> Tất cả bài hướng dẫn
         </Link>
         {canEdit(user, article) && (
           <Link
             href={`/articles/${article.id}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-colors rounded-lg px-3 py-1.5"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-colors rounded-md px-2.5 py-1"
           >
-            <Pencil className="size-3.5" /> Sửa bài viết
+            <Pencil className="size-3" /> Sửa bài viết
           </Link>
         )}
       </div>
 
-      {/* Article Header */}
-      <header className="space-y-4 rounded-3xl border border-border/70 bg-gradient-to-br from-primary/5 via-card to-card p-6 sm:p-8 shadow-xs">
+      <header className="space-y-3 rounded-lg border border-border bg-card p-5 sm:p-6 shadow-xs">
         {article.category && (
-          <span className="inline-flex items-center rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+          <span className="inline-flex items-center rounded bg-primary px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary-foreground shadow-xs">
             {article.category.name}
           </span>
         )}
-        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
+        <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-foreground leading-tight">
           {article.title}
         </h1>
         {article.summary && (
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
             {article.summary}
           </p>
         )}
 
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 border-t border-border/40 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5 font-medium text-foreground/80">
-            <UserIcon className="size-3.5 text-primary" />
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-2 border-t border-border text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5 font-medium text-foreground">
+            <UserIcon className="size-3.5 text-muted-foreground" />
             {article.author.displayName || article.author.username}
           </span>
           <span className="flex items-center gap-1.5">
             <CalendarDays className="size-3.5" />
             {(article.publishedAt ?? article.createdAt).toLocaleDateString("vi-VN", {
               year: "numeric",
-              month: "long",
+              month: "numeric",
               day: "numeric",
             })}
           </span>
@@ -86,7 +84,7 @@ export default async function ArticlePage({ params }: Props) {
             {article.views + 1} lượt xem
           </span>
           {article.visibility !== "PUBLIC" && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+            <span className="inline-flex items-center gap-1 rounded bg-muted border border-border px-2 py-0.5 text-[10.5px] font-medium text-muted-foreground">
               <Lock className="size-3" />
               {VISIBILITY_LABELS[article.visibility as Visibility]}
             </span>
@@ -94,8 +92,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </header>
 
-      {/* Article Body */}
-      <div className="rounded-3xl border border-border/70 bg-card p-6 sm:p-10 shadow-xs">
+      <div className="rounded-lg border border-border bg-card p-5 sm:p-8 shadow-xs">
         <ArticleContent content={article.content} format={article.format} />
       </div>
     </article>

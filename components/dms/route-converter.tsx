@@ -65,14 +65,14 @@ function FileDrop({
           if (!disabled && e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]);
         }}
         className={cn(
-          "flex w-full items-center gap-2 rounded-lg border-2 border-dashed px-3 py-3 text-left text-sm transition-colors",
-          drag ? "border-primary bg-primary/5" : "border-muted hover:border-primary/50",
+          "flex w-full cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed px-3 py-3 text-left text-sm transition-colors",
+          drag ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
           disabled && "cursor-not-allowed opacity-50"
         )}
       >
         {file ? (
           <>
-            <FileSpreadsheet className="size-5 shrink-0 text-emerald-600" />
+            <FileSpreadsheet className="size-5 shrink-0 text-primary" />
             <span className="min-w-0 flex-1 truncate font-medium">{file.name}</span>
             <span className="shrink-0 text-xs text-muted-foreground">đổi file</span>
           </>
@@ -143,8 +143,8 @@ function TemplateSlot({
 
       {savedTemplate && !oneOff ? (
         <>
-          <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-muted/40 px-3 py-3 text-sm">
-            <FileSpreadsheet className="size-5 shrink-0 text-emerald-600" />
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-3 text-sm">
+            <FileSpreadsheet className="size-5 shrink-0 text-primary" />
             <span className="min-w-0 flex-1 truncate font-medium">{savedTemplate}</span>
             <Badge variant="secondary" className="shrink-0 text-[10px] font-normal">
               mẫu đã lưu
@@ -284,10 +284,10 @@ export function RouteConverter({
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-          <ArrowRightLeft className="size-6" /> Chuyển tuyến giữa nhà phân phối
+        <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+          <ArrowRightLeft className="size-5 text-primary" /> Chuyển tuyến giữa nhà phân phối
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Đổi dữ liệu tuyến từ NPP A sang file import cho NPP B: cập nhật mã đơn vị,
           sinh mã tuyến mới (ngày + mã NVBH), từ ngày = ngày mai, giữ nguyên định dạng mẫu.
           Mẫu import lưu một lần, những lần sau chỉ cần chọn file gốc.
@@ -375,7 +375,7 @@ export function RouteConverter({
             </div>
             {result && (
               <div className="mt-3 flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm">
-                <Badge className="bg-emerald-600 text-white">Xong · {result.rowCount} dòng</Badge>
+                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">Xong · {result.rowCount} dòng</Badge>
                 <span className="min-w-0 flex-1 truncate">{result.fileName}</span>
                 <a href={`/api/dms/routes/result/${result.token}?name=${encodeURIComponent(result.fileName)}`}>
                   <Button size="sm" variant="outline">

@@ -97,8 +97,8 @@ export function ArticleManager({
     <div className="space-y-4">
       <div className="flex flex-wrap items-start gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Bài hướng dẫn</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Bài hướng dẫn</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Viết tài liệu kỹ thuật bằng Markdown. Bài công khai hiện ở{" "}
             <Link href="/huong-dan" className="text-primary underline-offset-2 hover:underline">
               /huong-dan

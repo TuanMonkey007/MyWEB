@@ -130,7 +130,7 @@ export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
                 <div
                   className={cn(
                     "text-xl font-semibold tabular-nums",
-                    w.balance < 0 && "text-red-600"
+                    w.balance < 0 ? "text-destructive font-semibold" : "text-foreground"
                   )}
                 >
                   {formatVND(w.balance)}

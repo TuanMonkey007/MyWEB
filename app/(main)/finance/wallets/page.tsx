@@ -13,10 +13,10 @@ export default async function WalletsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Ví tiền</h1>
-        <p className="text-sm text-muted-foreground">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Ví tiền</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Tổng tài sản:{" "}
-          <span className="font-medium text-foreground tabular-nums">
+          <span className="font-semibold text-foreground tabular-nums">
             {formatVND(totalAssets)}
           </span>
         </p>

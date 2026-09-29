@@ -162,8 +162,8 @@ export function FaceidProcessor() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Lọc dữ liệu FaceID</h1>
-        <p className="text-sm text-muted-foreground">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Lọc dữ liệu FaceID</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Làm sạch dữ liệu chấm công cổng bảo vệ: lọc trùng, loại ID không cần, sửa
           giờ user ngoại lệ, phân sheet theo khung giờ.
         </p>
@@ -402,7 +402,7 @@ export function FaceidProcessor() {
             </div>
             {result && (
               <div className="mt-3 flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm">
-                <Badge className="bg-emerald-600 text-white">Xong</Badge>
+                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">Xong</Badge>
                 <span className="min-w-0 flex-1 truncate">{result.fileName}</span>
                 <a href={`/api/faceid/result/${result.token}?name=${encodeURIComponent(result.fileName)}`}>
                   <Button size="sm" variant="outline">

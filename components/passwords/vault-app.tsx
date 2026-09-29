@@ -196,10 +196,10 @@ export function VaultApp() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-            <ShieldCheck className="size-6 text-emerald-600" /> Kho mật khẩu
+          <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+            <ShieldCheck className="size-5 text-primary" /> Kho mật khẩu
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             {entries.length} mục · mã hóa đầu-cuối, tự khóa sau 5 phút
           </p>
         </div>
@@ -244,7 +244,7 @@ export function VaultApp() {
               <h2 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {cat} ({list.length})
               </h2>
-              <div className="divide-y rounded-lg border">
+              <div className="divide-y divide-border/60 rounded-lg border border-border bg-card shadow-xs">
                 {list.map((e) => (
                   <EntryRow
                     key={e.id}
@@ -346,7 +346,7 @@ function EntryRow({
   }
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-accent/40">
+    <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-muted/30 transition-colors">
       <div className="min-w-0 flex-1">
         <div className="truncate font-medium">{entry.title}</div>
         <div className="truncate text-xs text-muted-foreground">

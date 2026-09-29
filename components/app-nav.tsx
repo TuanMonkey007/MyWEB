@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeftRight,
-  CircleUser,
   ArrowRightLeft,
   BookOpen,
   ClipboardList,
@@ -30,8 +29,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { LogoutButton } from "@/components/logout-button";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 type NavItem = {
   href: string;
@@ -145,14 +142,15 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
   return (
     <Link
       href={item.href}
+      aria-current={active ? "page" : undefined}
       className={cn(
-        "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs transition-colors",
+        "group flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar",
         active
-          ? "bg-primary/10 text-primary dark:bg-rose-500/15 dark:text-rose-300 font-bold border-l-2 border-primary"
-          : "font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+          ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-xs"
+          : "font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
       )}
     >
-      <Icon className={cn("size-3.5 shrink-0", active ? "text-primary dark:text-rose-400" : "text-muted-foreground")} />
+      <Icon className={cn("size-4 shrink-0", active ? "text-sidebar-primary-foreground" : "text-muted-foreground group-hover:text-sidebar-accent-foreground")} />
       <span className="truncate">{item.label}</span>
     </Link>
   );
@@ -161,7 +159,6 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
 export function AppSidebar({
   allowedModules,
   isAdmin,
-  userName,
   moduleOrder,
 }: NavProps & {
   platformName?: string;
@@ -171,11 +168,11 @@ export function AppSidebar({
   const mods = visibleModules(allowedModules, moduleOrder);
 
   return (
-    <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-border bg-sidebar text-sidebar-foreground select-none">
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2.5">
+    <aside className="hidden w-64 shrink-0 select-none flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
+      <nav aria-label="Điều hướng chính" className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
         {mods.map((mod) => (
-          <div key={mod.id} className="mt-2.5 space-y-0.5 first:mt-1">
-            <div className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
+          <div key={mod.id} className="mt-3 space-y-1 first:mt-0">
+            <div className="px-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               {mod.label}
             </div>
             {mod.items.map((item) => (
@@ -185,8 +182,8 @@ export function AppSidebar({
         ))}
 
         {isAdmin && (
-          <div className="mt-3.5 border-t border-border pt-2.5 space-y-0.5">
-            <div className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
+          <div className="mt-4 space-y-1 border-t border-sidebar-border pt-4">
+            <div className="px-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               Quản trị
             </div>
             {adminItems.map((item) => (
@@ -201,8 +198,6 @@ export function AppSidebar({
 
 export function AppBottomNav({
   allowedModules,
-  isAdmin,
-  userName,
   moduleOrder,
 }: NavProps) {
   const pathname = usePathname();
@@ -212,7 +207,7 @@ export function AppBottomNav({
 
   return (
     <>
-      <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-sidebar shadow-lg">
+      <nav aria-label="Điều hướng nhanh" className="fixed inset-x-0 bottom-0 z-40 flex border-t border-sidebar-border bg-sidebar/95 shadow-[0_-4px_16px_rgba(16,24,40,0.08)] backdrop-blur md:hidden">
         {(mod?.items ?? []).map((item) => {
           const Icon = item.icon;
           const active = isActive(pathname, item);
@@ -221,11 +216,11 @@ export function AppBottomNav({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex min-w-0 flex-1 flex-col items-center gap-0.5 py-2 text-[10px] transition-colors",
-                active ? "text-primary font-bold bg-muted" : "text-muted-foreground hover:text-foreground"
+                "flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring",
+                active ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold" : "text-muted-foreground hover:text-sidebar-accent-foreground"
               )}
             >
-              <Icon className="size-4.5" />
+              <Icon className="size-4" />
               <span className="truncate">{item.label}</span>
             </Link>
           );
@@ -233,15 +228,16 @@ export function AppBottomNav({
         <button
           type="button"
           onClick={() => setMenuOpen(true)}
-          className="flex min-w-0 flex-1 flex-col items-center gap-0.5 py-2 text-[10px] text-muted-foreground hover:text-foreground"
+          aria-label="Mở tất cả module"
+          className="flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] text-muted-foreground transition-colors hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring"
         >
-          <LayoutGrid className="size-4.5" />
+          <LayoutGrid className="size-4" />
           <span>Menu</span>
         </button>
       </nav>
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent side="bottom" className="max-h-[80dvh] overflow-y-auto rounded-t-2xl p-4">
+        <SheetContent side="bottom" className="max-h-[80dvh] overflow-y-auto rounded-t-lg p-4">
           <SheetHeader className="pb-3 border-b border-border">
             <SheetTitle className="text-base font-bold text-foreground">Tất cả module</SheetTitle>
           </SheetHeader>
@@ -251,7 +247,7 @@ export function AppBottomNav({
                 <div className="pb-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                   {m.label}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {m.items.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(pathname, item);
@@ -261,10 +257,10 @@ export function AppBottomNav({
                         href={item.href}
                         onClick={() => setMenuOpen(false)}
                         className={cn(
-                          "flex flex-col items-center gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all",
+                          "flex min-h-22 flex-col items-center justify-center gap-1.5 rounded-md border p-2.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                           active
-                            ? "border-primary bg-primary/10 text-primary"
-                            : "border-border text-muted-foreground hover:bg-muted"
+                            ? "border-primary/30 bg-primary/10 text-primary"
+                            : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
                         )}
                       >
                         <Icon className="size-5" />

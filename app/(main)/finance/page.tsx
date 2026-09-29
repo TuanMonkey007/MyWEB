@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight, BarChart3, Coins, CreditCard, DollarSign, FileSpreadsheet, PieChart, Plus, Wallet } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, BarChart3, CreditCard, PieChart, TrendingUp, Wallet } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getWalletsWithBalances, getIncomeExpenseTotals } from "@/lib/balance";
 import {
@@ -31,18 +31,18 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-5">
-      {/* SECTION HEADER — CHUẨN PHONG CÁCH TOOL DMS HNF */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      {/* SECTION HEADER — THIẾT KẾ ĐỒNG BỘ THEO DESIGN SYSTEM */}
+      <div className="rounded-lg border border-border bg-card p-4 sm:p-5 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <span className="w-8 h-8 bg-rose-100 text-[#881337] rounded-xl flex items-center justify-center font-black text-base shadow-xs">
-              📊
-            </span>
+            <div className="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <BarChart3 className="size-5" />
+            </div>
             <div>
-              <h1 className="text-base sm:text-lg font-bold text-slate-800 tracking-tight">
-                BÁO CÁO TỔNG QUAN TÀI CHÍNH CÁ NHÂN (THÁNG {monthLabel})
+              <h1 className="text-base sm:text-lg font-semibold tracking-tight text-foreground">
+                Tổng quan tài chính cá nhân — Tháng {monthLabel}
               </h1>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 Theo dõi chi tiết số dư ví, đối soát dòng tiền thu chi và phân bổ danh mục theo thời gian thực
               </p>
             </div>
@@ -62,134 +62,146 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* 4 KPI CARDS — THEO ĐÚNG MÀU SẮC TOOL DMS (ROSE, BLUE, INDIGO, AMBER) */}
+      {/* 4 KPI CARDS — DÙNG BIẾN SEMANTIC ĐỒNG BỘ 100% CẢ LIGHT VÀ DARK MODE */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
         {/* Card 1: Tổng tiền */}
-        <div className="bg-rose-50 border border-rose-200/80 rounded-xl p-4 shadow-2xs">
-          <p className="text-xs font-bold text-rose-700 uppercase tracking-wider">
-            Tổng tài sản khả dụng
-          </p>
-          <p className="text-xl sm:text-2xl font-black text-rose-900 mt-1 tabular-nums">
+        <div className="rounded-lg border border-border bg-card p-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Tổng tài sản khả dụng
+            </p>
+            <Wallet className="size-4 text-primary" />
+          </div>
+          <p className="mt-1.5 text-xl sm:text-2xl font-bold tabular-nums tracking-tight text-foreground">
             {formatVND(totalAssets)}
           </p>
-          <p className="text-[11px] text-rose-600 mt-1">
-            Tổng số dư trên {wallets.length} ví hoạt động
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Trên tổng số {wallets.length} ví hoạt động
           </p>
         </div>
 
         {/* Card 2: Thu tháng */}
-        <div className="bg-blue-50 border border-blue-200/80 rounded-xl p-4 shadow-2xs">
-          <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-            Tổng thu tháng {monthLabel}
-          </p>
-          <p className="text-xl sm:text-2xl font-black text-blue-900 mt-1 tabular-nums">
+        <div className="rounded-lg border border-border bg-card p-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              Thu tháng {monthLabel}
+            </p>
+            <ArrowDownLeft className="size-4 text-emerald-600 dark:text-emerald-400" />
+          </div>
+          <p className="mt-1.5 text-xl sm:text-2xl font-bold tabular-nums tracking-tight text-emerald-600 dark:text-emerald-400">
             +{formatVND(monthTotals.income)}
           </p>
-          <p className="text-[11px] text-blue-600 mt-1">
-            Dòng tiền vào trong kỳ báo cáo
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Tổng dòng tiền thu trong kỳ
           </p>
         </div>
 
         {/* Card 3: Chi tháng */}
-        <div className="bg-rose-50 border border-rose-200/80 rounded-xl p-4 shadow-2xs">
-          <p className="text-xs font-bold text-rose-700 uppercase tracking-wider">
-            Tổng chi tháng {monthLabel}
-          </p>
-          <p className="text-xl sm:text-2xl font-black text-rose-900 mt-1 tabular-nums">
+        <div className="rounded-lg border border-border bg-card p-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+              Chi tháng {monthLabel}
+            </p>
+            <ArrowUpRight className="size-4 text-rose-600 dark:text-rose-400" />
+          </div>
+          <p className="mt-1.5 text-xl sm:text-2xl font-bold tabular-nums tracking-tight text-rose-600 dark:text-rose-400">
             -{formatVND(monthTotals.expense)}
           </p>
-          <p className="text-[11px] text-rose-600 mt-1">
+          <p className="mt-1 text-[11px] text-muted-foreground">
             Chênh lệch: {formatVND(monthTotals.income - monthTotals.expense)}
           </p>
         </div>
 
         {/* Card 4: Số ví */}
-        <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-4 shadow-2xs">
-          <p className="text-xs font-bold text-amber-700 uppercase tracking-wider">
-            Số tài khoản / Ví
+        <div className="rounded-lg border border-border bg-card p-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Số tài khoản / Ví
+            </p>
+            <CreditCard className="size-4 text-muted-foreground" />
+          </div>
+          <p className="mt-1.5 text-xl sm:text-2xl font-bold tabular-nums tracking-tight text-foreground">
+            {wallets.length} ví
           </p>
-          <p className="text-xl sm:text-2xl font-black text-amber-900 mt-1">
-            {wallets.length} Ví
-          </p>
-          <p className="text-[11px] text-amber-600 mt-1">
-            Tiền mặt, Ngân hàng, Thẻ tín dụng
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Tiền mặt, ngân hàng, thẻ tín dụng
           </p>
         </div>
       </div>
 
-      {/* BẢNG SỐ DƯ TỪNG VÍ — PHONG CÁCH BẢNG EXCEL DMS */}
-      <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-7 h-7 bg-emerald-100 text-emerald-800 rounded-lg flex items-center justify-center font-bold text-sm">
-              📋
-            </span>
+      {/* BẢNG SỐ DƯ TỪNG VÍ — PHONG CÁCH BẢNG KÊ CHUYÊN NGHIỆP */}
+      <section className="space-y-4 rounded-lg border border-border bg-card p-4 sm:p-5 shadow-xs">
+        <div className="flex items-center justify-between border-b border-border pb-3">
+          <div className="flex items-center space-x-2.5">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <CreditCard className="size-4" />
+            </div>
             <div>
-              <h2 className="text-base font-bold text-slate-800">
-                Chi Tiết Số Dư & Tỷ Trọng Từng Tài Khoản
+              <h2 className="text-sm sm:text-base font-semibold text-foreground">
+                Chi tiết số dư & tỷ trọng từng tài khoản
               </h2>
-              <p className="text-xs text-slate-500">
-                Bảng đối soát số dư thực tế theo định dạng bảng số liệu chuẩn DMS
+              <p className="text-xs text-muted-foreground">
+                Bảng đối soát số dư thực tế theo các nguồn tiền đang quản lý
               </p>
             </div>
           </div>
-          <div className="text-xs text-slate-500 font-medium">
-            Đơn vị tính: <strong className="text-slate-700">VNĐ</strong>
+          <div className="text-xs font-medium text-muted-foreground">
+            Đơn vị tính: <strong className="text-foreground">VNĐ</strong>
           </div>
         </div>
 
-        <div className="overflow-x-auto border border-slate-200 rounded-xl">
+        <div className="overflow-x-auto rounded-md border border-border">
           <table className="w-full text-xs text-left border-collapse">
             <thead>
-              <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
-                <th className="py-2.5 px-3 text-center w-14 border-r border-slate-200">STT</th>
-                <th className="py-2.5 px-4 border-r border-slate-200">Tên Ví / Tài Khoản</th>
-                <th className="py-2.5 px-4 border-r border-slate-200 w-64">Phân bổ tỷ trọng</th>
-                <th className="py-2.5 px-4 text-right border-r border-slate-200 w-44">Số dư khả dụng</th>
-                <th className="py-2.5 px-3 text-center w-28">Trạng thái</th>
+              <tr className="border-b border-border bg-muted/50 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="py-2 px-3 text-center w-12 border-r border-border">STT</th>
+                <th className="py-2 px-4 border-r border-border">Tên ví / Tài khoản</th>
+                <th className="py-2 px-4 border-r border-border w-64">Phân bổ tỷ trọng</th>
+                <th className="py-2 px-4 text-right border-r border-border w-44">Số dư khả dụng</th>
+                <th className="py-2 px-3 text-center w-28">Trạng thái</th>
               </tr>
-              {/* DÒNG TỔNG CỘNG NỔI BẬT KIỂU DMS (NỀN VÀNG NHẸ) */}
-              <tr className="bg-amber-100/80 font-bold border-b-2 border-amber-300 text-amber-950">
-                <td className="py-2.5 px-3 text-center border-r border-amber-200">—</td>
-                <td className="py-2.5 px-4 border-r border-amber-200 font-black">
-                  TỔNG CỘNG ({wallets.length} VÍ)
+              {/* DÒNG TỔNG CỘNG HÀI HÒA VỚI GIAO DIỆN */}
+              <tr className="border-b-2 border-border bg-muted/70 font-semibold text-foreground">
+                <td className="py-2 px-3 text-center border-r border-border">—</td>
+                <td className="py-2 px-4 border-r border-border font-bold">
+                  Tổng cộng ({wallets.length} ví)
                 </td>
-                <td className="py-2.5 px-4 border-r border-amber-200">
-                  <div className="h-2 w-full bg-amber-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-amber-600 w-full" />
+                <td className="py-2 px-4 border-r border-border">
+                  <div className="h-2 w-full bg-border rounded-full overflow-hidden">
+                    <div className="h-full bg-primary w-full" />
                   </div>
                 </td>
-                <td className="py-2.5 px-4 text-right border-r border-amber-200 font-black text-rose-700 text-sm">
+                <td className="py-2 px-4 text-right border-r border-border font-bold text-foreground tabular-nums text-xs sm:text-sm">
                   {formatVND(totalAssets)}
                 </td>
-                <td className="py-2.5 px-3 text-center">
-                  <span className="inline-block px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px]">
-                    KHỚP SỐ LIỆU
+                <td className="py-2 px-3 text-center">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                    Khớp số liệu
                   </span>
                 </td>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border/60">
               {wallets.map((w, idx) => {
                 const ratio = totalAssets > 0 ? Math.max(0, (w.balance / totalAssets) * 100) : 0;
                 return (
-                  <tr key={w.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-2.5 px-3 text-center text-slate-500 font-medium border-r border-slate-200">
+                  <tr key={w.id} className="hover:bg-muted/20 transition-colors">
+                    <td className="py-2 px-3 text-center text-muted-foreground border-r border-border">
                       {idx + 1}
                     </td>
-                    <td className="py-2.5 px-4 font-bold text-slate-800 border-r border-slate-200">
+                    <td className="py-2 px-4 font-medium text-foreground border-r border-border">
                       <div className="flex items-center gap-2">
-                        <Wallet className="size-3.5 text-[#9f1239]" />
+                        <Wallet className="size-3.5 text-muted-foreground" />
                         <span>{w.name}</span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-4 border-r border-slate-200">
+                    <td className="py-2 px-4 border-r border-border">
                       <div className="flex items-center gap-2.5">
-                        <div className="h-2 flex-1 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                        <div className="h-2 flex-1 bg-muted rounded-full overflow-hidden border border-border">
                           <div
                             className={cn(
                               "h-full rounded-full",
-                              w.balance < 0 ? "bg-rose-500" : "bg-[#9f1239]"
+                              w.balance < 0 ? "bg-rose-500" : "bg-primary"
                             )}
                             style={{
                               width: `${Math.min(
@@ -199,21 +211,21 @@ export default async function DashboardPage() {
                             }}
                           />
                         </div>
-                        <span className="text-[11px] text-slate-500 w-10 text-right font-medium">
+                        <span className="text-[11px] text-muted-foreground w-10 text-right font-medium tabular-nums">
                           {ratio.toFixed(0)}%
                         </span>
                       </div>
                     </td>
                     <td
                       className={cn(
-                        "py-2.5 px-4 text-right font-bold tabular-nums border-r border-slate-200",
-                        w.balance < 0 ? "text-rose-600" : "text-slate-900"
+                        "py-2 px-4 text-right font-semibold tabular-nums border-r border-border",
+                        w.balance < 0 ? "text-rose-600 dark:text-rose-400" : "text-foreground"
                       )}
                     >
                       {formatVND(w.balance)}
                     </td>
-                    <td className="py-2.5 px-3 text-center">
-                      <span className="inline-block px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <td className="py-2 px-3 text-center">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-muted text-muted-foreground border border-border">
                         Hoạt động
                       </span>
                     </td>
@@ -227,16 +239,16 @@ export default async function DashboardPage() {
 
       {/* 2 BIỂU ĐỒ BÁO CÁO TRỰC QUAN */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
-            <span className="w-6 h-6 bg-rose-100 text-[#881337] rounded-md flex items-center justify-center font-bold text-xs">
-              <PieChart className="size-3.5" />
-            </span>
+        <div className="space-y-3 rounded-lg border border-border bg-card p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center space-x-2 border-b border-border pb-2.5">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <PieChart className="size-4" />
+            </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-800">
-                Cơ Cấu Chi Tiêu Theo Danh Mục — Tháng {monthLabel}
+              <h3 className="text-sm font-semibold text-foreground">
+                Cơ cấu chi tiêu theo danh mục — Tháng {monthLabel}
               </h3>
-              <p className="text-[11px] text-slate-500">Tỷ lệ các khoản chi phát sinh trong kỳ</p>
+              <p className="text-[11px] text-muted-foreground">Tỷ lệ các khoản chi phát sinh trong kỳ</p>
             </div>
           </div>
           <div className="pt-2">
@@ -246,16 +258,16 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
-            <span className="w-6 h-6 bg-blue-100 text-blue-700 rounded-md flex items-center justify-center font-bold text-xs">
-              <BarChart3 className="size-3.5" />
-            </span>
+        <div className="space-y-3 rounded-lg border border-border bg-card p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center space-x-2 border-b border-border pb-2.5">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <TrendingUp className="size-4" />
+            </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-800">
-                Xu Hướng Dòng Tiền Thu — Chi 6 Tháng Gần Nhất
+              <h3 className="text-sm font-semibold text-foreground">
+                Xu hướng dòng tiền thu — chi 6 tháng gần nhất
               </h3>
-              <p className="text-[11px] text-slate-500">So sánh đối soát luân chuyển dòng tiền</p>
+              <p className="text-[11px] text-muted-foreground">So sánh đối soát luân chuyển dòng tiền</p>
             </div>
           </div>
           <div className="pt-2">
