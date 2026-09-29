@@ -2,7 +2,6 @@
 // (nav, phân quyền, form cấp quyền đều đọc từ registry này)
 export const MODULE_REGISTRY = [
   { id: "finance", label: "Tài chính cá nhân", href: "/finance" },
-  { id: "markets", label: "Thị trường", href: "/markets" },
   { id: "procurement", label: "Đề xuất mua hàng", href: "/procurement" },
   { id: "todos", label: "Công việc", href: "/todos" },
   { id: "drive", label: "Kho file", href: "/drive" },

@@ -23,6 +23,7 @@ import {
   ShieldCheck,
   Sparkles,
   Terminal,
+  TrendingUp,
   User,
   Wallet,
 } from "lucide-react";
@@ -261,6 +262,9 @@ export default function PersonalLandingPage() {
             <a href="#tools" className="hover:text-primary transition-colors">
               Bộ công cụ
             </a>
+            <Link href="/markets" className="hover:text-primary transition-colors">
+              Giá Vàng & BTC
+            </Link>
             <a href="#articles" className="hover:text-primary transition-colors">
               Bài viết
             </a>
@@ -271,6 +275,13 @@ export default function PersonalLandingPage() {
 
           {/* Action buttons */}
           <div className="flex items-center gap-2">
+            <Link
+              href="/markets"
+              className="inline-flex items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-amber-400 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-stone-900 shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo transition-all"
+            >
+              <TrendingUp className="size-3.5 text-stone-900" />
+              <span>Giá Vàng & BTC</span>
+            </Link>
             <Link
               href="/bai-viet"
               className="hidden sm:inline-flex items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-white px-3 py-1.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"

@@ -19,7 +19,6 @@ import {
   Settings,
   ShieldCheck,
   SlidersHorizontal,
-  TrendingUp,
   Wallet,
 } from "lucide-react";
 import {
@@ -47,13 +46,6 @@ const MODULES: ModuleGroup[] = [
       { href: "/finance", label: "Tổng quan", icon: LayoutDashboard, exact: true },
       { href: "/finance/wallets", label: "Ví tiền", icon: Wallet },
       { href: "/finance/transactions", label: "Giao dịch", icon: ArrowLeftRight },
-    ],
-  },
-  {
-    id: "markets",
-    label: "Thị trường",
-    items: [
-      { href: "/markets", label: "Giá Vàng & Bitcoin", icon: TrendingUp },
     ],
   },
   {

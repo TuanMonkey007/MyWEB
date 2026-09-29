@@ -18,9 +18,6 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "edit", label: "Sửa" },
     { id: "delete", label: "Xóa" },
   ],
-  markets: [
-    { id: "view", label: "Xem biểu đồ & giá" },
-  ],
   procurement: [
     { id: "view", label: "Xem" },
     { id: "create", label: "Thêm" },
@@ -121,7 +118,6 @@ type PermUser = { role: string; permissions?: string | null; modules?: string | 
 
 export function userCan(user: PermUser, module: ModuleId, cap: string): boolean {
   if (user.role === "ADMIN") return true;
-  if (module === "markets" && cap === "view") return true;
   return (parsePermissions(user)[module] ?? []).includes(cap);
 }
 
@@ -129,7 +125,7 @@ export function userCan(user: PermUser, module: ModuleId, cap: string): boolean 
 export function userModules(user: PermUser): ModuleId[] {
   if (user.role === "ADMIN") return [...ALL_MODULE_IDS];
   const map = parsePermissions(user);
-  return ALL_MODULE_IDS.filter((m) => m === "markets" || (map[m] ?? []).includes("view"));
+  return ALL_MODULE_IDS.filter((m) => (map[m] ?? []).includes("view"));
 }
 
 // Trang đích sau đăng nhập
@@ -160,8 +156,6 @@ export function requiredCapability(
   const module = owned[1];
   const m = method.toUpperCase();
   const isRead = m === "GET" || m === "HEAD";
-
-  if (module === "markets") return { module, cap: "view" };
 
   // Xuất phiếu (GET tạo file)
   if (module === "procurement" && pathname.includes("/export"))
