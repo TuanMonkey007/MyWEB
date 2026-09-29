@@ -218,10 +218,12 @@ export function DriveBrowser({
         if (canCreate && e.dataTransfer.files.length) handleUpload(e.dataTransfer.files);
       }}
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-center justify-between gap-4 dark:bg-card">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Kho file</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+            Kho file & Tài liệu
+          </h1>
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
             Lưu trữ chống trùng lặp — file giống hệt chỉ tốn dung lượng một lần.
           </p>
         </div>

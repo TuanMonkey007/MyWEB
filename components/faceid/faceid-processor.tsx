@@ -160,10 +160,12 @@ export function FaceidProcessor() {
   });
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Lọc dữ liệu FaceID</h1>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <h1 className="flex items-center gap-2.5 font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+          <Sparkles className="size-6 text-[#F25C2B]" /> Lọc dữ liệu FaceID
+        </h1>
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
           Làm sạch dữ liệu chấm công cổng bảo vệ: lọc trùng, loại ID không cần, sửa
           giờ user ngoại lệ, phân sheet theo khung giờ.
         </p>

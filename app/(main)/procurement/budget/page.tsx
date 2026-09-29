@@ -34,12 +34,14 @@ export default async function BudgetSettingsPage({
     : [];
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-center justify-between gap-4 dark:bg-card">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Thiết lập ngân sách</h1>
-          <p className="text-sm text-muted-foreground">
-            Năm ngân sách → nhóm khoản mục → quỹ (phân bổ 12 tháng)
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+            Thiết lập ngân sách
+          </h1>
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
+            Năm ngân sách → Nhóm khoản mục → Quỹ chi tiết (phân bổ 12 tháng)
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -59,7 +61,7 @@ export default async function BudgetSettingsPage({
       </div>
 
       {!selected ? (
-        <div className="rounded-lg border border-dashed py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-sm border-2 border-dashed border-[#1C1917] bg-white py-16 text-center text-sm font-semibold text-muted-foreground dark:bg-card">
           Chưa có năm ngân sách nào — bấm &quot;Thêm năm&quot; để bắt đầu.
         </div>
       ) : (

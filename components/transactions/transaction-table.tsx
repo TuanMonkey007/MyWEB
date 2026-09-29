@@ -18,8 +18,8 @@ import type { Option } from "@/components/forms/transaction-form";
 import { TransactionDetailDialog } from "./transaction-detail";
 
 const TYPE_META = {
-  expense: { icon: ArrowUpRight, color: "text-rose-600 dark:text-rose-400", sign: "−" },
-  income: { icon: ArrowDownLeft, color: "text-emerald-600 dark:text-emerald-400", sign: "+" },
+  expense: { icon: ArrowUpRight, color: "text-[#F25C2B]", sign: "−" },
+  income: { icon: ArrowDownLeft, color: "text-emerald-700 dark:text-emerald-400", sign: "+" },
   transfer: { icon: ArrowLeftRight, color: "text-muted-foreground", sign: "" },
 } as const;
 
@@ -38,7 +38,7 @@ export function TransactionTable({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border bg-card py-16 text-center text-sm text-muted-foreground">
+      <div className="rounded-sm border-2 border-dashed border-[#1C1917] bg-white py-16 text-center text-sm font-semibold text-muted-foreground dark:bg-card">
         Chưa có giao dịch nào khớp bộ lọc.
       </div>
     );
@@ -46,51 +46,51 @@ export function TransactionTable({
 
   return (
     <>
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-2xs">
-        <Table>
+      <div className="overflow-x-auto rounded-sm border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card">
+        <Table className="border-0 shadow-none">
           <TableHeader>
-            <TableRow className="bg-muted/40 border-b border-border hover:bg-muted/40">
-              <TableHead className="w-28 text-xs font-bold uppercase tracking-wider text-muted-foreground">Ngày</TableHead>
-              <TableHead className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Giao dịch</TableHead>
-              <TableHead className="hidden sm:table-cell text-xs font-bold uppercase tracking-wider text-muted-foreground">Ví</TableHead>
-              <TableHead className="text-right text-xs font-bold uppercase tracking-wider text-muted-foreground">Số tiền</TableHead>
+            <TableRow className="bg-[#F5EFEB] border-b-2 border-[#1C1917] dark:bg-[#2C1F15]">
+              <TableHead className="w-28 text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0] border-r-2 border-[#1C1917]">Ngày</TableHead>
+              <TableHead className="text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0] border-r-2 border-[#1C1917]">Giao dịch</TableHead>
+              <TableHead className="hidden sm:table-cell text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0] border-r-2 border-[#1C1917]">Ví</TableHead>
+              <TableHead className="text-right text-xs font-black uppercase tracking-wider text-[#1C1917] dark:text-[#FAF7F0]">Số tiền</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y-2 divide-border/60">
             {rows.map((row) => {
               const meta = TYPE_META[row.type];
               const Icon = meta.icon;
               return (
                 <TableRow
                   key={`${row.type}-${row.id}`}
-                  className="cursor-pointer hover:bg-muted/30 border-b border-border/50 transition-colors"
+                  className="cursor-pointer hover:bg-[#FAF7F0] dark:hover:bg-[#2C1F15] transition-colors"
                   onClick={() => setSelected(row)}
                 >
-                  <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                  <TableCell className="whitespace-nowrap text-xs font-semibold text-muted-foreground border-r-2 border-[#1C1917]">
                     {formatDate(row.occurredAt)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="border-r-2 border-[#1C1917]">
                     <div className="flex items-center gap-2">
-                      <Icon className={cn("size-3.5 shrink-0", meta.color)} />
-                      <span className="font-semibold text-xs sm:text-sm text-foreground">{row.title}</span>
+                      <Icon className={cn("size-3.5 shrink-0 stroke-[2.5]", meta.color)} />
+                      <span className="font-bold text-xs sm:text-sm text-foreground">{row.title}</span>
                       {row.imagePath && (
                         <Paperclip className="size-3.5 shrink-0 text-muted-foreground" />
                       )}
                     </div>
                     {row.categoryName && (
-                      <Badge variant="secondary" className="mt-1 text-[10px] rounded px-1.5 py-0">
+                      <Badge variant="secondary" className="mt-1 text-[10px] font-bold">
                         {row.categoryName}
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell className="hidden text-xs text-muted-foreground sm:table-cell">
+                  <TableCell className="hidden text-xs font-semibold text-muted-foreground sm:table-cell border-r-2 border-[#1C1917]">
                     {row.type === "transfer"
                       ? `${row.fromWalletName} → ${row.toWalletName}`
                       : row.walletName}
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "text-right font-bold text-xs sm:text-sm tabular-nums whitespace-nowrap",
+                      "text-right font-black text-xs sm:text-sm tabular-nums whitespace-nowrap",
                       meta.color
                     )}
                   >

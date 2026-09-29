@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { CreditCard } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getTransactions } from "@/lib/transactions";
 import type { TransactionType } from "@/lib/types";
@@ -48,18 +49,18 @@ export default async function TransactionsPage({
     .map((c) => ({ id: c.id, name: c.name }));
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="bg-card rounded-2xl border border-border p-4 sm:p-5 shadow-xs flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center space-x-3">
-          <span className="w-8 h-8 bg-rose-50 text-[#881337] dark:bg-rose-950/40 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-sm">
-            💳
-          </span>
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-center justify-between gap-4 dark:bg-card">
+        <div className="flex items-center space-x-3.5">
+          <div className="flex size-10 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-white shadow-neo-sm">
+            <CreditCard className="size-5" />
+          </div>
           <div>
-            <h1 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
-              Quản Lý Lịch Sử Giao Dịch
+            <h1 className="font-editorial text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+              Quản lý lịch sử giao dịch
             </h1>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground font-semibold">
               {rows.length} giao dịch được ghi nhận trong hệ thống
             </p>
           </div>
@@ -73,7 +74,7 @@ export default async function TransactionsPage({
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-card rounded-xl border border-border p-3.5 shadow-xs">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-4 shadow-neo-sm dark:bg-card">
         <Suspense>
           <TransactionFilters
             wallets={walletOptions}

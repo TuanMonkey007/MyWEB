@@ -144,13 +144,13 @@ function SidebarLink({ item, pathname }: { item: NavItem; pathname: string }) {
       href={item.href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "group flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar",
+        "group flex min-h-9 items-center gap-3 rounded-xs px-3 py-2 text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring cursor-pointer",
         active
-          ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-xs"
-          : "font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          ? "border-2 border-[#1C1917] bg-[#F25C2B] font-bold text-white shadow-neo-sm dark:border-white/80"
+          : "border-2 border-transparent font-bold text-stone-700 hover:border-[#1C1917] hover:bg-white hover:text-[#1C1917] hover:shadow-neo-sm dark:text-stone-300 dark:hover:border-white/80 dark:hover:bg-card dark:hover:text-white"
       )}
     >
-      <Icon className={cn("size-4 shrink-0", active ? "text-sidebar-primary-foreground" : "text-muted-foreground group-hover:text-sidebar-accent-foreground")} />
+      <Icon className={cn("size-4 shrink-0", active ? "text-white" : "text-stone-600 group-hover:text-[#1C1917] dark:text-stone-400 dark:group-hover:text-white")} />
       <span className="truncate">{item.label}</span>
     </Link>
   );
@@ -168,11 +168,11 @@ export function AppSidebar({
   const mods = visibleModules(allowedModules, moduleOrder);
 
   return (
-    <aside className="hidden w-64 shrink-0 select-none flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
+    <aside className="hidden w-64 shrink-0 select-none flex-col border-r-2 border-[#1C1917] bg-[#F5EFEB] text-foreground dark:border-stone-800 dark:bg-[#140D07] md:flex">
       <nav aria-label="Điều hướng chính" className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
         {mods.map((mod) => (
           <div key={mod.id} className="mt-3 space-y-1 first:mt-0">
-            <div className="px-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="px-3 pb-0.5 text-[10px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
               {mod.label}
             </div>
             {mod.items.map((item) => (
@@ -182,8 +182,8 @@ export function AppSidebar({
         ))}
 
         {isAdmin && (
-          <div className="mt-4 space-y-1 border-t border-sidebar-border pt-4">
-            <div className="px-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="mt-4 space-y-1 border-t-2 border-[#1C1917] pt-4 dark:border-stone-800">
+            <div className="px-3 pb-0.5 text-[10px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Quản trị
             </div>
             {adminItems.map((item) => (

@@ -51,74 +51,74 @@
 
 /* Neutral application surfaces; the selected accent is injected by theme-color.ts. */
 :root {
-  --background: #f7f8fa;
-  --foreground: #182230;
-  --card: #ffffff;
-  --card-foreground: #182230;
-  --popover: #ffffff;
-  --popover-foreground: #182230;
-  --primary: var(--tl-primary, #4338ca);
-  --primary-foreground: var(--tl-primary-foreground, #ffffff);
-  --secondary: #eef1f5;
-  --secondary-foreground: #344054;
-  --muted: #f1f3f6;
-  --muted-foreground: #667085;
-  --accent: var(--tl-accent, #eef2ff);
-  --accent-foreground: var(--tl-accent-foreground, #3730a3);
-  --destructive: #c2413a;
-  --border: #dde2ea;
-  --input: #cfd6e1;
-  --ring: var(--tl-ring, #6366f1);
-  --chart-1: var(--tl-chart-1, #6366f1);
-  --chart-2: #2563eb;
-  --chart-3: #d97706;
+  --background: #FAF7F0;
+  --foreground: #1C1917;
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+  --primary: #F25C2B;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3ECE2;
+  --secondary-foreground: #1C1917;
+  --muted: #F3ECE2;
+  --muted-foreground: #78716C;
+  --accent: #FDF1EA;
+  --accent-foreground: #C84013;
+  --destructive: #DC2626;
+  --border: #1C1917;
+  --input: #1C1917;
+  --ring: #F25C2B;
+  --chart-1: #F25C2B;
+  --chart-2: #E8592A;
+  --chart-3: #D97706;
   --chart-4: #059669;
-  --chart-5: #7c3aed;
-  --radius: 0.5rem;
+  --chart-5: #1C1917;
+  --radius: 0.375rem;
 
-  --sidebar: #f4f6f8;
-  --sidebar-foreground: #182230;
-  --sidebar-primary: var(--tl-sidebar-primary, #4338ca);
-  --sidebar-primary-foreground: var(--tl-sidebar-primary-foreground, #ffffff);
-  --sidebar-accent: var(--tl-sidebar-accent, #eef2ff);
-  --sidebar-accent-foreground: var(--tl-sidebar-accent-foreground, #3730a3);
-  --sidebar-border: #dde2ea;
-  --sidebar-ring: var(--tl-sidebar-ring, #6366f1);
+  --sidebar: #F5EFEB;
+  --sidebar-foreground: #1C1917;
+  --sidebar-primary: #F25C2B;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FAF7F0;
+  --sidebar-accent-foreground: #1C1917;
+  --sidebar-border: #1C1917;
+  --sidebar-ring: #F25C2B;
 }
 
 .dark {
-  --background: #151719;
-  --foreground: #f0f2f5;
-  --card: #1d2024;
-  --card-foreground: #f0f2f5;
-  --popover: #1d2024;
-  --popover-foreground: #f0f2f5;
-  --primary: var(--td-primary, #a5b4fc);
-  --primary-foreground: var(--td-primary-foreground, #111827);
-  --secondary: #292d32;
-  --secondary-foreground: #e4e7ec;
-  --muted: #22262b;
-  --muted-foreground: #a7b0bd;
-  --accent: var(--td-accent, #29283d);
-  --accent-foreground: var(--td-accent-foreground, #c7d2fe);
-  --destructive: #f87171;
-  --border: #30353c;
-  --input: #3a4048;
-  --ring: var(--td-ring, #a5b4fc);
-  --chart-1: var(--td-chart-1, #a5b4fc);
-  --chart-2: #60a5fa;
-  --chart-3: #fbbf24;
-  --chart-4: #34d399;
-  --chart-5: #a78bfa;
+  --background: #18110B;
+  --foreground: #FAF7F0;
+  --card: #22170F;
+  --card-foreground: #FAF7F0;
+  --popover: #22170F;
+  --popover-foreground: #FAF7F0;
+  --primary: #F25C2B;
+  --primary-foreground: #FFFFFF;
+  --secondary: #2C1F15;
+  --secondary-foreground: #FAF7F0;
+  --muted: #2C1F15;
+  --muted-foreground: #A8A29E;
+  --accent: #332216;
+  --accent-foreground: #F25C2B;
+  --destructive: #EF4444;
+  --border: #443224;
+  --input: #443224;
+  --ring: #F25C2B;
+  --chart-1: #F25C2B;
+  --chart-2: #F97316;
+  --chart-3: #FBBF24;
+  --chart-4: #34D399;
+  --chart-5: #A78BFA;
 
-  --sidebar: #191c20;
-  --sidebar-foreground: #f0f2f5;
-  --sidebar-primary: var(--td-sidebar-primary, #a5b4fc);
-  --sidebar-primary-foreground: var(--td-sidebar-primary-foreground, #111827);
-  --sidebar-accent: var(--td-sidebar-accent, #29283d);
-  --sidebar-accent-foreground: var(--td-sidebar-accent-foreground, #c7d2fe);
-  --sidebar-border: #30353c;
-  --sidebar-ring: var(--td-sidebar-ring, #a5b4fc);
+  --sidebar: #140D07;
+  --sidebar-foreground: #FAF7F0;
+  --sidebar-primary: #F25C2B;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #22170F;
+  --sidebar-accent-foreground: #FAF7F0;
+  --sidebar-border: #443224;
+  --sidebar-ring: #F25C2B;
 }
 
 @layer base {
@@ -163,10 +163,13 @@
 
 @layer components {
   [data-slot="card"] {
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    border-width: 2px;
+    border-color: var(--border);
+    box-shadow: 4px 4px 0px #1c1917;
   }
   .dark [data-slot="card"] {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+    border-color: var(--border);
+    box-shadow: 4px 4px 0px #000000;
   }
   
   ::-webkit-scrollbar {

@@ -22,22 +22,24 @@ export default async function SettingsPage() {
   ]);
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Cài đặt</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+          Cài đặt hệ thống
+        </h1>
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
           Giao diện chung, thứ tự module, mẫu xuất phiếu, danh mục thu/chi.
         </p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <AppearanceSettings settings={settings} />
         <ModuleOrderCard order={settings.moduleOrder} />
         <ExportTemplateCard templateName={settings.exportTemplateName} />
       </div>
 
-      <div>
-        <h2 className="mb-3 text-lg font-medium">Danh mục thu/chi (module Tài chính)</h2>
+      <div className="space-y-3">
+        <h2 className="font-editorial text-xl font-bold text-foreground">Danh mục thu / chi (Tài chính)</h2>
         <CategoryManager
           categories={categories.map((c) => ({
             id: c.id,

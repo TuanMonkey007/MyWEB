@@ -13,12 +13,14 @@ export default async function AccessPage() {
   const users = await prisma.user.findMany({ orderBy: { createdAt: "asc" } });
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Phân quyền</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+          Phân quyền người dùng
+        </h1>
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
           Quản lý tài khoản và cấp quyền chi tiết (xem / thêm / sửa / xóa và các tính
-          năng đặc biệt) cho từng module.
+          năng đặc biệt) cho từng module trong hệ thống.
         </p>
       </div>
 
@@ -29,7 +31,6 @@ export default async function AccessPage() {
           username: u.username,
           displayName: u.displayName,
           role: u.role,
-          // quyền hiệu lực (kèm suy ra từ cột modules cũ) để hiển thị đúng
           permissions: JSON.stringify(parsePermissions(u)),
           active: u.active,
         }))}

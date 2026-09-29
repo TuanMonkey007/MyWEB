@@ -33,22 +33,10 @@ const VIEW_KEY = "todos-view";
 
 function PriorityBadge({ priority }: { priority: string }) {
   if (priority === "HIGH")
-    return (
-      <Badge className="bg-destructive/10 text-destructive border border-destructive/20 text-[10px] font-semibold">
-        Cao
-      </Badge>
-    );
+    return <Badge variant="destructive">Cao</Badge>;
   if (priority === "LOW")
-    return (
-      <Badge variant="secondary" className="text-[10px]">
-        Thấp
-      </Badge>
-    );
-  return (
-    <Badge className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 text-[10px] font-semibold">
-      Vừa
-    </Badge>
-  );
+    return <Badge variant="secondary">Thấp</Badge>;
+  return <Badge variant="warning">Vừa</Badge>;
 }
 
 function DueDate({ todo }: { todo: TodoDTO }) {
@@ -143,10 +131,10 @@ export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
             Việc cần làm
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground">
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
             {openTodos.length} việc đang mở · {doneTodos.length} đã xong
           </p>
         </div>
@@ -245,7 +233,7 @@ function ChecklistView({
               <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {TODO_STATUS_LABELS[status]} ({items.length})
               </h2>
-              <ul className="divide-y divide-border/60 rounded-lg border border-border bg-card shadow-xs">
+              <ul className="divide-y-2 divide-border/60 rounded-sm border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card">
                 {items.map((t) => (
                   <li
                     key={t.id}
@@ -314,8 +302,8 @@ function KanbanView({
           <div
             key={status}
             className={cn(
-              "rounded-lg border border-border bg-card/60 p-2.5 transition-colors shadow-xs",
-              dragOver === status && "border-primary bg-primary/5"
+              "rounded-sm border-2 border-[#1C1917] bg-[#F5EFEB] dark:bg-[#140D07] p-3 shadow-neo transition-all",
+              dragOver === status && "border-[#F25C2B] bg-[#FDF1EA]"
             )}
             onDragOver={(e) => {
               e.preventDefault();

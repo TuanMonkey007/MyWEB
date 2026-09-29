@@ -282,12 +282,12 @@ export function RouteConverter({
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-          <ArrowRightLeft className="size-5 text-primary" /> Chuyển tuyến giữa nhà phân phối
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <h1 className="flex items-center gap-2.5 font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+          <ArrowRightLeft className="size-6 text-[#F25C2B]" /> Chuyển tuyến giữa nhà phân phối
         </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
           Đổi dữ liệu tuyến từ NPP A sang file import cho NPP B: cập nhật mã đơn vị,
           sinh mã tuyến mới (ngày + mã NVBH), từ ngày = ngày mai, giữ nguyên định dạng mẫu.
           Mẫu import lưu một lần, những lần sau chỉ cần chọn file gốc.

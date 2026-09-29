@@ -39,20 +39,20 @@ export default async function ProposalDetailPage({ params }: { params: Params })
     .reduce((s, i) => s + (i.actualAmount ?? 0), 0);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Link
         href="/procurement/proposals"
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground border-2 border-transparent hover:border-[#1C1917] px-2 py-1 rounded-xs transition-all"
       >
         <ArrowLeft className="size-4" /> Các đợt đề xuất
       </Link>
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-start justify-between gap-4 dark:bg-card">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
             Đợt đề xuất #{proposal.number} — {formatDate(proposal.proposedAt)}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
             Năm ngân sách {proposal.budgetYear.year}
             {proposal.title ? ` · ${proposal.title}` : ""}
           </p>
@@ -74,31 +74,31 @@ export default async function ProposalDetailPage({ params }: { params: Params })
       </div>
 
       <Card>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-5">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            <div>
-              <div className="text-xs text-muted-foreground">Tổng tiền đề xuất</div>
-              <div className="text-lg font-semibold tabular-nums">
+            <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-3.5 shadow-neo-sm dark:bg-card">
+              <div className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">Tổng tiền đề xuất</div>
+              <div className="font-editorial text-xl font-bold tabular-nums text-foreground mt-1">
                 {formatVND(totalProposed)}
               </div>
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Đã chi thực tế (VAT)</div>
-              <div className="text-lg font-semibold tabular-nums text-primary">
+            <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF1EA] p-3.5 shadow-neo-sm dark:bg-card">
+              <div className="text-[11px] font-black uppercase tracking-wider text-[#F25C2B]">Đã chi thực tế (VAT)</div>
+              <div className="font-editorial text-xl font-bold tabular-nums text-[#F25C2B] mt-1">
                 {formatVND(totalActual)}
               </div>
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Hạng mục</div>
-              <div className="text-lg font-semibold tabular-nums">
-                {proposal.items.length}
+            <div className="rounded-xs border-2 border-[#1C1917] bg-stone-100 p-3.5 shadow-neo-sm dark:bg-stone-800">
+              <div className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">Hạng mục</div>
+              <div className="font-editorial text-xl font-bold tabular-nums text-foreground mt-1">
+                {proposal.items.length} hạng mục
               </div>
             </div>
           </div>
           {proposal.notes && (
-            <p className="text-sm text-muted-foreground">{proposal.notes}</p>
+            <p className="text-xs sm:text-sm font-medium text-muted-foreground bg-muted p-3 rounded-xs border border-[#1C1917]">{proposal.notes}</p>
           )}
-          <Separator />
+          <Separator className="border-t-2 border-[#1C1917]" />
           <AttachmentList
             attachments={proposal.attachments.map((a) => ({
               id: a.id,

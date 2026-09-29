@@ -5,34 +5,34 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all duration-150 outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-sm border-2 border-transparent bg-clip-padding text-sm font-bold whitespace-nowrap transition-all duration-150 outline-none select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 hover:shadow-sm active:shadow-none",
+          "bg-primary text-primary-foreground border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80 dark:shadow-[2px_2px_0px_#000000]",
         outline:
-          "border-border/80 bg-background/80 hover:bg-accent hover:text-accent-foreground hover:border-border aria-expanded:bg-muted aria-expanded:text-foreground dark:border-border/80 dark:bg-card/40 dark:hover:bg-accent/60",
+          "border-2 border-[#1C1917] bg-card text-foreground shadow-neo-sm hover:bg-muted hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80 dark:shadow-[2px_2px_0px_#000000]",
         secondary:
-          "bg-secondary/90 text-secondary-foreground hover:bg-secondary border border-border/40 shadow-2xs aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-secondary text-secondary-foreground border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80",
         ghost:
-          "hover:bg-accent/80 hover:text-accent-foreground aria-expanded:bg-accent/80 aria-expanded:text-foreground",
+          "hover:bg-muted hover:text-foreground active:translate-x-[1px] active:translate-y-[1px]",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 active:shadow-none",
+          "bg-destructive text-white border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default:
           "h-8.5 gap-2 px-3.5 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
-        xs: "h-6.5 gap-1 rounded-sm px-2 text-xs in-data-[slot=button-group]:rounded-sm has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7.5 gap-1.5 rounded-md px-2.5 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-10 gap-2 rounded-md px-4 text-sm font-semibold has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
-        icon: "size-8.5 rounded-md",
+        xs: "h-6.5 gap-1 rounded-xs px-2 text-xs in-data-[slot=button-group]:rounded-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-7.5 gap-1.5 rounded-sm px-2.5 text-xs in-data-[slot=button-group]:rounded-sm has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-10 gap-2 rounded-sm px-4 text-sm font-bold has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
+        icon: "size-8.5 rounded-sm",
         "icon-xs":
-          "size-6.5 rounded-sm in-data-[slot=button-group]:rounded-sm [&_svg:not([class*='size-'])]:size-3",
+          "size-6.5 rounded-xs in-data-[slot=button-group]:rounded-xs [&_svg:not([class*='size-'])]:size-3",
         "icon-sm":
-          "size-7.5 rounded-md in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3.5",
-        "icon-lg": "size-10 rounded-md",
+          "size-7.5 rounded-sm in-data-[slot=button-group]:rounded-sm [&_svg:not([class*='size-'])]:size-3.5",
+        "icon-lg": "size-10 rounded-sm",
       },
     },
     defaultVariants: {

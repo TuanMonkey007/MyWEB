@@ -11,16 +11,19 @@ export default async function WalletsPage() {
   ]);
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Ví tiền</h1>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          Tổng tài sản:{" "}
-          <span className="font-semibold text-foreground tabular-nums">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+          Ví tiền & Nguồn vốn
+        </h1>
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
+          Tổng tài sản khả dụng:{" "}
+          <span className="font-editorial text-lg sm:text-xl font-bold text-[#F25C2B] tabular-nums">
             {formatVND(totalAssets)}
           </span>
         </p>
       </div>
+
       <WalletList
         wallets={wallets.map((w) => ({
           id: w.id,

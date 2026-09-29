@@ -23,22 +23,22 @@ export function SiteHeader({
   const now = giay === null ? null : new Date(giay * 1000);
 
   return (
-    <header className="sticky top-0 z-40 h-14 shrink-0 border-b border-border bg-card/95 backdrop-blur">
+    <header className="sticky top-0 z-40 h-14 shrink-0 border-b-2 border-[#1C1917] bg-[#FAF7F0] dark:bg-[#1E140C] shadow-neo-sm">
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6">
         {/* Brand & HNF Badge */}
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="flex size-8 items-center justify-center rounded-md bg-primary text-xs font-extrabold tracking-wide text-primary-foreground shadow-xs">
+            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wide text-white shadow-neo-sm">
               HNF
             </div>
             <div>
-              <span className="block text-xs font-semibold leading-tight text-foreground sm:text-sm">
+              <span className="block font-editorial text-sm sm:text-base font-bold leading-tight text-foreground tracking-tight">
                 {platformName}
               </span>
-              <span className="hidden text-[10px] leading-tight text-muted-foreground sm:block">
+              <span className="hidden text-[10px] font-semibold leading-tight text-muted-foreground sm:block">
                 Hệ thống Quản trị & Điều hành Dữ liệu Tập trung
               </span>
             </div>
@@ -49,13 +49,13 @@ export function SiteHeader({
         <div className="hidden md:flex items-center space-x-2">
           <Link
             href="/dong-ho"
-            className="inline-flex min-h-8 items-center gap-1.5 rounded-md border border-border bg-muted/50 px-2.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-2.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
             title="Đồng hồ hệ thống"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <Clock className="size-3.5" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-[#1C1917]" />
+            <Clock className="size-3.5 text-[#F25C2B]" />
             {now ? (
-              <span className="tabular-nums">
+              <span className="tabular-nums font-mono">
                 {now.toLocaleTimeString("vi-VN")} ·{" "}
                 {now.toLocaleDateString("vi-VN", {
                   weekday: "short",
@@ -72,18 +72,18 @@ export function SiteHeader({
         {/* Actions */}
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <div className="hidden h-5 w-px bg-border sm:block" />
+          <div className="hidden h-5 w-0.5 bg-[#1C1917] sm:block dark:bg-stone-700" />
           {isLoggedIn ? (
             <div className="flex items-center gap-2">
               <Link
                 href="/finance"
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-border bg-card px-3 text-xs font-medium text-foreground hover:bg-muted transition-colors"
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-white px-3 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
               >
-                <LayoutDashboard className="size-3.5" /> Workspace
+                <LayoutDashboard className="size-3.5 text-[#F25C2B]" /> Workspace
               </Link>
               <Link
                 href="/articles"
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-3 text-xs font-bold text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
               >
                 <PenLine className="size-3.5" /> Viết bài
               </Link>
@@ -91,7 +91,7 @@ export function SiteHeader({
           ) : (
             <Link
               href="/login"
-              className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-primary px-3.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
+              className="inline-flex min-h-8 items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-3.5 text-xs font-bold text-white shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
             >
               <LogIn className="size-3.5" /> Đăng nhập
             </Link>

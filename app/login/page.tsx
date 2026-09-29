@@ -35,21 +35,23 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col bg-muted/35 text-foreground">
-      <header className="border-b border-border bg-card">
+    <div className="flex min-h-dvh flex-col bg-[#FAF7F0] dark:bg-[#18110B] text-foreground">
+      <header className="border-b-2 border-[#1C1917] bg-[#FAF7F0] dark:bg-[#1E140C] shadow-neo-sm">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center rounded-md bg-primary text-xs font-extrabold tracking-wide text-primary-foreground shadow-xs">
+            <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black tracking-wide text-white shadow-neo-sm">
               HNF
             </div>
             <div>
-              <span className="text-sm font-semibold tracking-tight">HỮU NGHỊ FOOD</span>
-              <p className="hidden text-[11px] text-muted-foreground sm:block">Cổng quản trị DMS và dữ liệu tập trung</p>
+              <span className="block font-editorial text-sm font-bold tracking-tight text-foreground sm:text-base">
+                HỮU NGHỊ FOOD
+              </span>
+              <p className="hidden text-[10px] font-semibold text-muted-foreground sm:block">Cổng quản trị DMS & dữ liệu tập trung</p>
             </div>
           </div>
           <Link
             href="/"
-            className="flex min-h-9 items-center gap-1 rounded-md px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-8 items-center gap-1 rounded-xs border-2 border-[#1C1917] bg-white px-2.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all dark:bg-card dark:text-foreground"
           >
             <ArrowLeft className="size-3.5" /> Trang chủ
           </Link>
@@ -57,22 +59,22 @@ export default function LoginPage() {
       </header>
 
       <div className="flex flex-1 items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-6 rounded-lg border border-border bg-card p-6 shadow-sm sm:p-8">
+        <div className="w-full max-w-md space-y-6 rounded-sm border-2 border-[#1C1917] bg-white p-6 sm:p-8 shadow-neo-lg dark:bg-card">
           <div className="text-center space-y-2">
-            <div className="mx-auto flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="mx-auto flex size-12 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-white shadow-neo-sm">
               <ShieldCheck className="size-6" />
             </div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">
+            <h1 className="font-editorial text-2xl font-bold uppercase tracking-tight text-foreground">
               Đăng nhập hệ thống
             </h1>
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="text-xs font-medium leading-relaxed text-muted-foreground">
               Nhập tên tài khoản và mật khẩu đã được cấp để tiếp tục
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 pt-2">
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-xs font-semibold text-foreground">
+              <Label htmlFor="username" className="text-xs font-bold uppercase tracking-wider text-foreground">
                 Tên đăng nhập
               </Label>
               <div className="relative">
@@ -83,14 +85,14 @@ export default function LoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="admin"
-                  className="h-10 pl-9 text-xs font-medium sm:text-sm"
+                  className="h-10 pl-9 text-xs font-bold sm:text-sm"
                   autoFocus
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs font-semibold text-foreground">
+              <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-foreground">
                 Mật khẩu
               </Label>
               <div className="relative">
@@ -102,15 +104,14 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="h-10 pl-9 text-xs sm:text-sm"
+                  className="h-10 pl-9 text-xs font-bold sm:text-sm"
                 />
               </div>
             </div>
 
-            <Button
+            <button
               type="submit"
-              size="lg"
-              className="mt-2 h-10.5 w-full text-xs font-semibold sm:text-sm"
+              className="mt-2 flex h-11 w-full cursor-pointer items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] text-xs font-black uppercase tracking-widest text-white shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50"
               disabled={loading || !username || !password}
             >
               {loading ? (
@@ -124,10 +125,10 @@ export default function LoginPage() {
                   Xác nhận Đăng nhập
                 </>
               )}
-            </Button>
+            </button>
           </form>
 
-          <div className="border-t border-border pt-4 text-center text-xs text-muted-foreground">
+          <div className="border-t-2 border-[#1C1917] pt-4 text-center text-xs font-bold text-muted-foreground dark:border-stone-800">
             Hữu Nghị Food • Phòng DMS & CNTT
           </div>
         </div>

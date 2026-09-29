@@ -8,7 +8,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className="relative w-full overflow-x-auto rounded-sm border-2 border-border bg-card shadow-neo"
     >
       <table
         data-slot="table"
@@ -23,7 +23,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn("border-b-2 border-border bg-[#F5EFEB] dark:bg-[#2C1F15] text-[#1C1917] dark:text-[#FAF7F0] font-bold", className)}
       {...props}
     />
   )
@@ -33,7 +33,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       data-slot="table-body"
-      className={cn("[&_tr:last-child]:border-0", className)}
+      className={cn("[&_tr:last-child]:border-0 divide-y-2 divide-border/60", className)}
       {...props}
     />
   )
@@ -44,7 +44,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+        "border-t-2 border-border bg-muted font-bold text-foreground [&>tr]:last:border-b-0",
         className
       )}
       {...props}
@@ -57,7 +57,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        "border-b border-border/60 transition-colors hover:bg-muted/40 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
         className
       )}
       {...props}
@@ -70,9 +70,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        // Tiêu đề cột tách hẳn khỏi dữ liệu: chữ nhỏ, viết hoa, giãn chữ, màu mờ
-        // hơn — mắt phân biệt được hàng tiêu đề mà không cần kẻ đậm.
-        "h-9 px-3 text-left align-middle text-xs font-medium tracking-wide uppercase whitespace-nowrap text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        "h-9.5 px-3.5 text-left align-middle text-xs font-bold tracking-wider uppercase whitespace-nowrap text-[#1C1917] dark:text-[#FAF7F0] [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -85,9 +83,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        // px-3 thay p-2: cột sát nhau theo chiều ngang là thứ làm bảng nhiều cột
-        // khó đọc nhất; chiều dọc giữ 8px để bảng 700 dòng không bị dài ra.
-        "px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "px-3.5 py-2.5 align-middle whitespace-nowrap text-xs sm:text-sm text-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -102,7 +98,7 @@ function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn("mt-4 text-sm text-muted-foreground", className)}
+      className={cn("mt-4 text-xs text-muted-foreground", className)}
       {...props}
     />
   )

@@ -193,14 +193,14 @@ export function VaultApp() {
   const categories = [...new Set(entries.map((e) => e.category).filter(Boolean))];
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-center justify-between gap-4 dark:bg-card">
         <div>
-          <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-            <ShieldCheck className="size-5 text-primary" /> Kho mật khẩu
+          <h1 className="flex items-center gap-2.5 font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+            <ShieldCheck className="size-6 text-[#F25C2B]" /> Kho mật khẩu
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {entries.length} mục · mã hóa đầu-cuối, tự khóa sau 5 phút
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
+            {entries.length} mục · Mã hóa đầu-cuối AES-GCM, tự khóa sau 5 phút
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

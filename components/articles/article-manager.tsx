@@ -94,13 +94,15 @@ export function ArticleManager({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-start gap-3">
+    <div className="space-y-6">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo flex flex-wrap items-center justify-between gap-4 dark:bg-card">
         <div>
-          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Bài hướng dẫn</h1>
-          <p className="text-xs sm:text-sm text-muted-foreground">
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
+            Quản lý bài viết & Hướng dẫn
+          </h1>
+          <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
             Viết tài liệu kỹ thuật bằng Markdown. Bài công khai hiện ở{" "}
-            <Link href="/huong-dan" className="text-primary underline-offset-2 hover:underline">
+            <Link href="/huong-dan" className="text-[#F25C2B] underline-offset-2 hover:underline font-bold">
               /huong-dan
             </Link>{" "}
             cho cả người chưa đăng nhập.

@@ -29,40 +29,42 @@ export function QuickAddButtons({
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5">
         <button
           type="button"
           onClick={() => setOpen("expense")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-rose-500/20 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-500/20 dark:text-rose-400 transition-colors disabled:opacity-50"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#FFEBEE] px-3.5 py-1.5 text-xs font-bold text-[#B71C1C] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 dark:bg-rose-950/40 dark:text-rose-300 dark:border-white/80"
         >
-          <Minus className="size-3.5" /> Khoản chi
+          <Minus className="size-3.5 stroke-[3]" /> Khoản chi
         </button>
         <button
           type="button"
           onClick={() => setOpen("income")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-400 transition-colors disabled:opacity-50"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#E8F5E9] px-3.5 py-1.5 text-xs font-bold text-[#1B5E20] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-white/80"
         >
-          <Plus className="size-3.5" /> Khoản thu
+          <Plus className="size-3.5 stroke-[3]" /> Khoản thu
         </button>
         <button
           type="button"
           onClick={() => setOpen("transfer")}
           disabled={!canCreate}
           title={canCreate ? undefined : NO_PERM}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-3.5 py-1.5 text-xs font-bold text-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 dark:bg-stone-800 dark:text-stone-200 dark:border-white/80"
         >
-          <ArrowLeftRight className="size-3.5" /> Chuyển khoản
+          <ArrowLeftRight className="size-3.5 stroke-[2.5]" /> Chuyển khoản
         </button>
       </div>
 
       <Dialog open={open === "expense"} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md rounded-xs border-2 border-[#1C1917] bg-white p-6 shadow-neo-lg dark:bg-card">
           <DialogHeader>
-            <DialogTitle>Thêm khoản chi</DialogTitle>
+            <DialogTitle className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
+              Thêm khoản chi
+            </DialogTitle>
           </DialogHeader>
           <TransactionForm
             kind="expense"
@@ -74,9 +76,11 @@ export function QuickAddButtons({
       </Dialog>
 
       <Dialog open={open === "income"} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md rounded-xs border-2 border-[#1C1917] bg-white p-6 shadow-neo-lg dark:bg-card">
           <DialogHeader>
-            <DialogTitle>Thêm khoản thu</DialogTitle>
+            <DialogTitle className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
+              Thêm khoản thu
+            </DialogTitle>
           </DialogHeader>
           <TransactionForm
             kind="income"
@@ -88,9 +92,11 @@ export function QuickAddButtons({
       </Dialog>
 
       <Dialog open={open === "transfer"} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md rounded-xs border-2 border-[#1C1917] bg-white p-6 shadow-neo-lg dark:bg-card">
           <DialogHeader>
-            <DialogTitle>Chuyển khoản nội bộ</DialogTitle>
+            <DialogTitle className="font-editorial text-xl font-bold uppercase tracking-tight text-foreground">
+              Chuyển khoản nội bộ
+            </DialogTitle>
           </DialogHeader>
           <TransferForm wallets={wallets} onDone={close} />
         </DialogContent>

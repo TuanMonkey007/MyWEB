@@ -46,14 +46,14 @@ export default async function HuongDanPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="rounded-lg border border-border bg-card p-4 sm:p-5 shadow-xs">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+      <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 shadow-neo dark:bg-card">
+        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#F25C2B]">
           <BookOpen className="size-4" /> Tài liệu & Hướng dẫn kỹ thuật
         </div>
-        <h1 className="mt-1.5 text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="mt-1.5 font-editorial text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground">
           Thư viện kiến thức & Hướng dẫn
         </h1>
-        <p className="mt-1 text-xs text-muted-foreground leading-relaxed max-w-2xl">
+        <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground leading-relaxed max-w-2xl">
           {articles.length > 0
             ? `Tổng hợp ${articles.length} bài viết được hệ thống hoá theo ${groups.length} chuyên mục.`
             : "Chưa có bài viết nào được đăng."}
@@ -62,84 +62,84 @@ export default async function HuongDanPage({
       </div>
 
       {groups.length === 0 && (
-        <div className="rounded-lg border border-dashed border-border bg-card py-16 text-center">
+        <div className="rounded-sm border-2 border-dashed border-[#1C1917] bg-white py-16 text-center shadow-neo dark:bg-card">
           <MessageSquareText className="mx-auto size-8 text-muted-foreground" />
-          <p className="mt-2 text-sm font-semibold text-foreground">
+          <p className="mt-2 font-editorial text-lg font-bold text-foreground">
             Chưa có bài hướng dẫn nào được đăng.
           </p>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-0.5 text-xs font-semibold text-muted-foreground">
             Vui lòng quay lại sau hoặc liên hệ quản trị viên.
           </p>
         </div>
       )}
 
       {/* Categories Group Sections */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {groups.map((g) => (
           <section
             key={g.id}
-            className="overflow-hidden rounded-lg border border-border bg-card shadow-xs transition-colors"
+            className="overflow-hidden rounded-sm border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card transition-colors"
           >
-            <header className="border-b border-border bg-muted/40 px-4 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <header className="border-b-2 border-[#1C1917] bg-[#F5EFEB] dark:bg-[#2C1F15] px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <div>
-                <h2 className="text-xs sm:text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-primary" />
+                <h2 className="font-editorial text-base sm:text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
+                  <span className="size-2.5 rounded-full bg-[#F25C2B] border border-[#1C1917]" />
                   {g.name}
                 </h2>
                 {g.description && (
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">{g.description}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground font-medium">{g.description}</p>
                 )}
               </div>
-              <span className="text-[11px] font-semibold text-muted-foreground">
+              <span className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">
                 {g.items.length} chủ đề
               </span>
             </header>
 
-            <ul className="divide-y divide-border/60">
+            <ul className="divide-y-2 divide-border/60">
               {g.items.map((a) => (
                 <li key={a.id}>
                   <Link
                     href={`/huong-dan/${a.slug}`}
-                    className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-3 hover:bg-muted/30 transition-colors"
+                    className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-5 py-3.5 hover:bg-[#FAF7F0] dark:hover:bg-[#2C1F15] transition-colors"
                   >
-                    <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className="min-w-0 flex-1 space-y-1">
                       <div className="flex items-center gap-2">
                         {a.pinned && (
-                          <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                          <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-1.5 py-0.5 text-[10px] font-bold text-[#F25C2B] shadow-neo-sm">
                             <Pin className="size-3" /> Ghim
                           </span>
                         )}
                         {a.visibility !== "PUBLIC" && (
-                          <span className="inline-flex items-center gap-1 rounded bg-muted border border-border px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#FAF7F0] px-1.5 py-0.5 text-[10px] font-bold text-stone-700 shadow-neo-sm dark:bg-card dark:text-stone-300">
                             <Lock className="size-3" />
                             {a.visibility === "DRAFT" ? "Bản nháp" : "Nội bộ"}
                           </span>
                         )}
-                        <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-primary transition-colors">
+                        <span className="font-bold text-sm sm:text-base text-foreground group-hover:text-[#F25C2B] transition-colors">
                           {a.title}
                         </span>
                       </div>
                       {a.summary && (
-                        <p className="line-clamp-1 text-xs text-muted-foreground">
+                        <p className="line-clamp-1 text-xs text-muted-foreground font-medium">
                           {a.summary}
                         </p>
                       )}
                     </div>
 
-                    <div className="flex shrink-0 items-center gap-3.5 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1 text-[11px]">
+                    <div className="flex shrink-0 items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1 font-semibold text-[11px]">
                         <User className="size-3" />
                         {a.author.displayName || a.author.username}
                       </span>
-                      <span className="flex items-center gap-1 font-medium text-[11px]">
-                        <Eye className="size-3" />
+                      <span className="flex items-center gap-1 font-bold text-[11px]">
+                        <Eye className="size-3 text-[#F25C2B]" />
                         {a.views}
                       </span>
-                      <span className="w-20 text-right flex items-center justify-end gap-1 text-[10px]">
+                      <span className="w-24 text-right flex items-center justify-end gap-1 text-[11px] font-medium font-mono">
                         <Clock className="size-3" />
                         {thoiGianTuongDoi(a.publishedAt ?? a.createdAt)}
                       </span>
-                      <ArrowRight className="size-3.5 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                      <ArrowRight className="size-4 text-[#F25C2B] transition-transform group-hover:translate-x-1" />
                     </div>
                   </Link>
                 </li>
