@@ -108,25 +108,30 @@ export function TodoDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{todo ? "Chi tiết việc" : "Thêm việc mới"}</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="td-title">Tên việc</Label>
+        <form onSubmit={handleSubmit} className="space-y-4 pt-1">
+          <div className="space-y-1.5">
+            <Label htmlFor="td-title" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Tên việc
+            </Label>
             <Input
               id="td-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="vd: Gia hạn SSL huunghi.com.vn"
               autoFocus={!todo}
+              className="font-bold text-foreground"
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-2">
-              <Label>Ưu tiên</Label>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="space-y-1.5 min-w-0">
+              <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Ưu tiên
+              </Label>
               <Select value={priority} onValueChange={setPriority}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -140,8 +145,11 @@ export function TodoDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label>Trạng thái</Label>
+
+            <div className="space-y-1.5 min-w-0">
+              <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Trạng thái
+              </Label>
               <Select value={status} onValueChange={setStatus}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -155,33 +163,41 @@ export function TodoDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="td-due">Hạn</Label>
+
+            <div className="space-y-1.5 min-w-0">
+              <Label htmlFor="td-due" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Hạn chót
+              </Label>
               <Input
                 id="td-due"
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
+                className="w-full"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="td-notes">Ghi chú</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="td-notes" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Ghi chú & Chi tiết
+            </Label>
             <Textarea
               id="td-notes"
-              rows={3}
+              rows={6}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              className="min-h-[140px] resize-y font-mono text-xs sm:text-sm leading-relaxed"
+              placeholder="Nhập ghi chú hoặc thông tin chi tiết..."
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex items-center gap-3 pt-2 border-t-2 border-[#1C1917] dark:border-stone-800">
             {todo && (
               <Button
                 type="button"
                 variant="outline"
-                className="text-destructive hover:text-destructive"
+                className="border-2 border-[#1C1917] text-destructive hover:bg-destructive/10 shadow-neo-sm"
                 disabled={!canDelete}
                 title={canDelete ? undefined : NO_PERM}
                 onClick={handleDelete}
@@ -191,7 +207,7 @@ export function TodoDialog({
             )}
             <Button
               type="submit"
-              className="flex-1"
+              className="flex-1 font-bold uppercase tracking-wider shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               disabled={saving || (todo ? !canEdit : !canCreate)}
               title={(todo ? canEdit : canCreate) ? undefined : NO_PERM}
             >
