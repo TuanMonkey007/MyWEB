@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -174,6 +174,18 @@ export default function PersonalLandingPage() {
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [featuredArticles, setFeaturedArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/articles/featured")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFeaturedArticles(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredTools =
     activeCategory === "Tất cả"
@@ -664,42 +676,71 @@ export default function PersonalLandingPage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {ARTICLES_DATA.map((article) => (
+            {(featuredArticles.length > 0 ? featuredArticles : ARTICLES_DATA).map((article) => (
               <div
-                key={article.slug}
-                className="flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-6 shadow-neo transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg dark:bg-card"
+                key={article.id || article.slug}
+                className="group flex flex-col justify-between overflow-hidden rounded-xs border-2 border-[#1C1917] bg-white shadow-neo transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg dark:bg-card"
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
-                      {article.category}
-                    </span>
-                    <span className="text-[11px] font-bold text-muted-foreground font-mono">
-                      {article.readTime}
-                    </span>
+                  {/* Ảnh bìa bài viết nếu có */}
+                  {article.coverImage ? (
+                    <Link href={`/bai-viet/${article.slug}`} className="block aspect-video w-full overflow-hidden border-b-2 border-[#1C1917] bg-stone-100 dark:bg-stone-900">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`/api/anh-bai-viet/${article.coverImage}`}
+                        alt={article.title}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </Link>
+                  ) : (
+                    <Link href={`/bai-viet/${article.slug}`} className="flex aspect-video w-full items-center justify-center border-b-2 border-[#1C1917] bg-[#F5EFEB] p-4 text-center dark:bg-[#2C1F15]">
+                      <span className="font-editorial text-base font-bold text-muted-foreground group-hover:text-primary transition-colors">
+                        {typeof article.category === "string" ? article.category : article.category?.name || "Tài liệu kỹ thuật"}
+                      </span>
+                    </Link>
+                  )}
+
+                  <div className="p-5">
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                      <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
+                        {typeof article.category === "string" ? article.category : article.category?.name ?? "Tài liệu"}
+                      </span>
+                      {article.pinned && (
+                        <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-amber-400 px-1.5 py-0.5 text-[10px] font-black uppercase text-stone-900 shadow-neo-sm">
+                          <Sparkles className="size-2.5 text-stone-900" /> Nổi bật
+                        </span>
+                      )}
+                    </div>
+
+                    <Link href={`/bai-viet/${article.slug}`}>
+                      <h3 className="font-editorial text-lg sm:text-xl font-bold text-foreground leading-snug hover:text-primary transition-colors line-clamp-2">
+                        {article.title}
+                      </h3>
+                    </Link>
+
+                    {article.summary && (
+                      <p className="mt-2 text-xs sm:text-sm leading-relaxed text-stone-600 font-medium dark:text-stone-400 line-clamp-2">
+                        {article.summary}
+                      </p>
+                    )}
                   </div>
-
-                  <Link href={`/bai-viet/${article.slug}`}>
-                    <h3 className="font-editorial text-xl font-bold text-foreground leading-snug hover:text-primary transition-colors">
-                      {article.title}
-                    </h3>
-                  </Link>
-
-                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-stone-600 font-medium dark:text-stone-400">
-                    {article.summary}
-                  </p>
                 </div>
 
-                <div className="mt-5 pt-3.5 border-t-2 border-[#1C1917] flex items-center justify-between dark:border-stone-800">
-                  <span className="text-[11px] font-bold text-muted-foreground font-mono">
-                    {article.date} · Tuannm
-                  </span>
-                  <Link
-                    href={`/bai-viet/${article.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-black text-primary hover:underline"
-                  >
-                    Đọc tiếp <ArrowRight className="size-3.5" />
-                  </Link>
+                <div className="p-5 pt-0">
+                  <div className="pt-3.5 border-t-2 border-[#1C1917] flex items-center justify-between dark:border-stone-800">
+                    <span className="text-[11px] font-bold text-muted-foreground font-mono">
+                      {article.publishedAt
+                        ? new Date(article.publishedAt).toLocaleDateString("vi-VN")
+                        : article.date || "Mới đăng"}{" "}
+                      · {article.author?.displayName || article.author?.username || "Tuannm"}
+                    </span>
+                    <Link
+                      href={`/bai-viet/${article.slug}`}
+                      className="inline-flex items-center gap-1 text-xs font-black text-primary hover:underline"
+                    >
+                      Đọc tiếp <ArrowRight className="size-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

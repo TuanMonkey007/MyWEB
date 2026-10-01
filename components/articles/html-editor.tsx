@@ -174,7 +174,7 @@ export function HtmlEditor({
             title="Chèn Video (MP4 / Link Drive)"
             onClick={() =>
               insertSnippet(
-                '<div class="my-4 overflow-hidden rounded-xs border-2 border-[#1C1917] bg-black shadow-neo">\n  <video controls width="100%" preload="metadata">\n    <source src="',
+                '<div class="my-4 overflow-hidden rounded-xs border-2 border-[#1C1917] bg-black shadow-neo">\n  <video controls playsinline webkit-playsinline preload="metadata" class="w-full h-auto block">\n    <source src="',
                 '" type="video/mp4">\n    Trình duyệt không hỗ trợ phát video này.\n  </video>\n</div>',
                 "URL_VIDEO_HOAC_LINK_DRIVE"
               )

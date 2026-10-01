@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ArrowLeft, Code2, ExternalLink, Eye, ImagePlus, Loader2, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink, Eye, ImagePlus, Loader2, Pin, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,7 @@ export type EditorArticle = {
   categoryId: string | null;
   coverImage: string | null;
   format: string;
+  pinned?: boolean;
 };
 
 const MAU_BAI = `<h2>Chuẩn bị</h2><ul><li>Thiết bị A: …</li><li>Thiết bị B: …</li></ul><h2>Các bước</h2><ol><li>Bước một</li><li>Bước hai</li></ol><blockquote><p>Lưu ý: …</p></blockquote>`;
@@ -60,6 +61,7 @@ export function ArticleEditor({
   );
   const [categoryId, setCategoryId] = useState(article?.categoryId ?? "none");
   const [coverImage, setCoverImage] = useState(article?.coverImage ?? null);
+  const [pinned, setPinned] = useState(article?.pinned ?? false);
   const [uploading, setUploading] = useState(false);
   const coverRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
@@ -95,6 +97,7 @@ export function ArticleEditor({
         visibility,
         categoryId: categoryId === "none" ? null : categoryId,
         coverImage,
+        pinned,
         format: "HTML",
       };
       const res = await fetch(article ? `/api/articles/${article.id}` : "/api/articles", {
@@ -235,6 +238,24 @@ export function ArticleEditor({
               placeholder="Một câu tóm tắt bài này giải quyết việc gì"
               maxLength={300}
             />
+          </div>
+
+          <div className="flex items-center gap-3 rounded-xs border-2 border-[#1C1917] bg-[#FDF1EA] p-3.5 shadow-neo-sm md:col-span-3 dark:bg-[#2C1F15] dark:border-stone-800">
+            <input
+              type="checkbox"
+              id="pinned"
+              checked={pinned}
+              onChange={(e) => setPinned(e.target.checked)}
+              className="size-5 accent-primary cursor-pointer rounded"
+            />
+            <div>
+              <Label htmlFor="pinned" className="text-sm font-bold text-foreground cursor-pointer flex items-center gap-1.5">
+                <Pin className="size-4 text-primary" /> Đánh dấu bài viết nổi bật (Hiển thị ưu tiên ở Trang chủ)
+              </Label>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Khi kích hoạt, bài viết này sẽ được ghim nổi bật và chọn lọc xuất hiện trực tiếp trên trang chủ.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>

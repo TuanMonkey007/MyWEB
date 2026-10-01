@@ -92,6 +92,17 @@ export default async function ArticleDetailPage({ params }: Props) {
         </div>
       </header>
 
+      {article.coverImage && (
+        <div className="overflow-hidden rounded-xs border-2 border-[#1C1917] bg-stone-100 shadow-neo dark:bg-stone-900">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`/api/anh-bai-viet/${article.coverImage}`}
+            alt={article.title}
+            className="w-full max-h-[460px] object-cover"
+          />
+        </div>
+      )}
+
       <div className="rounded-sm border-2 border-[#1C1917] bg-white p-5 sm:p-8 shadow-neo dark:bg-card">
         <ArticleContent content={article.content} format={article.format} />
       </div>

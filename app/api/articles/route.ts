@@ -50,6 +50,7 @@ export async function POST(req: Request) {
       categoryId,
       coverImage,
       format,
+      pinned: body.pinned === true,
       authorId: user.id,
       publishedAt: visibility === "DRAFT" ? null : new Date(),
     },
