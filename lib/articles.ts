@@ -146,3 +146,104 @@ export async function listCategories() {
 export async function bumpViews(id: string) {
   await prisma.article.update({ where: { id }, data: { views: { increment: 1 } } }).catch(() => {});
 }
+
+export async function getSidebarData(
+  viewer: Viewer,
+  opts?: {
+    currentSlug?: string;
+    categorySlug?: string;
+    categoryId?: string | null;
+  }
+) {
+  const whereVisible = visibleWhere(viewer);
+
+  // 1. Bài viết cùng chuyên mục (nếu có category)
+  let sameCategoryArticles: ArticleListItem[] = [];
+  if (opts?.categorySlug || opts?.categoryId) {
+    sameCategoryArticles = await prisma.article.findMany({
+      where: {
+        ...whereVisible,
+        ...(opts.categorySlug
+          ? { category: { slug: opts.categorySlug } }
+          : { categoryId: opts.categoryId }),
+        ...(opts?.currentSlug ? { slug: { not: opts.currentSlug } } : {}),
+      },
+      select: LIST_SELECT,
+      orderBy: [{ pinned: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
+      take: 5,
+    });
+  }
+
+  // 2. Bài viết nổi bật / xem nhiều nhất toàn hệ thống
+  const featuredArticles = await prisma.article.findMany({
+    where: {
+      ...whereVisible,
+      ...(opts?.currentSlug ? { slug: { not: opts.currentSlug } } : {}),
+    },
+    select: LIST_SELECT,
+    orderBy: [{ pinned: "desc" }, { views: "desc" }, { publishedAt: "desc" }],
+    take: 5,
+  });
+
+  // 3. Danh sách chuyên mục
+  const categories = await listCategories();
+
+  // 4. Bài viết từ các chuyên mục khác
+  let otherCategoryArticles: ArticleListItem[] = [];
+  if (opts?.categorySlug || opts?.categoryId) {
+    otherCategoryArticles = await prisma.article.findMany({
+      where: {
+        ...whereVisible,
+        ...(opts.categorySlug
+          ? { NOT: { category: { slug: opts.categorySlug } } }
+          : opts.categoryId
+          ? { NOT: { categoryId: opts.categoryId } }
+          : {}),
+        ...(opts?.currentSlug ? { slug: { not: opts.currentSlug } } : {}),
+      },
+      select: LIST_SELECT,
+      orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+      take: 4,
+    });
+  }
+
+  return {
+    sameCategoryArticles,
+    featuredArticles,
+    otherCategoryArticles,
+    categories,
+  };
+}
+
+export async function getNextPrevArticles(viewer: Viewer, currentSlug: string, categoryId?: string | null) {
+  const whereVisible = visibleWhere(viewer);
+  const current = await prisma.article.findUnique({
+    where: { slug: currentSlug },
+    select: { createdAt: true, categoryId: true },
+  });
+  if (!current) return { prev: null, next: null };
+
+  const [prev, next] = await Promise.all([
+    prisma.article.findFirst({
+      where: {
+        ...whereVisible,
+        ...(categoryId ? { categoryId } : {}),
+        createdAt: { lt: current.createdAt },
+      },
+      select: LIST_SELECT,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.article.findFirst({
+      where: {
+        ...whereVisible,
+        ...(categoryId ? { categoryId } : {}),
+        createdAt: { gt: current.createdAt },
+      },
+      select: LIST_SELECT,
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+
+  return { prev, next };
+}
+
