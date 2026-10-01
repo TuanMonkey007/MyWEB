@@ -171,12 +171,12 @@ export function HtmlEditor({
 
           <button
             type="button"
-            title="Chèn Video (MP4)"
+            title="Chèn Video (MP4 / Link Drive)"
             onClick={() =>
               insertSnippet(
                 '<div class="my-4 overflow-hidden rounded-xs border-2 border-[#1C1917] bg-black shadow-neo">\n  <video controls width="100%" preload="metadata">\n    <source src="',
                 '" type="video/mp4">\n    Trình duyệt không hỗ trợ phát video này.\n  </video>\n</div>',
-                "/videos/HDCaiDat.mp4"
+                "URL_VIDEO_HOAC_LINK_DRIVE"
               )
             }
             className="flex items-center gap-1 rounded-xs border border-[#1C1917] bg-white px-2 py-1 text-xs font-bold text-primary shadow-neo-sm hover:bg-[#FDF1EA] dark:bg-card"
