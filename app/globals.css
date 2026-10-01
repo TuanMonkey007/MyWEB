@@ -225,3 +225,8 @@
   background: var(--muted);
   font-weight: 700;
 }
+.prose-article video,
+.prose-article iframe {
+  max-width: 100%;
+  display: block;
+}

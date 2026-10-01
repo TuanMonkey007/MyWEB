@@ -68,7 +68,7 @@ export const articleSchema: Schema = {
       ["style", ...CANH_LE],
     ],
     iframe: ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "title"],
-    video: ["src", "controls", "width", "height", "autoplay", "loop", "muted", "poster"],
+    video: ["src", "controls", "width", "height", "autoplay", "loop", "muted", "poster", "preload"],
     audio: ["src", "controls", "autoplay", "loop", "muted"],
     source: ["src", "type"],
     img: [

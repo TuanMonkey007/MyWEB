@@ -12,6 +12,7 @@ import {
   List,
   Quote,
   Table as TableIcon,
+  Video,
   Wand2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -166,6 +167,21 @@ export function HtmlEditor({
             className="flex items-center gap-1 rounded-xs border border-[#1C1917] bg-white px-2 py-1 text-xs font-bold text-foreground shadow-neo-sm hover:bg-muted dark:bg-card"
           >
             <TableIcon className="size-3 text-primary" /> Table
+          </button>
+
+          <button
+            type="button"
+            title="Chèn Video (MP4)"
+            onClick={() =>
+              insertSnippet(
+                '<div class="my-4 overflow-hidden rounded-xs border-2 border-[#1C1917] bg-black shadow-neo">\n  <video controls width="100%" preload="metadata">\n    <source src="',
+                '" type="video/mp4">\n    Trình duyệt không hỗ trợ phát video này.\n  </video>\n</div>',
+                "/videos/HDCaiDat.mp4"
+              )
+            }
+            className="flex items-center gap-1 rounded-xs border border-[#1C1917] bg-white px-2 py-1 text-xs font-bold text-primary shadow-neo-sm hover:bg-[#FDF1EA] dark:bg-card"
+          >
+            <Video className="size-3 text-primary" /> Video MP4
           </button>
 
           <button
