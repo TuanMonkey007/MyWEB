@@ -33,14 +33,20 @@ const roboto = localFont({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings();
+  const settings = await getSettings().catch(() => null);
+  const iconUrl = settings?.faviconPath
+    ? `/api/branding/favicon?v=${encodeURIComponent(settings.faviconPath)}`
+    : "/favicon.ico";
+
   return {
-    title: settings.platformName,
+    title: settings?.platformName || "MyWEB",
     description:
       "Platform cá nhân dạng module: tài chính cá nhân, đề xuất mua hàng",
-    icons: settings.faviconPath
-      ? [{ url: `/api/branding/favicon?v=${encodeURIComponent(settings.faviconPath)}` }]
-      : undefined,
+    icons: {
+      icon: iconUrl,
+      shortcut: iconUrl,
+      apple: iconUrl,
+    },
   };
 }
 

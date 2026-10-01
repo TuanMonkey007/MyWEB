@@ -6,6 +6,15 @@ import { brandingDir, getSettings, setSetting } from "@/lib/settings";
 
 const ALLOWED = new Set([".ico", ".png", ".svg", ".jpg", ".jpeg", ".webp"]);
 
+const MIME: Record<string, string> = {
+  ".ico": "image/x-icon",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+};
+
 // Upload favicon/icon platform
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -18,14 +27,27 @@ export async function POST(req: Request) {
 
   const dir = brandingDir();
   await mkdir(dir, { recursive: true });
-  // dọn favicon cũ (có thể khác đuôi)
+  // dọn favicon cũ
   for (const f of await readdir(dir).catch(() => [])) {
-    if (f.startsWith("favicon.")) await unlink(path.join(dir, f)).catch(() => {});
+    if (f.startsWith("favicon-") || f.startsWith("favicon.")) {
+      await unlink(path.join(dir, f)).catch(() => {});
+    }
   }
 
-  const fileName = `favicon${ext}`;
-  await writeFile(path.join(dir, fileName), Buffer.from(await file.arrayBuffer()));
+  // Đặt tên kèm timestamp để tránh bị trình duyệt cache vĩnh viễn
+  const timestamp = Date.now();
+  const fileName = `favicon-${timestamp}${ext}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await writeFile(path.join(dir, fileName), buffer);
+
+  // Lưu cả Base64 vào database để chạy mượt mà ngay cả trên serverless (Vercel)
+  const base64 = buffer.toString("base64");
+  const mimeType = MIME[ext] || file.type || "image/x-icon";
+
   await setSetting("faviconPath", fileName);
+  await setSetting("faviconData", base64);
+  await setSetting("faviconMime", mimeType);
+
   return NextResponse.json({ ok: true, faviconPath: fileName }, { status: 201 });
 }
 
@@ -33,6 +55,10 @@ export async function DELETE() {
   const { faviconPath } = await getSettings();
   if (faviconPath)
     await unlink(path.join(brandingDir(), path.basename(faviconPath))).catch(() => {});
+
   await setSetting("faviconPath", null);
+  await setSetting("faviconData", null);
+  await setSetting("faviconMime", null);
+
   return NextResponse.json({ ok: true });
 }
