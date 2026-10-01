@@ -28,8 +28,11 @@ export default async function proxy(req: NextRequest) {
     pathname.startsWith("/huong-dan/") ||
     pathname === "/bai-viet" ||
     pathname.startsWith("/bai-viet/") ||
-    // Ảnh bìa bài viết — trang công khai cần hiện được cho khách
+    // Ảnh bìa & video bài viết — trang công khai cần xem được cho khách
     pathname.startsWith("/api/anh-bai-viet/") ||
+    pathname.startsWith("/api/videos/") ||
+    (pathname.startsWith("/api/drive/files/") && req.method === "GET") ||
+    pathname === "/api/articles/featured" ||
     pathname.startsWith("/api/auth/login") ||
     pathname === "/api/branding/favicon"
   ) {

@@ -20,6 +20,11 @@ export async function PUT(req: Request, { params }: Params) {
     await prisma.folder.update({ where: { id }, data: { name } });
   }
 
+  // Đổi trạng thái Public
+  if (typeof body.isPublic === "boolean") {
+    await prisma.folder.update({ where: { id }, data: { isPublic: body.isPublic } });
+  }
+
   // Di chuyển sang thư mục cha khác (chặn di chuyển vào chính con của nó)
   if (body.parentId !== undefined) {
     const parentId = body.parentId || null;

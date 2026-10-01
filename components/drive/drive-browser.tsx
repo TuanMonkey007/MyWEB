@@ -9,9 +9,12 @@ import {
   Download,
   Folder,
   FolderPlus,
+  Globe,
   HardDrive,
   Home,
+  Link as LinkIcon,
   Loader2,
+  Lock,
   MoreVertical,
   Pencil,
   Sparkles,
@@ -33,6 +36,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -51,7 +55,12 @@ import { cn } from "@/lib/utils";
 import { fileIconFor } from "./file-icon";
 import { useCan, NO_PERM } from "@/components/permissions-provider";
 
-type FolderRow = { id: string; name: string; childCount: number };
+type FolderRow = {
+  id: string;
+  name: string;
+  isPublic: boolean;
+  childCount: number;
+};
 type FileRow = {
   id: string;
   name: string;
@@ -91,6 +100,7 @@ export function DriveBrowser({
   const [dragActive, setDragActive] = useState(false);
   const [newFolderOpen, setNewFolderOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
+  const [newFolderIsPublic, setNewFolderIsPublic] = useState(false);
   const [rename, setRename] = useState<
     { kind: "folder" | "file"; id: string; name: string } | null
   >(null);
@@ -149,16 +159,43 @@ export function DriveBrowser({
     const res = await fetch("/api/drive/folders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, parentId: currentFolderId }),
+      body: JSON.stringify({
+        name,
+        parentId: currentFolderId,
+        isPublic: newFolderIsPublic,
+      }),
     });
     if (res.ok) {
-      toast.success("Đã tạo thư mục");
+      toast.success(
+        newFolderIsPublic
+          ? "Đã tạo thư mục Công khai (Public)"
+          : "Đã tạo thư mục Riêng tư"
+      );
       setNewFolderOpen(false);
       setNewFolderName("");
+      setNewFolderIsPublic(false);
       router.refresh();
     } else {
       const d = await res.json().catch(() => null);
       toast.error(d?.error ?? "Tạo thất bại");
+    }
+  }
+
+  async function toggleFolderPublic(id: string, current: boolean) {
+    const res = await fetch(`/api/drive/folders/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isPublic: !current }),
+    });
+    if (res.ok) {
+      toast.success(
+        !current
+          ? "Đã chuyển sang thư mục Công khai (Public) — file bên trong có thể xem không cần đăng nhập"
+          : "Đã chuyển sang thư mục Riêng tư (Private)"
+      );
+      router.refresh();
+    } else {
+      toast.error("Không thể thay đổi quyền thư mục");
     }
   }
 
@@ -224,7 +261,7 @@ export function DriveBrowser({
             Kho file & Tài liệu
           </h1>
           <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground">
-            Lưu trữ chống trùng lặp — file giống hệt chỉ tốn dung lượng một lần.
+            Lưu trữ chống trùng lặp — hỗ trợ cấp quyền Công khai (Public) để xem và nhúng video/ảnh bài viết.
           </p>
         </div>
         <div className="flex gap-2">
@@ -356,8 +393,26 @@ export function DriveBrowser({
                   href={`/drive?folder=${f.id}`}
                   className="flex min-w-0 flex-1 items-center gap-3"
                 >
-                  <Folder className="size-5 shrink-0 fill-amber-400/20 text-amber-500" />
-                  <span className="min-w-0 flex-1 truncate font-medium">{f.name}</span>
+                  <Folder
+                    className={cn(
+                      "size-5 shrink-0",
+                      f.isPublic
+                        ? "fill-emerald-500/20 text-emerald-600"
+                        : "fill-amber-400/20 text-amber-500"
+                    )}
+                  />
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="truncate font-medium">{f.name}</span>
+                    {f.isPublic ? (
+                      <span className="inline-flex items-center gap-1 rounded-xs border border-emerald-600 bg-emerald-100 px-1.5 py-0.2 text-[10px] font-black text-emerald-800 shadow-neo-sm dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700">
+                        <Globe className="size-2.5" /> Public
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                        <Lock className="size-2.5" /> Riêng tư
+                      </span>
+                    )}
+                  </div>
                   <span className="shrink-0 text-xs text-muted-foreground">
                     {f.childCount} mục
                   </span>
@@ -365,6 +420,8 @@ export function DriveBrowser({
                 <RowMenu
                   canEdit={canEdit}
                   canDelete={canDelete}
+                  isPublic={f.isPublic}
+                  onTogglePublic={() => toggleFolderPublic(f.id, f.isPublic)}
                   onRename={() => {
                     setRename({ kind: "folder", id: f.id, name: f.name });
                     setRenameValue(f.name);
@@ -395,6 +452,19 @@ export function DriveBrowser({
                       {formatBytes(f.size)}
                     </span>
                   </a>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 text-muted-foreground hover:text-primary"
+                    title="Sao chép liên kết file (để nhúng bài viết)"
+                    onClick={() => {
+                      const url = `${window.location.origin}/api/drive/files/${f.id}`;
+                      navigator.clipboard.writeText(url);
+                      toast.success("Đã sao chép liên kết file: " + url);
+                    }}
+                  >
+                    <LinkIcon className="size-4" />
+                  </Button>
                   <a href={`/api/drive/files/${f.id}?download=1`} title="Tải xuống">
                     <Button variant="ghost" size="icon" className="size-8">
                       <Download className="size-4" />
@@ -422,15 +492,37 @@ export function DriveBrowser({
           <DialogHeader>
             <DialogTitle>Thư mục mới</DialogTitle>
           </DialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="nf-name">Tên thư mục</Label>
-            <Input
-              id="nf-name"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && createFolder()}
-              autoFocus
-            />
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="nf-name">Tên thư mục</Label>
+              <Input
+                id="nf-name"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && createFolder()}
+                autoFocus
+              />
+            </div>
+            <div className="flex items-start gap-2.5 rounded-xs border-2 border-[#1C1917] bg-[#FDF1EA] p-3 shadow-neo-sm dark:bg-[#2C1F15] dark:border-stone-800">
+              <input
+                type="checkbox"
+                id="nf-public"
+                checked={newFolderIsPublic}
+                onChange={(e) => setNewFolderIsPublic(e.target.checked)}
+                className="mt-0.5 size-4.5 accent-primary cursor-pointer rounded"
+              />
+              <div>
+                <Label
+                  htmlFor="nf-public"
+                  className="text-xs font-bold text-foreground cursor-pointer flex items-center gap-1"
+                >
+                  <Globe className="size-3.5 text-emerald-600" /> Thư mục công khai (Public)
+                </Label>
+                <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
+                  Cho phép mọi người (kể cả khách chưa đăng nhập) có quyền <b>xem, tải và phát video</b> nhúng trong bài viết public.
+                </p>
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setNewFolderOpen(false)}>
@@ -471,15 +563,13 @@ export function DriveBrowser({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Xóa {deleting?.kind === "folder" ? "thư mục" : "file"} &quot;{deleting?.name}
-              &quot;?
+              Xóa {deleting?.kind === "folder" ? "thư mục" : "file"} &quot;{deleting?.name}&quot;?
             </AlertDialogTitle>
             <AlertDialogDescription>
               {deleting?.kind === "folder"
                 ? "Toàn bộ thư mục con và file bên trong sẽ bị xóa."
                 : "File sẽ bị xóa."}{" "}
-              Nếu không còn bản sao nào trùng nội dung, dữ liệu trên đĩa cũng được giải
-              phóng. Không thể hoàn tác.
+              Nếu không còn bản sao nào trùng nội dung, dữ liệu trên đĩa cũng được giải phóng. Không thể hoàn tác.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -534,11 +624,15 @@ function StatCard({
 function RowMenu({
   onRename,
   onDelete,
+  onTogglePublic,
+  isPublic,
   canEdit,
   canDelete,
 }: {
   onRename: () => void;
   onDelete: () => void;
+  onTogglePublic?: () => void;
+  isPublic?: boolean;
   canEdit: boolean;
   canDelete: boolean;
 }) {
@@ -550,6 +644,22 @@ function RowMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        {onTogglePublic && (
+          <>
+            <DropdownMenuItem disabled={!canEdit} onClick={onTogglePublic}>
+              {isPublic ? (
+                <>
+                  <Lock className="size-4 text-stone-500" /> Chuyển sang Riêng tư
+                </>
+              ) : (
+                <>
+                  <Globe className="size-4 text-emerald-600" /> Chuyển sang Công khai (Public)
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem disabled={!canEdit} onClick={onRename}>
           <Pencil className="size-4" /> Đổi tên
         </DropdownMenuItem>

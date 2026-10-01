@@ -254,6 +254,7 @@ model Session {
 model Folder {
   id        String   @id @default(cuid())
   name      String
+  isPublic  Boolean  @default(false)
   parentId  String?
   parent    Folder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
   children  Folder[] @relation("FolderTree")

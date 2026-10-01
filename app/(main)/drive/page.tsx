@@ -50,6 +50,7 @@ export default async function DrivePage({
       folders={folders.map((f) => ({
         id: f.id,
         name: f.name,
+        isPublic: f.isPublic,
         childCount: f._count.children + f._count.files,
       }))}
       files={files.map((f) => ({

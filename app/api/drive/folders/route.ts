@@ -15,6 +15,7 @@ export async function POST(req: Request) {
     if (!parent) return jsonError("Thư mục cha không tồn tại");
   }
 
-  const folder = await prisma.folder.create({ data: { name, parentId } });
+  const isPublic = body.isPublic === true;
+  const folder = await prisma.folder.create({ data: { name, parentId, isPublic } });
   return NextResponse.json(folder, { status: 201 });
 }

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { stat } from "fs/promises";
 import { prisma } from "@/lib/prisma";
 import { jsonError } from "@/lib/api";
+import { getCurrentUser } from "@/lib/auth";
+import { userCan } from "@/lib/permissions";
 import {
   contentPath,
   isInlineType,
@@ -11,11 +13,36 @@ import {
 
 type Params = { params: Promise<{ id: string }> };
 
+async function isFolderPublic(folderId: string | null): Promise<boolean> {
+  let curId = folderId;
+  while (curId) {
+    const f = await prisma.folder.findUnique({
+      where: { id: curId },
+      select: { id: true, isPublic: true, parentId: true },
+    });
+    if (!f) break;
+    if (f.isPublic) return true;
+    curId = f.parentId;
+  }
+  return false;
+}
+
 // Tải/xem file — hỗ trợ Range (206) để tua video/audio, xem PDF, resume tải
 export async function GET(req: Request, { params }: Params) {
   const { id } = await params;
   const file = await prisma.storedFile.findUnique({ where: { id } });
   if (!file) return jsonError("Không tìm thấy file", 404);
+
+  // Kiểm tra quyền xem:
+  // Nếu thư mục được đánh dấu Public (hoặc thư mục cha Public) thì cho phép khách xem/tải mà không cần đăng nhập
+  const isPublic = await isFolderPublic(file.folderId);
+  if (!isPublic) {
+    const user = await getCurrentUser();
+    if (!user) return jsonError("Chưa đăng nhập", 401);
+    if (!userCan(user, "drive", "view")) {
+      return jsonError("Tài khoản của bạn không có quyền xem file này", 403);
+    }
+  }
 
   const download = new URL(req.url).searchParams.get("download") === "1";
   const disposition = download || !isInlineType(file.mimeType) ? "attachment" : "inline";
