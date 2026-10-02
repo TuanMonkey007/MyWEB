@@ -7,6 +7,7 @@ import {
   ArrowLeftRight,
   ArrowRightLeft,
   BookOpen,
+  CalendarClock,
   ClipboardList,
   HardDrive,
   KeyRound,
@@ -60,7 +61,10 @@ const MODULES: ModuleGroup[] = [
   {
     id: "todos",
     label: "Công việc",
-    items: [{ href: "/todos", label: "Việc cần làm", icon: ClipboardList }],
+    items: [
+      { href: "/todos", label: "Việc cần làm", icon: ClipboardList, exact: true },
+      { href: "/todos/schedule", label: "Thời gian biểu", icon: CalendarClock },
+    ],
   },
   {
     id: "drive",

@@ -27,8 +27,6 @@ import {
 } from "@/lib/todos-constants";
 import { cn } from "@/lib/utils";
 import { TodoDialog } from "./todo-dialog";
-import { TimetableView } from "./timetable-view";
-import type { TimetableItemDTO } from "@/lib/timetable-constants";
 import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 const VIEW_KEY = "todos-view";
@@ -56,13 +54,7 @@ function DueDate({ todo }: { todo: TodoDTO }) {
   );
 }
 
-export function TodosView({
-  todos: serverTodos,
-  timetableItems = [],
-}: {
-  todos: TodoDTO[];
-  timetableItems?: TimetableItemDTO[];
-}) {
+export function TodosView({ todos: serverTodos }: { todos: TodoDTO[] }) {
   const router = useRouter();
   const canCreate = useCan()("todos", "create");
   const [todos, setTodos] = useState(serverTodos);
@@ -204,11 +196,6 @@ export function TodosView({
         todo={dialog.todo}
         onClose={() => setDialog({ open: false, todo: null })}
       />
-
-      {/* ── THỜI KHÓA BIỂU & LỊCH TUẦN BÊN DƯỚI TODOS ── */}
-      <div className="pt-6 border-t-2 border-dashed border-[#1C1917]/30 dark:border-stone-800">
-        <TimetableView items={timetableItems} />
-      </div>
     </div>
   );
 }
