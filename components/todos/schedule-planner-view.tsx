@@ -7,6 +7,9 @@ import {
   Calendar,
   CalendarClock,
   CalendarDays,
+  CalendarRange,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   LayoutGrid,
   List,
@@ -38,11 +41,17 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
   const canEdit = can("todos", "edit");
 
   const [items, setItems] = useState<TimetableItemDTO[]>(initialItems);
-  const [viewMode, setViewMode] = useState<"timeline" | "grid" | "list">("timeline");
+  const [viewMode, setViewMode] = useState<"timeline" | "grid" | "month" | "year" | "list">("timeline");
   const [todayDayOfWeek] = useState<number>(getCurrentDayOfWeek());
   const [selectedDay, setSelectedDay] = useState<number>(todayDayOfWeek);
   const [currentTimeStr, setCurrentTimeStr] = useState<string>("");
   const [seeding, setSeeding] = useState(false);
+
+  // Trạng thái tháng & năm xem lịch
+  const now = new Date();
+  const [viewMonthDate, setViewMonthDate] = useState<Date>(new Date(now.getFullYear(), now.getMonth(), 1));
+  const [viewYear, setViewYear] = useState<number>(now.getFullYear());
+
   const [dialogState, setDialogState] = useState<{
     open: boolean;
     item: TimetableItemDTO | null;
@@ -55,9 +64,9 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
   // Cập nhật giờ hiện tại mỗi phút
   useEffect(() => {
     function updateClock() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
+      const d = new Date();
+      const h = String(d.getHours()).padStart(2, "0");
+      const m = String(d.getMinutes()).padStart(2, "0");
       setCurrentTimeStr(`${h}:${m}`);
     }
     updateClock();
@@ -65,13 +74,13 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
     return () => clearInterval(interval);
   }, []);
 
-  // Nhóm theo ngày trong tuần
+  // Nhóm theo ngày trong tuần (1 = T2 ... 7 = CN)
   const itemsByDay = DAYS_OF_WEEK.reduce((acc, d) => {
     acc[d.day] = items.filter((i) => i.dayOfWeek === d.day);
     return acc;
   }, {} as Record<number, TimetableItemDTO[]>);
 
-  // Danh sách các mục của ngày được chọn (sắp xếp theo giờ bắt đầu)
+  // Danh sách các mục của ngày được chọn
   const selectedDayItems = [...(itemsByDay[selectedDay] || [])].sort((a, b) => {
     const timeA = a.startTime || "99:99";
     const timeB = b.startTime || "99:99";
@@ -98,6 +107,29 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
     }
   }
 
+  // Chuyển tháng
+  function prevMonth() {
+    setViewMonthDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  }
+  function nextMonth() {
+    setViewMonthDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  }
+  function resetToCurrentMonth() {
+    const d = new Date();
+    setViewMonthDate(new Date(d.getFullYear(), d.getMonth(), 1));
+  }
+
+  // Chuyển năm
+  function prevYear() {
+    setViewYear((y) => y - 1);
+  }
+  function nextYear() {
+    setViewYear((y) => y + 1);
+  }
+  function resetToCurrentYear() {
+    setViewYear(new Date().getFullYear());
+  }
+
   return (
     <div className="space-y-5">
       {/* ── BANNER HEADER THỜI GIAN BIỂU & LỊCH TRÌNH ── */}
@@ -113,7 +145,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
               </h1>
             </div>
             <p className="mt-1.5 text-xs sm:text-sm font-semibold text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span>Sắp xếp lịch trình công việc, học tập HSK &amp; sinh hoạt theo từng khung thời gian.</span>
+              <span>Hệ thống quản lý lịch trình công việc, học tập HSK3 &amp; kế hoạch theo ngày, tuần, tháng và năm.</span>
               <span className="inline-flex items-center gap-1.5 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[11px] font-black text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                 <Clock className="size-3 text-primary animate-pulse" />
                 Hôm nay: {DAYS_OF_WEEK.find((d) => d.day === todayDayOfWeek)?.full} &bull; {currentTimeStr}
@@ -122,13 +154,13 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {/* Chuyển đổi 3 chế độ xem */}
-            <div className="flex rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-0.5 shadow-neo-sm dark:bg-[#22170F]">
+            {/* Chuyển đổi 5 chế độ xem: Dòng thời gian / Lưới tuần / Lịch tháng / Lịch năm / Danh sách */}
+            <div className="flex rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-0.5 shadow-neo-sm dark:bg-[#22170F] overflow-x-auto max-w-full">
               <button
                 type="button"
                 onClick={() => setViewMode("timeline")}
                 className={cn(
-                  "cursor-pointer rounded-xs px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5",
+                  "cursor-pointer rounded-xs px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1 whitespace-nowrap",
                   viewMode === "timeline"
                     ? "bg-primary text-primary-foreground shadow-neo-sm font-black"
                     : "text-muted-foreground hover:text-foreground"
@@ -140,7 +172,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                 type="button"
                 onClick={() => setViewMode("grid")}
                 className={cn(
-                  "cursor-pointer rounded-xs px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5",
+                  "cursor-pointer rounded-xs px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1 whitespace-nowrap",
                   viewMode === "grid"
                     ? "bg-primary text-primary-foreground shadow-neo-sm font-black"
                     : "text-muted-foreground hover:text-foreground"
@@ -150,9 +182,33 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
               </button>
               <button
                 type="button"
+                onClick={() => setViewMode("month")}
+                className={cn(
+                  "cursor-pointer rounded-xs px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1 whitespace-nowrap",
+                  viewMode === "month"
+                    ? "bg-primary text-primary-foreground shadow-neo-sm font-black"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <CalendarDays className="size-3.5" /> Lịch tháng
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("year")}
+                className={cn(
+                  "cursor-pointer rounded-xs px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1 whitespace-nowrap",
+                  viewMode === "year"
+                    ? "bg-primary text-primary-foreground shadow-neo-sm font-black"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <CalendarRange className="size-3.5" /> Lịch năm
+              </button>
+              <button
+                type="button"
                 onClick={() => setViewMode("list")}
                 className={cn(
-                  "cursor-pointer rounded-xs px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5",
+                  "cursor-pointer rounded-xs px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1 whitespace-nowrap",
                   viewMode === "list"
                     ? "bg-primary text-primary-foreground shadow-neo-sm font-black"
                     : "text-muted-foreground hover:text-foreground"
@@ -323,10 +379,9 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
               </div>
             ) : (
               <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-2 sm:before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#1C1917]/25 dark:before:bg-stone-700">
-                {selectedDayItems.map((item, idx) => {
+                {selectedDayItems.map((item) => {
                   const cfg = COLOR_CONFIGS[item.color] || COLOR_CONFIGS.orange;
 
-                  // Kiểm tra xem khung giờ này có đang diễn ra không (nếu là hôm nay)
                   const isCurrentTimeSlot =
                     selectedDay === todayDayOfWeek &&
                     item.startTime &&
@@ -336,7 +391,6 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
 
                   return (
                     <div key={item.id} className="relative group">
-                      {/* Điểm nút mốc giờ trên dòng thời gian */}
                       <div
                         className={cn(
                           "absolute -left-6 sm:-left-8 top-3 flex size-4 sm:size-5 items-center justify-center rounded-full border-2 border-[#1C1917] shadow-neo-sm transition-all",
@@ -348,7 +402,6 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                         <span className="size-1 rounded-full bg-white" />
                       </div>
 
-                      {/* Khối nội dung lịch trình */}
                       <div
                         onClick={canEdit ? () => setDialogState({ open: true, item }) : undefined}
                         className={cn(
@@ -432,7 +485,6 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                       : "border-[#1C1917]"
                   )}
                 >
-                  {/* Cột Header ngày */}
                   <div
                     className={cn(
                       "flex items-center justify-between border-b-2 border-[#1C1917] px-3 py-2 text-xs font-black uppercase tracking-wider",
@@ -452,7 +504,6 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                     <span className="text-[10px] opacity-80 font-mono">{dayItems.length}</span>
                   </div>
 
-                  {/* Danh sách các khối lịch trình */}
                   <div className="flex-1 space-y-2 p-2 min-h-[420px] bg-[#FAF7F0]/40 dark:bg-transparent">
                     {dayItems.length === 0 ? (
                       <div className="flex h-36 flex-col items-center justify-center text-center text-xs text-muted-foreground/60">
@@ -485,7 +536,6 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                     )}
                   </div>
 
-                  {/* Nút thêm nhanh dưới chân cột */}
                   {canCreate && (
                     <div className="border-t border-border/60 p-1.5 text-center bg-white dark:bg-card">
                       <button
@@ -510,7 +560,45 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
         </div>
       )}
 
-      {/* ── CHẾ ĐỘ 3: DANH SÁCH TỔNG HỢP (LIST VIEW) ── */}
+      {/* ── CHẾ ĐỘ 3: LỊCH THÁNG (MONTH CALENDAR VIEW) ── */}
+      {viewMode === "month" && (
+        <MonthCalendarView
+          viewMonthDate={viewMonthDate}
+          onPrevMonth={prevMonth}
+          onNextMonth={nextMonth}
+          onCurrentMonth={resetToCurrentMonth}
+          itemsByDay={itemsByDay}
+          canCreate={canCreate}
+          canEdit={canEdit}
+          onSelectDay={(dayOfWeek) => {
+            setSelectedDay(dayOfWeek);
+            setViewMode("timeline");
+          }}
+          onEditItem={(item) => setDialogState({ open: true, item })}
+          onAddItem={(dayOfWeek) => setDialogState({ open: true, item: null, initialDayOfWeek: dayOfWeek })}
+        />
+      )}
+
+      {/* ── CHẾ ĐỘ 4: LỊCH NĂM (YEAR OVERVIEW CALENDAR VIEW) ── */}
+      {viewMode === "year" && (
+        <YearCalendarView
+          viewYear={viewYear}
+          onPrevYear={prevYear}
+          onNextYear={nextYear}
+          onCurrentYear={resetToCurrentYear}
+          itemsByDay={itemsByDay}
+          onSelectMonth={(monthIndex) => {
+            setViewMonthDate(new Date(viewYear, monthIndex, 1));
+            setViewMode("month");
+          }}
+          onSelectDay={(dayOfWeek) => {
+            setSelectedDay(dayOfWeek);
+            setViewMode("timeline");
+          }}
+        />
+      )}
+
+      {/* ── CHẾ ĐỘ 5: DANH SÁCH TỔNG HỢP (LIST VIEW) ── */}
       {viewMode === "list" && (
         <div className="rounded-xs border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card overflow-hidden">
           <div className="border-b-2 border-[#1C1917] bg-[#F5EFEB] px-5 py-3 dark:bg-[#22170F] flex items-center justify-between">
@@ -560,9 +648,405 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
         onClose={() => setDialogState({ open: false, item: null })}
         onSaved={async () => {
           const res = await fetch("/api/timetable");
-          if (res.ok) setItems(await res.json());
+          if (res.ok) setItems(await getResJson(res));
         }}
       />
+    </div>
+  );
+}
+
+async function getResJson(res: Response) {
+  return await res.json();
+}
+
+/** ── COMPONENT LỊCH THÁNG (MONTH CALENDAR VIEW) ── */
+function MonthCalendarView({
+  viewMonthDate,
+  onPrevMonth,
+  onNextMonth,
+  onCurrentMonth,
+  itemsByDay,
+  canCreate,
+  canEdit,
+  onSelectDay,
+  onEditItem,
+  onAddItem,
+}: {
+  viewMonthDate: Date;
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
+  onCurrentMonth: () => void;
+  itemsByDay: Record<number, TimetableItemDTO[]>;
+  canCreate: boolean;
+  canEdit: boolean;
+  onSelectDay: (dayOfWeek: number) => void;
+  onEditItem: (item: TimetableItemDTO) => void;
+  onAddItem: (dayOfWeek: number) => void;
+}) {
+  const year = viewMonthDate.getFullYear();
+  const month = viewMonthDate.getMonth(); // 0-11
+  const today = new Date();
+
+  // Ngày đầu tiên của tháng là thứ mấy (0 = CN, 1 = T2, ..., 6 = T7)
+  const firstDayRaw = new Date(year, month, 1).getDay();
+  // Đổi sang offset thứ 2 = 0, ..., CN = 6
+  const startOffset = (firstDayRaw + 6) % 7;
+
+  // Số ngày trong tháng này & tháng trước
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  // Tạo mảng các ô lịch (35 hoặc 42 ô)
+  const cells: {
+    dayNumber: number;
+    isCurrentMonth: boolean;
+    dayOfWeek: number;
+    isToday: boolean;
+    dateKey: string;
+  }[] = [];
+
+  // Ô tháng trước
+  for (let i = startOffset - 1; i >= 0; i--) {
+    const dayNumber = daysInPrevMonth - i;
+    const dow = ((startOffset - 1 - i) % 7) + 1;
+    cells.push({
+      dayNumber,
+      isCurrentMonth: false,
+      dayOfWeek: dow,
+      isToday: false,
+      dateKey: `prev-${dayNumber}`,
+    });
+  }
+
+  // Ô tháng này
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dObj = new Date(year, month, d);
+    const rawDow = dObj.getDay();
+    const dow = rawDow === 0 ? 7 : rawDow;
+    const isToday =
+      d === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear();
+
+    cells.push({
+      dayNumber: d,
+      isCurrentMonth: true,
+      dayOfWeek: dow,
+      isToday,
+      dateKey: `curr-${d}`,
+    });
+  }
+
+  // Ô tháng sau để đủ số hàng
+  const remaining = 42 - cells.length >= 7 ? 35 - cells.length : 42 - cells.length;
+  for (let d = 1; d <= remaining; d++) {
+    const dObj = new Date(year, month + 1, d);
+    const rawDow = dObj.getDay();
+    const dow = rawDow === 0 ? 7 : rawDow;
+    cells.push({
+      dayNumber: d,
+      isCurrentMonth: false,
+      dayOfWeek: dow,
+      isToday: false,
+      dateKey: `next-${d}`,
+    });
+  }
+
+  return (
+    <div className="rounded-xs border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card overflow-hidden">
+      {/* Header điều hướng Tháng */}
+      <div className="border-b-2 border-[#1C1917] bg-[#F5EFEB] px-5 py-3.5 dark:bg-[#22170F] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <h2 className="font-editorial text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+            <CalendarDays className="size-5 text-primary" />
+            Tháng {month + 1}, {year}
+          </h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onCurrentMonth}
+            className="h-7 text-xs border border-[#1C1917] shadow-neo-sm font-bold"
+          >
+            Hôm nay
+          </Button>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onPrevMonth}
+            className="size-8 border-2 border-[#1C1917] shadow-neo-sm hover:shadow-neo"
+            title="Tháng trước"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onNextMonth}
+            className="size-8 border-2 border-[#1C1917] shadow-neo-sm hover:shadow-neo"
+            title="Tháng sau"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Lưới các cột thứ trong tuần */}
+      <div className="grid grid-cols-7 border-b-2 border-[#1C1917] bg-[#FAF7F0] text-center text-xs font-black uppercase text-foreground dark:bg-[#1A120B]">
+        {DAYS_OF_WEEK.map((d) => (
+          <div key={d.day} className="py-2.5 border-r border-[#1C1917]/20 last:border-r-0">
+            <span className="hidden sm:inline">{d.full}</span>
+            <span className="sm:hidden">{d.short}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Lưới các ô ngày trong tháng */}
+      <div className="grid grid-cols-7 divide-x divide-y divide-[#1C1917]/20">
+        {cells.map((cell) => {
+          const dayItems = itemsByDay[cell.dayOfWeek] || [];
+
+          return (
+            <div
+              key={cell.dateKey}
+              className={cn(
+                "group relative min-h-[100px] sm:min-h-[125px] p-1.5 sm:p-2 flex flex-col justify-between transition-colors",
+                cell.isCurrentMonth
+                  ? "bg-white dark:bg-card hover:bg-[#FAF7F0]/60 dark:hover:bg-[#22170F]/50"
+                  : "bg-stone-50/70 text-muted-foreground/50 dark:bg-stone-900/30",
+                cell.isToday && "ring-2 ring-primary ring-inset bg-primary/5 dark:bg-primary/10"
+              )}
+            >
+              {/* Ngày và huy hiệu */}
+              <div className="flex items-center justify-between">
+                <span
+                  onClick={() => cell.isCurrentMonth && onSelectDay(cell.dayOfWeek)}
+                  className={cn(
+                    "flex size-6 sm:size-7 items-center justify-center rounded-xs text-xs font-bold transition-all",
+                    cell.isToday
+                      ? "border border-[#1C1917] bg-primary font-black text-white shadow-neo-sm"
+                      : cell.isCurrentMonth
+                      ? "text-foreground font-mono cursor-pointer hover:bg-muted"
+                      : "text-muted-foreground/40 font-mono"
+                  )}
+                  title={`Xem dòng thời gian ${DAYS_OF_WEEK.find((d) => d.day === cell.dayOfWeek)?.full}`}
+                >
+                  {cell.dayNumber}
+                </span>
+
+                {cell.isCurrentMonth && dayItems.length > 0 && (
+                  <span
+                    onClick={() => onSelectDay(cell.dayOfWeek)}
+                    className="cursor-pointer text-[10px] font-mono font-bold text-muted-foreground hover:text-primary"
+                  >
+                    {dayItems.length} hoạt động
+                  </span>
+                )}
+              </div>
+
+              {/* Danh sách các khối lịch trình rút gọn */}
+              <div className="my-1 space-y-1 flex-1 overflow-hidden">
+                {cell.isCurrentMonth &&
+                  dayItems.slice(0, 3).map((item) => {
+                    const cfg = COLOR_CONFIGS[item.color] || COLOR_CONFIGS.orange;
+                    return (
+                      <div
+                        key={item.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (canEdit) onEditItem(item);
+                        }}
+                        className={cn(
+                          "cursor-pointer truncate rounded-xs border px-1.5 py-0.5 text-[10px] font-bold transition-all hover:scale-[1.02]",
+                          cfg.tagBg,
+                          cfg.border
+                        )}
+                        title={`${item.startTime || ""}: ${item.subject}`}
+                      >
+                        <span className="font-mono opacity-80">{item.startTime || "•"}</span>{" "}
+                        <span>{item.subject}</span>
+                      </div>
+                    );
+                  })}
+
+                {cell.isCurrentMonth && dayItems.length > 3 && (
+                  <div
+                    onClick={() => onSelectDay(cell.dayOfWeek)}
+                    className="cursor-pointer text-[9.5px] font-bold text-primary hover:underline text-center"
+                  >
+                    +{dayItems.length - 3} lịch khác...
+                  </div>
+                )}
+              </div>
+
+              {/* Nút thêm nhanh khi hover */}
+              {cell.isCurrentMonth && canCreate && (
+                <button
+                  type="button"
+                  onClick={() => onAddItem(cell.dayOfWeek)}
+                  className="w-full rounded-xs py-0.5 text-[9px] font-bold text-muted-foreground/0 group-hover:text-primary group-hover:bg-[#FAF7F0] dark:group-hover:bg-[#22170F] transition-all text-center"
+                >
+                  + Thêm lịch
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** ── COMPONENT LỊCH NĂM (YEAR CALENDAR VIEW - 12 THÁNG TỔNG QUAN) ── */
+function YearCalendarView({
+  viewYear,
+  onPrevYear,
+  onNextYear,
+  onCurrentYear,
+  itemsByDay,
+  onSelectMonth,
+  onSelectDay,
+}: {
+  viewYear: number;
+  onPrevYear: () => void;
+  onNextYear: () => void;
+  onCurrentYear: () => void;
+  itemsByDay: Record<number, TimetableItemDTO[]>;
+  onSelectMonth: (monthIndex: number) => void;
+  onSelectDay: (dayOfWeek: number) => void;
+}) {
+  const months = Array.from({ length: 12 }, (_, i) => i);
+  const today = new Date();
+
+  return (
+    <div className="space-y-4">
+      {/* Header điều hướng Năm */}
+      <div className="rounded-xs border-2 border-[#1C1917] bg-white p-4 sm:p-5 shadow-neo dark:bg-card flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <h2 className="font-editorial text-xl sm:text-3xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+            <CalendarRange className="size-6 text-primary" />
+            Năm {viewYear}
+          </h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onCurrentYear}
+            className="h-7 text-xs border border-[#1C1917] shadow-neo-sm font-bold"
+          >
+            Năm nay
+          </Button>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onPrevYear}
+            className="size-8 border-2 border-[#1C1917] shadow-neo-sm hover:shadow-neo"
+            title="Năm trước"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onNextYear}
+            className="size-8 border-2 border-[#1C1917] shadow-neo-sm hover:shadow-neo"
+            title="Năm sau"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Lưới 12 mini-calendar cho 12 tháng */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {months.map((mIndex) => {
+          const firstDayRaw = new Date(viewYear, mIndex, 1).getDay();
+          const startOffset = (firstDayRaw + 6) % 7;
+          const daysInMonth = new Date(viewYear, mIndex + 1, 0).getDate();
+
+          return (
+            <div
+              key={mIndex}
+              className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 shadow-neo transition-all hover:border-primary dark:bg-card"
+            >
+              {/* Header Tháng */}
+              <div className="flex items-center justify-between border-b border-[#1C1917]/20 pb-2 mb-2">
+                <button
+                  type="button"
+                  onClick={() => onSelectMonth(mIndex)}
+                  className="font-editorial text-sm font-bold uppercase text-foreground hover:text-primary transition-colors flex items-center gap-1"
+                >
+                  <span>Tháng {mIndex + 1}</span>
+                  <span className="text-[10px] text-muted-foreground font-sans font-normal">&rarr;</span>
+                </button>
+
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  {daysInMonth} ngày
+                </span>
+              </div>
+
+              {/* Tiêu đề 7 thứ trong tuần */}
+              <div className="grid grid-cols-7 text-center text-[10px] font-bold text-muted-foreground mb-1">
+                <span>T2</span>
+                <span>T3</span>
+                <span>T4</span>
+                <span>T5</span>
+                <span>T6</span>
+                <span>T7</span>
+                <span className="text-primary font-black">CN</span>
+              </div>
+
+              {/* Lưới các ngày trong tháng */}
+              <div className="grid grid-cols-7 gap-y-1 text-center text-xs">
+                {/* Khoảng trống trước ngày 1 */}
+                {Array.from({ length: startOffset }).map((_, i) => (
+                  <div key={`empty-${i}`} />
+                ))}
+
+                {/* Các ngày trong tháng */}
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const d = i + 1;
+                  const dateObj = new Date(viewYear, mIndex, d);
+                  const rawDow = dateObj.getDay();
+                  const dow = rawDow === 0 ? 7 : rawDow;
+                  const dayItemsCount = (itemsByDay[dow] || []).length;
+
+                  const isToday =
+                    d === today.getDate() &&
+                    mIndex === today.getMonth() &&
+                    viewYear === today.getFullYear();
+
+                  return (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => onSelectDay(dow)}
+                      className={cn(
+                        "group relative flex flex-col items-center justify-center rounded-xs py-1 transition-all",
+                        isToday
+                          ? "bg-primary font-black text-white shadow-neo-sm"
+                          : "hover:bg-[#FAF7F0] dark:hover:bg-[#22170F]"
+                      )}
+                      title={`Ngày ${d}/${mIndex + 1}: ${dayItemsCount} hoạt động lặp lại`}
+                    >
+                      <span className={cn("text-[11px] font-mono", isToday ? "font-black" : "text-foreground")}>
+                        {d}
+                      </span>
+                      {dayItemsCount > 0 && !isToday && (
+                        <span className="size-1 rounded-full bg-primary/70 mt-0.5" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

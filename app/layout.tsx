@@ -34,18 +34,61 @@ const roboto = localFont({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings().catch(() => null);
+  const platformName = settings?.platformName || "Minh Tuấn";
   const iconUrl = settings?.faviconPath
     ? `/api/branding/favicon?v=${encodeURIComponent(settings.faviconPath)}`
     : "/favicon.ico";
 
+  const siteTitle = `${platformName} · Không gian làm việc số & Kết nối`;
+  const siteDesc =
+    "Không gian làm việc số, chia sẻ kiến thức & giải pháp tự động hóa quy trình. Kết nối và liên hệ ngay với Tuấn nhé!";
+  const siteUrl = "https://tuandeptrai.io.vn";
+
   return {
-    title: settings?.platformName || "MyWEB",
-    description:
-      "Platform cá nhân dạng module: tài chính cá nhân, đề xuất mua hàng",
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: siteTitle,
+      template: `%s · ${platformName}`,
+    },
+    description: siteDesc,
+    keywords: [
+      "Minh Tuấn",
+      "Tuannm",
+      "tuandeptrai",
+      "tuandeptrai.io.vn",
+      "Hữu Nghị Food",
+      "DMS",
+      "Không gian làm việc số",
+      "Tự động hóa quy trình",
+    ],
+    authors: [{ name: "Nguyễn Minh Tuấn", url: siteUrl }],
+    creator: "Nguyễn Minh Tuấn",
     icons: {
       icon: iconUrl,
       shortcut: iconUrl,
       apple: iconUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "vi_VN",
+      url: siteUrl,
+      title: siteTitle,
+      description: siteDesc,
+      siteName: platformName,
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: siteTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteDesc,
+      images: ["/og-image.jpg"],
     },
   };
 }

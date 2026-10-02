@@ -316,7 +316,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="relative z-10 pb-6 text-center text-xs text-white/40">
-        © {new Date().getFullYear()} Tuấn — Platform cá nhân dạng module
+        © {new Date().getFullYear()} Tuấn — Không gian làm việc số & Kết nối
       </footer>
 
       <style jsx>{`
