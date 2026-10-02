@@ -35,6 +35,7 @@ export const MODULE_PATH_PREFIXES: [string, ModuleId][] = [
   ["/api/attachments", "procurement"],
   ["/todos", "todos"],
   ["/api/todos", "todos"],
+  ["/api/timetable", "todos"],
   ["/drive", "drive"],
   ["/api/drive", "drive"],
   ["/faceid", "faceid"],

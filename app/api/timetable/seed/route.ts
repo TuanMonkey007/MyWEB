@@ -1,0 +1,189 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
+
+export async function POST() {
+  try {
+    // Xóa lịch cũ nếu có yêu cầu làm mới
+    const count = await prisma.timetableItem.count();
+    if (count > 0) {
+      return NextResponse.json({ message: "Thời khóa biểu đã có dữ liệu", count });
+    }
+
+    const sampleItems = [
+      // Thứ 2
+      {
+        dayOfWeek: 1,
+        subject: "Họp giao ban đầu tuần phòng CNTT",
+        session: "MORNING",
+        startTime: "08:30",
+        endTime: "09:30",
+        location: "Phòng họp HO / Online",
+        note: "Báo cáo tiến độ vận hành DMS & các dự án số hóa",
+        color: "purple",
+      },
+      {
+        dayOfWeek: 1,
+        subject: "Rà soát & Đối soát dữ liệu DMS 5.2 - 6.4.4",
+        session: "MORNING",
+        startTime: "09:30",
+        endTime: "11:30",
+        location: "Văn phòng HNF",
+        note: "Kiểm tra dữ liệu đồng bộ các nhà phân phối",
+        color: "orange",
+      },
+      {
+        dayOfWeek: 1,
+        subject: "Học từ vựng & Ngữ pháp HSK3",
+        session: "EVENING",
+        startTime: "19:30",
+        endTime: "21:00",
+        location: "Bàn làm việc",
+        note: "Ôn tập 36 Vần Mẫu & Luyện viết chữ Hán",
+        color: "blue",
+      },
+
+      // Thứ 3
+      {
+        dayOfWeek: 2,
+        subject: "Xử lý yêu cầu chuyển tuyến & chốt kho NPP",
+        session: "MORNING",
+        startTime: "08:00",
+        endTime: "11:30",
+        location: "Phòng DMS",
+        note: "Hỗ trợ KTNPP & GSBH các miền",
+        color: "emerald",
+      },
+      {
+        dayOfWeek: 2,
+        subject: "Kiểm tra hệ thống FaceID & Server log",
+        session: "AFTERNOON",
+        startTime: "14:00",
+        endTime: "16:30",
+        location: "Văn phòng HNF",
+        note: "Lọc quét trùng dữ liệu chấm công",
+        color: "orange",
+      },
+      {
+        dayOfWeek: 2,
+        subject: "Luyện nghe & Flashcards HSK Anki",
+        session: "EVENING",
+        startTime: "20:00",
+        endTime: "21:30",
+        location: "Nhà riêng",
+        note: "Mục tiêu 30 từ mới mỗi ngày",
+        color: "blue",
+      },
+
+      // Thứ 4
+      {
+        dayOfWeek: 3,
+        subject: "Tối ưu hóa bảng tính & Viết script tự động",
+        session: "MORNING",
+        startTime: "08:30",
+        endTime: "11:30",
+        location: "Bàn làm việc",
+        note: "Nâng cấp tính năng web nội bộ",
+        color: "purple",
+      },
+      {
+        dayOfWeek: 3,
+        subject: "Chạy bộ / Thể dục thể thao",
+        session: "EVENING",
+        startTime: "17:30",
+        endTime: "18:45",
+        location: "Công viên / Phòng tập",
+        note: "Rèn luyện sức bền & tái tạo năng lượng",
+        color: "amber",
+      },
+
+      // Thứ 5
+      {
+        dayOfWeek: 4,
+        subject: "Kiểm tra dữ liệu viếng thăm & GPS tuyến bán",
+        session: "MORNING",
+        startTime: "08:00",
+        endTime: "11:30",
+        location: "Phòng DMS",
+        note: "Báo cáo tỉ lệ viếng thăm điểm bán của NVBH",
+        color: "emerald",
+      },
+      {
+        dayOfWeek: 4,
+        subject: "Học tiếng Trung HSK3: Đọc hiểu & Hội thoại",
+        session: "EVENING",
+        startTime: "19:30",
+        endTime: "21:30",
+        location: "Bàn học",
+        note: "Bài tập giáo trình HSK Chuẩn",
+        color: "blue",
+      },
+
+      // Thứ 6
+      {
+        dayOfWeek: 5,
+        subject: "Tổng hợp báo cáo tuần & Rà soát quỹ mua sắm",
+        session: "AFTERNOON",
+        startTime: "14:00",
+        endTime: "17:00",
+        location: "Văn phòng HNF",
+        note: "Đối soát số dư ví & hóa đơn VAT",
+        color: "rose",
+      },
+      {
+        dayOfWeek: 5,
+        subject: "Gặp gỡ bạn bè / Thư giãn cuối tuần",
+        session: "EVENING",
+        startTime: "19:00",
+        endTime: "22:00",
+        location: "Bên ngoài",
+        note: "Thư giãn & nạp năng lượng",
+        color: "amber",
+      },
+
+      // Thứ 7
+      {
+        dayOfWeek: 6,
+        subject: "Viết bài chia sẻ tài liệu kỹ thuật DMS",
+        session: "MORNING",
+        startTime: "09:00",
+        endTime: "11:30",
+        location: "Bàn làm việc",
+        note: "Cập nhật bài viết hướng dẫn trên website nội bộ",
+        color: "purple",
+      },
+      {
+        dayOfWeek: 6,
+        subject: "Luyện thi thử HSK3 & Ôn tập ngữ pháp",
+        session: "AFTERNOON",
+        startTime: "14:30",
+        endTime: "17:00",
+        location: "Nhà riêng",
+        note: "Làm đề thi thử trên OpenQuiz",
+        color: "blue",
+      },
+
+      // Chủ Nhật
+      {
+        dayOfWeek: 7,
+        subject: "Lên kế hoạch công việc tuần mới & Chuẩn bị tài liệu",
+        session: "EVENING",
+        startTime: "20:00",
+        endTime: "21:30",
+        location: "Nhà riêng",
+        note: "Sắp xếp danh sách việc cần làm (Todos) và mục tiêu tuần",
+        color: "orange",
+      },
+    ];
+
+    for (const item of sampleItems) {
+      await prisma.timetableItem.create({ data: item });
+    }
+
+    return NextResponse.json({ message: "Đã nạp thành công lịch mẫu!", count: sampleItems.length });
+  } catch (error) {
+    console.error("Lỗi nạp lịch mẫu:", error);
+    return NextResponse.json({ error: "Nạp lịch mẫu thất bại" }, { status: 500 });
+  }
+}
