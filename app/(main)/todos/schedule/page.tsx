@@ -6,13 +6,14 @@ export const dynamic = "force-dynamic";
 
 export default async function SchedulePage() {
   const items = await prisma.timetableItem.findMany({
-    orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }, { createdAt: "asc" }],
+    orderBy: [{ date: "asc" }, { dayOfWeek: "asc" }, { startTime: "asc" }, { createdAt: "asc" }],
   });
 
   return (
     <SchedulePlannerView
       items={items.map((item) => ({
         id: item.id,
+        date: item.date,
         dayOfWeek: item.dayOfWeek,
         subject: item.subject,
         session: item.session as SessionType,
@@ -21,6 +22,7 @@ export default async function SchedulePage() {
         location: item.location,
         note: item.note,
         color: item.color,
+        isRecurring: Boolean(item.isRecurring),
         createdAt: item.createdAt.toISOString(),
         updatedAt: item.updatedAt.toISOString(),
       }))}

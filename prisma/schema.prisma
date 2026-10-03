@@ -292,20 +292,23 @@ model Todo {
   @@index([status])
 }
 
-// ===== Thời khóa biểu / Lịch tuần =====
+// ===== Thời gian biểu / Lịch trình công việc & học tập =====
 model TimetableItem {
-  id        String   @id @default(cuid())
-  dayOfWeek Int      // 1 = Thứ 2, 2 = Thứ 3, ..., 6 = Thứ 7, 7 = Chủ Nhật
-  subject   String   // Môn học / Nhiệm vụ / Công việc
-  session   String   @default("MORNING") // MORNING | AFTERNOON | EVENING
-  startTime String?  // "08:00"
-  endTime   String?  // "11:30"
-  location  String?  // Phòng học, văn phòng, địa điểm, online
-  note      String?  // Ghi chú chi tiết
-  color     String   @default("orange") // orange | emerald | blue | purple | amber | rose
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  date        String?  // Ngày cụ thể "YYYY-MM-DD" (vd: "2026-10-03")
+  dayOfWeek   Int      // 1 = Thứ 2, 2 = Thứ 3, ..., 6 = Thứ 7, 7 = Chủ Nhật
+  subject     String   // Môn học / Nhiệm vụ / Công việc
+  session     String   @default("MORNING") // MORNING | AFTERNOON | EVENING
+  startTime   String?  // "08:00"
+  endTime     String?  // "11:30"
+  location    String?  // Phòng học, văn phòng, địa điểm, online
+  note        String?  // Ghi chú chi tiết
+  color       String   @default("orange") // orange | emerald | blue | purple | amber | rose
+  isRecurring Boolean  @default(false) // True: lặp lại hàng tuần theo dayOfWeek | False: lịch riêng của ngày date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
+  @@index([date])
   @@index([dayOfWeek])
 }
 

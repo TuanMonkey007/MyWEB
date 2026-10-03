@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Calendar, Clock, MapPin, Sparkles, Trash2 } from "lucide-react";
+import { Calendar, Clock, MapPin, Repeat, Sparkles, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,10 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   COLOR_CONFIGS,
   DAYS_OF_WEEK,
+  formatDateISO,
+  formatDateVN,
+  getDayOfWeekFromDate,
+  parseDateISO,
   SESSIONS,
   type ColorPreset,
   type SessionType,
@@ -28,6 +32,7 @@ import { cn } from "@/lib/utils";
 interface TimetableDialogProps {
   open: boolean;
   item: TimetableItemDTO | null;
+  initialDateStr?: string; // YYYY-MM-DD
   initialDayOfWeek?: number;
   onClose: () => void;
   onSaved: () => void;
@@ -36,11 +41,15 @@ interface TimetableDialogProps {
 export function TimetableDialog({
   open,
   item,
+  initialDateStr,
   initialDayOfWeek = 1,
   onClose,
   onSaved,
 }: TimetableDialogProps) {
   const router = useRouter();
+  const todayISO = formatDateISO(new Date());
+
+  const [date, setDate] = useState<string>(initialDateStr || todayISO);
   const [dayOfWeek, setDayOfWeek] = useState<number>(initialDayOfWeek);
   const [subject, setSubject] = useState("");
   const [session, setSession] = useState<SessionType>("MORNING");
@@ -49,11 +58,14 @@ export function TimetableDialog({
   const [location, setLocation] = useState("");
   const [note, setNote] = useState("");
   const [color, setColor] = useState<ColorPreset>("orange");
+  const [isRecurring, setIsRecurring] = useState(false);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (item) {
+      const dStr = item.date || initialDateStr || todayISO;
+      setDate(dStr);
       setDayOfWeek(item.dayOfWeek);
       setSubject(item.subject);
       setSession(item.session);
@@ -62,8 +74,12 @@ export function TimetableDialog({
       setLocation(item.location ?? "");
       setNote(item.note ?? "");
       setColor((item.color as ColorPreset) || "orange");
+      setIsRecurring(Boolean(item.isRecurring));
     } else {
-      setDayOfWeek(initialDayOfWeek);
+      const targetDate = initialDateStr || todayISO;
+      setDate(targetDate);
+      const parsed = parseDateISO(targetDate);
+      setDayOfWeek(getDayOfWeekFromDate(parsed));
       setSubject("");
       setSession("MORNING");
       setStartTime("08:00");
@@ -71,20 +87,30 @@ export function TimetableDialog({
       setLocation("");
       setNote("");
       setColor("orange");
+      setIsRecurring(false);
     }
-  }, [item, initialDayOfWeek, open]);
+  }, [item, initialDateStr, initialDayOfWeek, open, todayISO]);
+
+  function handleDateChange(newDate: string) {
+    setDate(newDate);
+    if (newDate) {
+      const parsed = parseDateISO(newDate);
+      setDayOfWeek(getDayOfWeekFromDate(parsed));
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const sub = subject.trim();
     if (!sub) {
-      toast.error("Vui lòng nhập tên công việc hoặc môn học!");
+      toast.error("Vui lòng nhập tên công việc hoặc hoạt động!");
       return;
     }
 
     setLoading(true);
     try {
       const payload = {
+        date: date || null,
         dayOfWeek,
         subject: sub,
         session,
@@ -93,6 +119,7 @@ export function TimetableDialog({
         location: location.trim() || null,
         note: note.trim() || null,
         color,
+        isRecurring,
       };
 
       const url = item ? `/api/timetable/${item.id}` : "/api/timetable";
@@ -109,7 +136,13 @@ export function TimetableDialog({
         throw new Error(err?.error || "Thao tác thất bại");
       }
 
-      toast.success(item ? "Đã cập nhật thời khóa biểu!" : "Đã thêm vào thời khóa biểu!");
+      toast.success(
+        item
+          ? "Đã cập nhật lịch trình!"
+          : isRecurring
+          ? "Đã thêm lịch trình (Lặp lại hàng tuần)!"
+          : `Đã thêm lịch trình riêng ngày ${formatDateVN(date)}!`
+      );
       onSaved();
       onClose();
       router.refresh();
@@ -122,13 +155,13 @@ export function TimetableDialog({
 
   async function handleDelete() {
     if (!item) return;
-    if (!confirm(`Bạn có chắc chắn muốn xóa tiết/công việc "${item.subject}"?`)) return;
+    if (!confirm(`Bạn có chắc chắn muốn xóa lịch trình "${item.subject}"?`)) return;
 
     setDeleting(true);
     try {
       const res = await fetch(`/api/timetable/${item.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
-      toast.success("Đã xóa khỏi thời khóa biểu!");
+      toast.success("Đã xóa khỏi lịch trình!");
       onSaved();
       onClose();
       router.refresh();
@@ -139,50 +172,67 @@ export function TimetableDialog({
     }
   }
 
+  const currentDayInfo = DAYS_OF_WEEK.find((d) => d.day === dayOfWeek);
+
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-editorial text-xl font-bold uppercase tracking-tight flex items-center gap-2">
             <Calendar className="size-5 text-primary" />
-            {item ? "Sửa tiết / lịch tuần" : "Thêm vào thời khóa biểu"}
+            {item ? "Sửa khung giờ lịch trình" : "Thêm vào lịch trình"}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-1">
-          {/* 1. Chọn ngày trong tuần */}
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold text-foreground">Ngày trong tuần</Label>
-            <div className="grid grid-cols-7 gap-1.5">
-              {DAYS_OF_WEEK.map((d) => (
-                <button
-                  key={d.day}
-                  type="button"
-                  onClick={() => setDayOfWeek(d.day)}
-                  className={cn(
-                    "cursor-pointer rounded-xs border-2 border-[#1C1917] py-2 text-center text-xs font-black transition-all",
-                    dayOfWeek === d.day
-                      ? "bg-primary text-primary-foreground shadow-neo-sm"
-                      : "bg-white text-foreground hover:bg-[#FAF7F0] dark:bg-card"
-                  )}
-                >
-                  <div className="text-[11px] leading-none">{d.short}</div>
-                  <div className="text-[9px] font-normal opacity-80 mt-0.5">{d.day === 7 ? "CN" : `T${d.day}`}</div>
-                </button>
-              ))}
+          {/* 1. Chọn ngày cụ thể (Lịch riêng cho ngày này) */}
+          <div className="space-y-1.5 rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-3 shadow-neo-sm dark:bg-[#1E1712]">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="tt-date" className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <Calendar className="size-3.5 text-primary" />
+                Ngày áp dụng <span className="text-destructive">*</span>
+              </Label>
+              {date && (
+                <span className="text-xs font-black text-primary font-mono">
+                  {currentDayInfo?.full}, {formatDateVN(date)}
+                </span>
+              )}
             </div>
+
+            <Input
+              id="tt-date"
+              type="date"
+              value={date}
+              onChange={(e) => handleDateChange(e.target.value)}
+              className="bg-white dark:bg-card text-xs sm:text-sm font-mono font-bold"
+              required
+            />
+
+            {/* Checkbox lặp lại (mặc định tắt: ngày nào note lịch riêng ngày đó) */}
+            <label className="flex items-center gap-2 pt-1 text-xs font-medium text-stone-700 dark:text-stone-300 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={isRecurring}
+                onChange={(e) => setIsRecurring(e.target.checked)}
+                className="size-4 accent-primary rounded cursor-pointer"
+              />
+              <span className="flex items-center gap-1">
+                <Repeat className="size-3 text-muted-foreground" />
+                Lặp lại cố định vào <b>{currentDayInfo?.full}</b> hàng tuần
+              </span>
+            </label>
           </div>
 
-          {/* 2. Tên công việc / Môn học */}
+          {/* 2. Tên công việc / Hoạt động */}
           <div className="space-y-1.5">
             <Label htmlFor="tt-subject" className="text-xs font-bold text-foreground">
-              Tên công việc / Môn học / Hoạt động <span className="text-destructive">*</span>
+              Tên công việc / Hoạt động / Môn học <span className="text-destructive">*</span>
             </Label>
             <Input
               id="tt-subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="VD: Đối soát DMS 5.2, Học HSK3, Họp phòng CNTT..."
+              placeholder="VD: Đối soát dữ liệu DMS 5.2, Học HSK3, Họp phòng CNTT..."
               autoFocus
               className="text-xs sm:text-sm"
             />
@@ -234,7 +284,7 @@ export function TimetableDialog({
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="text-xs"
+                className="text-xs font-mono font-bold"
               />
             </div>
 
@@ -247,12 +297,12 @@ export function TimetableDialog({
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="text-xs"
+                className="text-xs font-mono font-bold"
               />
             </div>
           </div>
 
-          {/* 4. Địa điểm / Phòng */}
+          {/* 4. Địa điểm / Nền tảng */}
           <div className="space-y-1.5">
             <Label htmlFor="tt-location" className="text-xs font-bold text-foreground flex items-center gap-1">
               <MapPin className="size-3.5 text-primary" /> Địa điểm / Phòng họp / Nền tảng
@@ -269,13 +319,13 @@ export function TimetableDialog({
           {/* 5. Ghi chú chi tiết */}
           <div className="space-y-1.5">
             <Label htmlFor="tt-note" className="text-xs font-bold text-foreground">
-              Ghi chú nội dung / Yêu cầu
+              Ghi chú nội dung / Yêu cầu riêng của ngày này
             </Label>
             <Textarea
               id="tt-note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Ghi chú thêm mục tiêu, tài liệu cần chuẩn bị..."
+              placeholder="Ghi chú chi tiết công việc hoặc mục tiêu cần đạt..."
               rows={2}
               className="text-xs resize-none"
             />
@@ -318,7 +368,7 @@ export function TimetableDialog({
                 disabled={deleting || loading}
                 className="gap-1 text-xs"
               >
-                <Trash2 className="size-3.5" /> Xóa tiết
+                <Trash2 className="size-3.5" /> Xóa lịch này
               </Button>
             ) : <div />}
 
@@ -327,7 +377,7 @@ export function TimetableDialog({
                 Hủy
               </Button>
               <Button type="submit" size="sm" disabled={loading || !subject.trim()}>
-                {loading ? "Đang lưu..." : item ? "Cập nhật" : "Thêm mới"}
+                {loading ? "Đang lưu..." : item ? "Cập nhật" : "Lưu vào lịch"}
               </Button>
             </div>
           </DialogFooter>

@@ -4,6 +4,7 @@ export type ColorPreset = "orange" | "emerald" | "blue" | "purple" | "amber" | "
 
 export interface TimetableItemDTO {
   id: string;
+  date: string | null; // "YYYY-MM-DD" ví dụ "2026-10-03" (lịch riêng của ngày)
   dayOfWeek: number; // 1 = T2, 2 = T3, ..., 7 = CN
   subject: string;
   session: SessionType;
@@ -12,6 +13,7 @@ export interface TimetableItemDTO {
   location: string | null;
   note: string | null;
   color: ColorPreset | string;
+  isRecurring: boolean; // True: lặp lại hàng tuần | False: chỉ riêng ngày date
   createdAt: string;
   updatedAt: string;
 }
@@ -93,8 +95,86 @@ export const COLOR_CONFIGS: Record<
   },
 };
 
-/** Lấy ngày hôm nay theo hệ 1 = Thứ 2 ... 7 = Chủ Nhật (chuẩn ISO) */
+/** Định dạng ngày thành chuỗi YYYY-MM-DD theo giờ địa phương */
+export function formatDateISO(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/** Parse an toàn chuỗi YYYY-MM-DD thành Date (tránh lệch múi giờ) */
+export function parseDateISO(str: string): Date {
+  const [y, m, d] = str.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+
+/** Định dạng DD/MM/YYYY */
+export function formatDateVN(strOrDate: string | Date): string {
+  const d = typeof strOrDate === "string" ? parseDateISO(strOrDate) : strOrDate;
+  const day = String(d.getDate()).padStart(2, "0");
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const y = d.getFullYear();
+  return `${day}/${m}/${y}`;
+}
+
+/** Lấy ngày thứ trong tuần theo chuẩn 1 = Thứ 2 ... 7 = Chủ Nhật */
+export function getDayOfWeekFromDate(d: Date): number {
+  const day = d.getDay(); // 0 = CN, 1 = T2, ..., 6 = T7
+  return day === 0 ? 7 : day;
+}
+
+/** Lấy ngày hôm nay theo hệ 1 = Thứ 2 ... 7 = Chủ Nhật */
 export function getCurrentDayOfWeek(): number {
-  const d = new Date().getDay(); // 0 = CN, 1 = T2, ..., 6 = T7
-  return d === 0 ? 7 : d;
+  return getDayOfWeekFromDate(new Date());
+}
+
+/** Lấy ngày Thứ Hai đầu tuần của một ngày bất kỳ */
+export function getStartOfWeek(date: Date): Date {
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const day = d.getDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+
+/** Lấy danh sách 7 ngày thực tế trong tuần (từ Thứ 2 đến Chủ Nhật) */
+export function getWeekDates(startOfWeek: Date): {
+  date: Date;
+  dateStr: string;
+  dayOfWeek: number;
+  dayLabel: string;
+  dayShort: string;
+  dayFull: string;
+}[] {
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const dayOfWeek = i + 1; // 1 = T2 ... 7 = CN
+    const info = DAYS_OF_WEEK.find((item) => item.day === dayOfWeek)!;
+    return {
+      date: d,
+      dateStr: formatDateISO(d),
+      dayOfWeek,
+      dayLabel: info.label,
+      dayShort: info.short,
+      dayFull: info.full,
+    };
+  });
+}
+
+/** Kiểm tra xem một item có hiển thị trên ngày targetDateStr không */
+export function isItemForDate(
+  item: TimetableItemDTO,
+  targetDateStr: string,
+  targetDayOfWeek: number
+): boolean {
+  if (item.date) {
+    return item.date === targetDateStr;
+  }
+  // Nếu là lịch lặp lại hàng tuần (cũ hoặc người dùng tick chọn lặp)
+  if (item.isRecurring) {
+    return item.dayOfWeek === targetDayOfWeek;
+  }
+  return false;
 }
