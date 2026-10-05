@@ -13,6 +13,16 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -37,6 +47,7 @@ export function ImeiManager() {
   const [looking, setLooking] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [unlock, setUnlock] = useState(true);
+  const [confirming, setConfirming] = useState(false);
   const [attempts, setAttempts] = useState<Attempt[]>([]);
 
   function log(entry: Attempt) {
@@ -66,7 +77,7 @@ export function ImeiManager() {
 
   async function reset() {
     if (!staff) return;
-    if (!confirm(`Clear IMEI của ${staff.staffCode} - ${staff.staffName}?`)) return;
+    setConfirming(false);
     setResetting(true);
     const at = new Date().toLocaleTimeString("vi-VN");
     try {
@@ -145,7 +156,7 @@ export function ImeiManager() {
               <Button
                 className="mt-2"
                 variant="destructive"
-                onClick={reset}
+                onClick={() => setConfirming(true)}
                 disabled={resetting}
               >
                 {resetting ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
@@ -155,6 +166,33 @@ export function ImeiManager() {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={confirming} onOpenChange={setConfirming}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Clear IMEI của &quot;{staff?.staffCode} — {staff?.staffName}&quot;?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              IMEI hiện tại{" "}
+              <code className="font-mono font-bold">
+                {staff?.imei || "(trống)"}
+              </code>{" "}
+              sẽ bị xóa để user đăng nhập máy khác
+              {unlock ? " và app sẽ được mở khóa luôn" : ""}. Không thể hoàn tác.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Hủy</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={reset}
+              className="bg-destructive text-white hover:bg-destructive/90"
+            >
+              Clear IMEI
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {attempts.length > 0 && (
         <Card>
