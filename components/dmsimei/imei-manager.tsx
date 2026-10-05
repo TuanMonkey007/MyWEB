@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   CheckCircle2,
+  KeyRound,
   Loader2,
   RotateCcw,
   Search,
@@ -48,6 +49,8 @@ export function ImeiManager() {
   const [resetting, setResetting] = useState(false);
   const [unlock, setUnlock] = useState(true);
   const [confirming, setConfirming] = useState(false);
+  const [confirmingPass, setConfirmingPass] = useState(false);
+  const [resettingPass, setResettingPass] = useState(false);
   const [attempts, setAttempts] = useState<Attempt[]>([]);
 
   function log(entry: Attempt) {
@@ -105,6 +108,35 @@ export function ImeiManager() {
     }
   }
 
+  async function resetPass() {
+    if (!staff) return;
+    setConfirmingPass(false);
+    setResettingPass(true);
+    const at = new Date().toLocaleTimeString("vi-VN");
+    try {
+      const res = await fetch("/api/dms-imei/reset-pass", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: staff.staffCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "Reset pass thất bại");
+      log({
+        at,
+        code: `${data.staffCode} - ${data.staffName}`,
+        ok: true,
+        detail: "Reset password về mặc định xong",
+      });
+      toast.success("Reset password về mặc định xong");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Reset pass thất bại";
+      log({ at, code: staff.staffCode, ok: false, detail: msg });
+      toast.error(msg);
+    } finally {
+      setResettingPass(false);
+    }
+  }
+
   return (
     <div className="space-y-4">
       <Card>
@@ -153,15 +185,24 @@ export function ImeiManager() {
                 />
                 <Unlock className="size-4" /> Mở khóa app luôn sau khi clear
               </label>
-              <Button
-                className="mt-2"
-                variant="destructive"
-                onClick={() => setConfirming(true)}
-                disabled={resetting}
-              >
-                {resetting ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
-                Clear IMEI
-              </Button>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Button
+                  variant="destructive"
+                  onClick={() => setConfirming(true)}
+                  disabled={resetting}
+                >
+                  {resetting ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
+                  Clear IMEI
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => setConfirmingPass(true)}
+                  disabled={resettingPass}
+                >
+                  {resettingPass ? <Loader2 className="size-4 animate-spin" /> : <KeyRound className="size-4" />}
+                  Reset password
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
@@ -189,6 +230,25 @@ export function ImeiManager() {
               className="bg-destructive text-white hover:bg-destructive/90"
             >
               Clear IMEI
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={confirmingPass} onOpenChange={setConfirmingPass}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Reset password của &quot;{staff?.staffCode} — {staff?.staffName}&quot; về mặc định?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Mật khẩu sẽ về giá trị mặc định của DMS. Không thể hoàn tác.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Hủy</AlertDialogCancel>
+            <AlertDialogAction onClick={resetPass}>
+              Reset password
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

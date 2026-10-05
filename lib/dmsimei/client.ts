@@ -245,8 +245,54 @@ export async function resetImei(code: string, unlock: boolean): Promise<DmsReset
   };
 }
 
+export type DmsPassResult = {
+  staffCode: string;
+  staffName: string;
+};
+
+/** Reset password NV ve mac dinh. Server tu set, khong can biet gia tri. */
+export async function resetPasscode(code: string): Promise<DmsPassResult> {
+  const cfg = await getDmsImeiConfig();
+  const missing = missingDmsImei(cfg);
+  if (missing.length) throw new Error(`Chưa cấu hình DMS — thiếu: ${missing.join(", ")}`);
+  const base = cfg.baseUrl.replace(/\/$/, "");
+  const jar: Jar = new Map();
+  let token = await login(jar, base, cfg.username!, cfg.password!);
+
+  const s = await dmsFetch(jar, base, "/catalog/unit-tree/search-staff-group", {
+    "unitFilter.unitCode": code.trim(), page: "1", rows: "10",
+  });
+  let data: { rows?: Record<string, unknown>[]; token?: string };
+  try {
+    data = JSON.parse(s.text);
+  } catch {
+    throw new Error("DMS trả về không phải JSON (mất session?)");
+  }
+  token = data.token || token;
+  const rows = (data.rows ?? []).filter(
+    (r) => String(r.staffCode ?? "").toUpperCase() === code.trim().toUpperCase(),
+  );
+  if (!rows.length) throw new Error(`Không tìm thấy NV mã ${code.trim()}`);
+  const r = rows[0];
+  const staffId = Number(r.staffId ?? r.id);
+
+  const p = await dmsFetch(jar, base, "/catalog/unit-tree/resetPass", {
+    staffId: String(staffId), token,
+  });
+  let res: { error?: boolean; errMsg?: string };
+  try {
+    res = JSON.parse(p.text);
+  } catch {
+    throw new Error("Reset pass thất bại: DMS không trả JSON");
+  }
+  if (res.error) throw new Error(`Reset pass thất bại: ${res.errMsg ?? "không rõ"}`);
+  return {
+    staffCode: String(r.staffCode ?? ""),
+    staffName: decodeEntities(String(r.staffName ?? "")),
+  };
+}
+
 async function login(jar: Jar, base: string, user: string, pass: string): Promise<string> {
-  // GET /login lay lt (CAS)
   const g = await dmsFetch(jar, base, "/login", undefined, false);
   const lt = /name="lt" value="([^"]*)"/.exec(g.text)?.[1] ?? "";
   // POST credentials, manual redirect de bat 302
