@@ -22,7 +22,9 @@ Web app cá nhân, kiến trúc module hóa. Trang chủ `/` là **trang tin cô
 
 8. **Test Mail Relay** (`/mailtest`) — gửi mail thử để kiểm tra API key và bản ghi DNS của nhà cung cấp: form nhập địa chỉ đích / tiêu đề / nội dung (text hoặc HTML), nhật ký các lần gửi kèm mã mail. Quản trị viên chỉnh cấu hình mail ngay tại đây (xem mục Gửi mail bên dưới).
 
-9. **Bài hướng dẫn** (`/articles` quản lý · `/huong-dan` công khai) — kho tài liệu kỹ thuật kiểu diễn đàn:
+9. **Reset IMEI DMS** (`/dms-imei`, chỉ ADMIN) — clear IMEI tablet nhân viên Hữu Nghị (`huunghiv2.dmsone.vn`) để đăng nhập máy khác, khỏi mở web DMS tay: nhập mã NV → tra cứu (tên + IMEI hiện tại) → Clear IMEI (+ tùy chọn mở khóa app), có nhật ký thao tác. Tài khoản IT nhập ở Cài đặt hệ thống → Tài khoản IT DMS (mật khẩu lưu mã hóa AES-256-GCM, chỉ hiện bản che). Quyền: `dmsimei` → *Xem* / *Reset IMEI*.
+
+10. **Bài hướng dẫn** (`/articles` quản lý · `/huong-dan` công khai) — kho tài liệu kỹ thuật kiểu diễn đàn:
    - **Trình soạn thảo trực quan** (TipTap): gõ đâu thấy đó, không phải học cú pháp. Thanh công cụ có tiêu đề, đậm/nghiêng/gạch, danh sách, trích dẫn, khối lệnh, canh lề, liên kết, chèn ảnh, chèn bảng. Mọi nút icon đều có nhãn trợ năng và trạng thái bật/tắt.
    - Nội dung lưu ra **HTML**. Bài viết bằng Markdown từ trước vẫn đọc bình thường nhờ cột `format` (`HTML` | `MARKDOWN`) — mỗi định dạng đi đường render riêng.
    - **Mỗi bài tự chọn phạm vi**: `Nháp` (chỉ tác giả + admin) · `Nội bộ` (cần đăng nhập) · `Công khai` (ai vào web cũng đọc). Bài không công khai còn được đánh `noindex` để công cụ tìm kiếm bỏ qua.

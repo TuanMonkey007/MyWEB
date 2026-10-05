@@ -6,6 +6,9 @@ import { CategoryManager } from "@/components/settings/category-manager";
 import { AppearanceSettings } from "@/components/settings/appearance-settings";
 import { ExportTemplateCard } from "@/components/settings/export-template-card";
 import { ModuleOrderCard } from "@/components/settings/module-order-card";
+import { DmsImeiConfigCard, type DmsImeiView } from "@/components/dmsimei/dmsimei-config-card";
+import { getDmsImeiConfig, missingDmsImei } from "@/lib/dmsimei/config";
+import { maskSecret } from "@/lib/secret-box";
 
 export const dynamic = "force-dynamic";
 
@@ -13,13 +16,23 @@ export default async function SettingsPage() {
   const currentUser = await getCurrentUser();
   if (!currentUser || currentUser.role !== "ADMIN") redirect("/login");
 
-  const [categories, settings] = await Promise.all([
+  const [categories, settings, dmsImei] = await Promise.all([
     prisma.category.findMany({
       orderBy: [{ kind: "asc" }, { name: "asc" }],
       include: { _count: { select: { expenses: true, incomes: true } } },
     }),
     getSettings(),
+    getDmsImeiConfig(),
   ]);
+
+  const dmsImeiView: DmsImeiView = {
+    baseUrl: dmsImei.baseUrl,
+    username: dmsImei.username,
+    hasPassword: !!dmsImei.password,
+    masked: dmsImei.password ? maskSecret(dmsImei.password) : null,
+    broken: dmsImei.broken,
+    missing: missingDmsImei(dmsImei),
+  };
 
   return (
     <div className="space-y-6">
@@ -36,6 +49,7 @@ export default async function SettingsPage() {
         <AppearanceSettings settings={settings} />
         <ModuleOrderCard order={settings.moduleOrder} />
         <ExportTemplateCard templateName={settings.exportTemplateName} />
+        <DmsImeiConfigCard config={dmsImeiView} />
       </div>
 
       <div className="space-y-3">

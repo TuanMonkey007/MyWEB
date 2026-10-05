@@ -20,6 +20,7 @@ import {
   Settings,
   ShieldCheck,
   SlidersHorizontal,
+  Smartphone,
   Wallet,
 } from "lucide-react";
 import {
@@ -95,6 +96,11 @@ const MODULES: ModuleGroup[] = [
     id: "articles",
     label: "Bài hướng dẫn",
     items: [{ href: "/articles", label: "Quản lý bài viết", icon: BookOpen }],
+  },
+  {
+    id: "dmsimei",
+    label: "Reset IMEI DMS",
+    items: [{ href: "/dms-imei", label: "Reset IMEI", icon: Smartphone }],
   },
 ];
 

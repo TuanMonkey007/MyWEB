@@ -64,6 +64,10 @@ export const MODULE_CAPS: Record<ModuleId, Capability[]> = {
     { id: "publish", label: "Đăng công khai" },
     { id: "categories", label: "Quản lý chuyên mục" },
   ],
+  dmsimei: [
+    { id: "view", label: "Xem" },
+    { id: "reset", label: "Reset IMEI" },
+  ],
 };
 
 export type PermMap = Partial<Record<ModuleId, string[]>>;
@@ -171,6 +175,12 @@ export function requiredCapability(
   // FaceID / DMS: mọi thao tác xử lý là "run"
   if (module === "faceid" || module === "dms")
     return { module, cap: isRead ? "view" : "run" };
+  // Reset IMEI DMS: tra cuu la "view", reset/unlock la "reset"
+  if (module === "dmsimei") {
+    if (pathname.includes("/lookup")) return { module, cap: "view" };
+    if (pathname.includes("/reset")) return { module, cap: "reset" };
+    return { module, cap: isRead ? "view" : "reset" };
+  }
   // Test Mail Relay: gửi mail là hành động riêng (tốn quota nhà cung cấp)
   if (module === "mailtest") return { module, cap: isRead ? "view" : "send" };
   // Chuyên mục bài viết là quyền riêng, tách khỏi quyền viết bài

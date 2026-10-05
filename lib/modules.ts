@@ -10,6 +10,7 @@ export const MODULE_REGISTRY = [
   { id: "dms", label: "DMS", href: "/dms" },
   { id: "mailtest", label: "Test Mail Relay", href: "/mailtest" },
   { id: "articles", label: "Bài hướng dẫn", href: "/articles" },
+  { id: "dmsimei", label: "Reset IMEI DMS", href: "/dms-imei" },
 ] as const;
 
 export type ModuleId = (typeof MODULE_REGISTRY)[number]["id"];
@@ -49,6 +50,8 @@ export const MODULE_PATH_PREFIXES: [string, ModuleId][] = [
   ["/articles", "articles"],
   ["/api/articles", "articles"],
   ["/api/article-categories", "articles"],
+  ["/dms-imei", "dmsimei"],
+  ["/api/dms-imei", "dmsimei"],
 ];
 
 // Khu vực chỉ ADMIN (cấu hình hệ thống + quản lý tài khoản/phân quyền)
