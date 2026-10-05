@@ -125,7 +125,7 @@ export function ImeiManager() {
         at,
         code: `${data.staffCode} - ${data.staffName}`,
         ok: true,
-        detail: "Reset password về mặc định xong",
+        detail: "Reset password về 123456a@A xong",
       });
       toast.success("Reset password về mặc định xong");
     } catch (e) {
@@ -242,7 +242,7 @@ export function ImeiManager() {
               Reset password của &quot;{staff?.staffCode} — {staff?.staffName}&quot; về mặc định?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Mật khẩu sẽ về giá trị mặc định của DMS. Không thể hoàn tác.
+              Mật khẩu sẽ về mặc định <code className="font-mono font-bold">123456a@A</code>. Không thể hoàn tác.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
