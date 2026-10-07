@@ -21,6 +21,9 @@ export default async function proxy(req: NextRequest) {
     pathname.startsWith("/gia-vang/") ||
     pathname === "/api/markets/tickers" ||
     pathname.startsWith("/api/markets/") ||
+    pathname === "/predict" ||
+    pathname.startsWith("/predict/") ||
+    pathname.startsWith("/api/predict") ||
     // Khu bài hướng dẫn công khai. Trang tự lọc theo quyền xem (lib/articles
     // visibleWhere): chưa đăng nhập chỉ thấy bài PUBLIC, đăng nhập rồi thấy
     // thêm bài nội bộ. Không có API công khai — trang đọc thẳng từ DB.
