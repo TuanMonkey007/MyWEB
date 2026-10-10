@@ -106,7 +106,7 @@ export function ItemsTable({
                       )}
                     </div>
                     {it.reason && (
-                      <div className="mt-0.5 text-[11px] font-medium text-muted-foreground">{it.reason}</div>
+                      <div className="mt-0.5 text-xs font-medium text-muted-foreground">{it.reason}</div>
                     )}
                   </TableCell>
                   <TableCell className="hidden max-w-56 truncate text-muted-foreground font-semibold lg:table-cell py-2 px-3.5 text-xs border-r-2 border-[#1C1917]">

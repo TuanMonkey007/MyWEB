@@ -46,7 +46,7 @@ export default function LoginPage() {
               <span className="block font-editorial text-sm font-bold tracking-tight text-foreground sm:text-base">
                 HỮU NGHỊ FOOD
               </span>
-              <p className="hidden text-[10px] font-semibold text-muted-foreground sm:block">Cổng quản trị DMS & dữ liệu tập trung</p>
+              <p className="hidden text-xs font-semibold text-muted-foreground sm:block">Cổng quản trị DMS & dữ liệu tập trung</p>
             </div>
           </div>
           <Link

@@ -61,7 +61,9 @@
   --secondary: #F3ECE2;
   --secondary-foreground: #1C1917;
   --muted: #F3ECE2;
-  --muted-foreground: #78716C;
+  /* #78716C cũ chỉ đạt 4.48:1 trên nền kem và 4.09:1 trên --muted, đều dưới
+     chuẩn AA. #6C6661 giữ nguyên sắc ấm, đạt >=4.8:1 trên cả ba nền sáng. */
+  --muted-foreground: #6C6661;
   --accent: var(--tl-accent, #FDF1EA);
   --accent-foreground: var(--tl-accent-foreground, #C84013);
   --destructive: #DC2626;
@@ -74,6 +76,8 @@
   --chart-4: #059669;
   --chart-5: #1C1917;
   --radius: 0.375rem;
+  /* Màu bóng cứng neo-brutalism (xem .shadow-neo* ở @layer utilities) */
+  --neo-shadow: #1C1917;
 
   --sidebar: #F5EFEB;
   --sidebar-foreground: #1C1917;
@@ -109,6 +113,9 @@
   --chart-3: #FBBF24;
   --chart-4: #34D399;
   --chart-5: #A78BFA;
+  /* Nền tối #18110B gần đen: bóng tối hơn nữa sẽ vô hình, nên dùng nâu ấm
+     sáng hơn nền — đạt ~3:1, ngưỡng tương phản cho thành phần phi văn bản. */
+  --neo-shadow: #7A5C40;
 
   --sidebar: #140D07;
   --sidebar-foreground: #FAF7F0;
@@ -143,14 +150,17 @@
   .font-editorial {
     font-family: var(--font-editorial), Georgia, serif;
   }
+  /* Bóng cứng là nét nhận diện của cả thiết kế. Trước đây ghi thẳng #1c1917
+     nên ở chế độ tối nó nằm trên nền #18110B — tương phản 1.07:1, tức vô
+     hình. Đi qua biến để mỗi chế độ có màu bóng riêng. */
   .shadow-neo-sm {
-    box-shadow: 2px 2px 0px #1c1917;
+    box-shadow: 2px 2px 0px var(--neo-shadow);
   }
   .shadow-neo {
-    box-shadow: 4px 4px 0px #1c1917;
+    box-shadow: 4px 4px 0px var(--neo-shadow);
   }
   .shadow-neo-lg {
-    box-shadow: 6px 6px 0px #1c1917;
+    box-shadow: 6px 6px 0px var(--neo-shadow);
   }
   .dark .text-red-600 {
     color: #f87171 !important;
@@ -164,11 +174,7 @@
   [data-slot="card"] {
     border-width: 2px;
     border-color: var(--border);
-    box-shadow: 4px 4px 0px #1c1917;
-  }
-  .dark [data-slot="card"] {
-    border-color: var(--border);
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: 4px 4px 0px var(--neo-shadow);
   }
   
   ::-webkit-scrollbar {

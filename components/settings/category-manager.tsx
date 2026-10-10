@@ -147,7 +147,7 @@ function CategorySection({
               ) : (
                 <>
                   <span className="flex-1 text-sm">{c.name}</span>
-                  <Badge variant="secondary" className="text-[10px]">
+                  <Badge variant="secondary" className="text-xs">
                     {c.usageCount} giao dịch
                   </Badge>
                   <Button

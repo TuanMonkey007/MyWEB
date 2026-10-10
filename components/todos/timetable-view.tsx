@@ -92,7 +92,7 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
             </div>
             <p className="mt-1 text-xs sm:text-sm font-semibold text-muted-foreground flex items-center gap-2">
               <span>Lịch trình cố định &amp; hoạt động học tập, vận hành lặp lại hàng tuần.</span>
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.2 text-[11px] font-black text-primary shadow-neo-sm dark:bg-[#2C1F15]">
+              <span className="hidden sm:inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.2 text-xs font-black text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                 <Sparkles className="size-2.5 text-primary" /> Hôm nay:{" "}
                 {DAYS_OF_WEEK.find((d) => d.day === todayDayOfWeek)?.full}
               </span>
@@ -204,19 +204,19 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
                     <div className="flex items-center gap-1.5">
                       <span>{d.label}</span>
                       {isToday && (
-                        <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-[9px] font-black text-amber-300">
+                        <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-xs font-black text-amber-300">
                           HÔM NAY
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] opacity-80">{dayItems.length} tiết</span>
+                    <span className="text-xs opacity-80">{dayItems.length} tiết</span>
                   </div>
 
                   {/* Danh sách tiết trong ngày */}
                   <div className="flex-1 space-y-2 p-2 min-h-[380px] bg-[#FAF7F0]/40 dark:bg-transparent">
                     {dayItems.length === 0 ? (
                       <div className="flex h-36 flex-col items-center justify-center text-center text-xs text-muted-foreground/60">
-                        <span className="text-[11px]">Trống</span>
+                        <span className="text-xs">Trống</span>
                         {canCreate && (
                           <button
                             type="button"
@@ -227,7 +227,7 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
                                 initialDayOfWeek: d.day,
                               })
                             }
-                            className="mt-1 text-[10.5px] font-bold text-primary hover:underline"
+                            className="mt-1 text-xs font-bold text-primary hover:underline"
                           >
                             + Thêm
                           </button>
@@ -257,7 +257,7 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
                             initialDayOfWeek: d.day,
                           })
                         }
-                        className="w-full rounded-xs py-1 text-[11px] font-bold text-muted-foreground hover:bg-[#FAF7F0] hover:text-primary transition-all dark:hover:bg-[#22170F]"
+                        className="w-full rounded-xs py-1 text-xs font-bold text-muted-foreground hover:bg-[#FAF7F0] hover:text-primary transition-all dark:hover:bg-[#22170F]"
                       >
                         + Thêm tiết
                       </button>
@@ -296,7 +296,7 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
                     <span>{d.short}</span>
                     {isToday && <span className="size-1.5 rounded-full bg-amber-400" />}
                   </div>
-                  <div className="text-[10px] opacity-80 font-mono mt-0.5">
+                  <div className="text-xs opacity-80 font-mono mt-0.5">
                     {count} tiết
                   </div>
                 </button>
@@ -356,7 +356,7 @@ export function TimetableView({ items: initialItems }: { items: TimetableItemDTO
                         )}
                         <span>{session.label}</span>
                       </div>
-                      <span className="text-[10px] text-muted-foreground font-mono">
+                      <span className="text-xs text-muted-foreground font-mono">
                         {session.timeRange}
                       </span>
                     </div>
@@ -467,14 +467,14 @@ function TimetableCard({
       <div>
         {/* Khung giờ & Buổi */}
         <div className="flex items-center justify-between gap-1 mb-1.5">
-          <span className="flex items-center gap-1 text-[10.5px] font-black font-mono text-foreground">
+          <span className="flex items-center gap-1 text-xs font-black font-mono text-foreground">
             <Clock className="size-3 text-primary shrink-0" />
             {item.startTime ? `${item.startTime} - ${item.endTime || ""}` : "Cả buổi"}
           </span>
 
           <span
             className={cn(
-              "rounded-xs border border-[#1C1917] px-1.5 py-0.2 text-[9px] font-black uppercase shadow-neo-sm",
+              "rounded-xs border border-[#1C1917] px-1.5 py-0.2 text-xs font-black uppercase shadow-neo-sm",
               cfg.badgeBg,
               cfg.badgeText
             )}
@@ -490,7 +490,7 @@ function TimetableCard({
 
         {/* Ghi chú */}
         {item.note && (
-          <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+          <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
             {item.note}
           </p>
         )}
@@ -498,7 +498,7 @@ function TimetableCard({
 
       {/* Địa điểm / Phòng */}
       {item.location && (
-        <div className="mt-2 pt-1.5 border-t border-[#1C1917]/15 flex items-center gap-1 text-[10.5px] font-semibold text-muted-foreground truncate">
+        <div className="mt-2 pt-1.5 border-t border-[#1C1917]/15 flex items-center gap-1 text-xs font-semibold text-muted-foreground truncate">
           <MapPin className="size-3 text-primary shrink-0" />
           <span className="truncate">{item.location}</span>
         </div>

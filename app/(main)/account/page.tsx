@@ -60,7 +60,7 @@ export default async function AccountPage() {
                       {MODULE_CAPS[m.id]
                         .filter((c) => caps.includes(c.id))
                         .map((c) => (
-                          <Badge key={c.id} variant="secondary" className="text-[10px]">
+                          <Badge key={c.id} variant="secondary" className="text-xs">
                             {c.label}
                           </Badge>
                         ))}

@@ -257,7 +257,7 @@ function ChecklistView({
                         {t.title}
                       </div>
                       {t.notes && (
-                        <div className="truncate text-[11px] text-muted-foreground">
+                        <div className="truncate text-xs text-muted-foreground">
                           {t.notes}
                         </div>
                       )}

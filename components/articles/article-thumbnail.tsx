@@ -62,14 +62,14 @@ export function ArticleThumbnail({
 
         {/* Huy hiệu Video nhỏ góc trên nếu là video */}
         {isVideoGuide && (
-          <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#1C1917]/85 px-1.5 py-0.5 text-[10px] font-black text-white shadow-neo-sm backdrop-blur-xs">
+          <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-xs border border-[#1C1917] bg-[#1C1917]/85 px-1.5 py-0.5 text-xs font-black text-white shadow-neo-sm backdrop-blur-xs">
             <PlayCircle className="size-3 text-red-500 fill-white" />
             <span>VIDEO</span>
           </div>
         )}
 
         {categoryName && (
-          <div className="absolute top-2 left-2 rounded-xs border border-[#1C1917] bg-white/95 px-1.5 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-primary shadow-neo-sm backdrop-blur-xs dark:bg-card">
+          <div className="absolute top-2 left-2 rounded-xs border border-[#1C1917] bg-white/95 px-1.5 py-0.5 text-xs font-black uppercase tracking-wider text-primary shadow-neo-sm backdrop-blur-xs dark:bg-card">
             {categoryName}
           </div>
         )}
@@ -107,7 +107,7 @@ export function ArticleThumbnail({
 
       {/* Top Header của Thumbnail */}
       <div className="relative z-10 flex items-center justify-between">
-        <span className="rounded-xs border border-[#1C1917] bg-white px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-primary shadow-neo-sm dark:bg-card">
+        <span className="rounded-xs border border-[#1C1917] bg-white px-2 py-0.5 text-xs font-black uppercase tracking-wider text-primary shadow-neo-sm dark:bg-card">
           {categoryName || "HNF DOCS"}
         </span>
 
@@ -134,7 +134,7 @@ export function ArticleThumbnail({
       </div>
 
       {/* Bottom Footer của Thumbnail */}
-      <div className="relative z-10 flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-muted-foreground border-t border-[#1C1917]/20 pt-1.5">
+      <div className="relative z-10 flex items-center justify-between text-xs font-black uppercase tracking-widest text-muted-foreground border-t border-[#1C1917]/20 pt-1.5">
         <span className="flex items-center gap-1">
           <Sparkles className="size-2.5 text-primary" /> HNF DATA &bull; DMS
         </span>

@@ -130,7 +130,7 @@ export default function RestaurantLandingPage() {
 
       {/* ── FLOATING NAVIGATION BAR (Chính xác như ảnh 2) ── */}
       <header className="sticky top-4 z-50 px-4 sm:px-6">
-        <nav className="mx-auto max-w-6xl rounded-md border-2 border-[#1C1917] bg-[#FAF7F0] px-6 py-3.5 shadow-neo transition-all flex items-center justify-between">
+        <nav className="mx-auto max-w-6xl rounded-md border-2 border-[#1C1917] bg-[#FAF7F0] px-4 py-3.5 sm:px-6 shadow-neo transition-all flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
           {/* Brand Logo */}
           <a href="#" className="font-editorial text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1917]">
             La Maison
@@ -260,7 +260,7 @@ export default function RestaurantLandingPage() {
             {/* Floating orange badge: 15+ YEARS OF EXCELLENCE */}
             <div className="absolute -bottom-5 right-6 z-10 rounded-xs border-2 border-[#1C1917] bg-[#F25C2B] px-5 py-3 text-center text-white shadow-neo">
               <div className="font-editorial text-2xl font-black leading-none">15+</div>
-              <div className="mt-0.5 text-[10px] font-bold uppercase tracking-wider">
+              <div className="mt-0.5 text-xs font-bold uppercase tracking-wider">
                 Years of Excellence
               </div>
             </div>
@@ -326,21 +326,21 @@ export default function RestaurantLandingPage() {
             <div className="grid grid-cols-3 gap-3.5 pt-4">
               <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">15+</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-[#1C1917]">
                   Years
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">50K+</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-[#1C1917]">
                   Happy Guests
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF9F3] p-4 text-center shadow-neo-sm">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-[#F25C2B]">3</div>
-                <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-[#1C1917]">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-[#1C1917]">
                   Michelin Stars
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function RestaurantLandingPage() {
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   {item.tag && (
-                    <span className="absolute top-2.5 right-2.5 rounded-xs border border-[#1C1917] bg-[#F25C2B] px-2 py-0.5 text-[10px] font-bold uppercase text-white shadow-neo-sm">
+                    <span className="absolute top-2.5 right-2.5 rounded-xs border border-[#1C1917] bg-[#F25C2B] px-2 py-0.5 text-xs font-bold uppercase text-white shadow-neo-sm">
                       {item.tag}
                     </span>
                   )}
@@ -418,7 +418,7 @@ export default function RestaurantLandingPage() {
               </div>
 
               <div className="mt-4 pt-3 border-t-2 border-dashed border-stone-200 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-semibold uppercase text-stone-500">{item.category}</span>
+                <span className="text-xs font-semibold uppercase text-stone-500">{item.category}</span>
                 <a href="#reservations" className="font-bold text-[#F25C2B] hover:underline flex items-center gap-1">
                   Order at Table →
                 </a>
@@ -454,7 +454,7 @@ export default function RestaurantLandingPage() {
                   <Phone className="size-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                  <div className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     Direct Phone Line
                   </div>
                   <div className="font-mono text-base font-bold text-white">
@@ -478,7 +478,7 @@ export default function RestaurantLandingPage() {
 
             {/* Right Column: Make a Reservation Card (Ảnh 1) */}
             <div className="lg:col-span-6">
-              <div className="mx-auto max-w-lg rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 text-[#1C1917] shadow-[6px_6px_0px_#000000]">
+              <div className="mx-auto max-w-lg rounded-xs border-2 border-[#1C1917] bg-white p-6 sm:p-8 text-[#1C1917] shadow-neo-lg">
                 <h3 className="font-editorial text-2xl font-bold uppercase tracking-wide text-[#1C1917] pb-4 border-b-2 border-stone-100">
                   MAKE A RESERVATION
                 </h3>

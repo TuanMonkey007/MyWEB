@@ -447,7 +447,7 @@ export function BudgetManager({
                   <li key={f.id} className="flex items-center gap-2 py-2 text-sm">
                     <span className="min-w-0 flex-1">{f.name}</span>
                     {f.itemCount > 0 && (
-                      <Badge variant="secondary" className="shrink-0 text-[10px]">
+                      <Badge variant="secondary" className="shrink-0 text-xs">
                         {f.itemCount} hạng mục
                       </Badge>
                     )}

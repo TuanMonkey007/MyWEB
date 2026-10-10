@@ -52,9 +52,9 @@ export function DmsImeiConfigCard({ config }: { config: DmsImeiView }) {
         <CardTitle className="flex items-center gap-2 text-base">
           <KeyRound className="size-4" /> Tài khoản IT DMS Hữu Nghị
           {config.hasPassword ? (
-            <Badge variant="secondary" className="text-[10px]">đã lưu</Badge>
+            <Badge variant="secondary" className="text-xs">đã lưu</Badge>
           ) : (
-            <Badge variant="destructive" className="text-[10px]">chưa có pass</Badge>
+            <Badge variant="destructive" className="text-xs">chưa có pass</Badge>
           )}
         </CardTitle>
       </CardHeader>

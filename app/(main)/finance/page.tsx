@@ -67,7 +67,7 @@ export default async function DashboardPage() {
         {/* Card 1: Tổng tiền */}
         <div className="rounded-sm border-2 border-[#1C1917] bg-white p-4.5 shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] dark:bg-card">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">
               Tổng tài sản khả dụng
             </p>
             <div className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] p-1 text-[#F25C2B]">
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
           <p className="mt-2 font-editorial text-2xl sm:text-3xl font-bold tabular-nums tracking-tight text-foreground">
             {formatVND(totalAssets)}
           </p>
-          <p className="mt-1 text-[11px] font-semibold text-stone-600 dark:text-stone-400">
+          <p className="mt-1 text-xs font-semibold text-stone-600 dark:text-stone-400">
             Trên tổng số {wallets.length} ví hoạt động
           </p>
         </div>
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
         {/* Card 2: Thu tháng */}
         <div className="rounded-sm border-2 border-[#1C1917] bg-white p-4.5 shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] dark:bg-card">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+            <p className="text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               Thu tháng {monthLabel}
             </p>
             <div className="rounded-xs border border-[#1C1917] bg-[#E8F5E9] p-1 text-emerald-700 dark:text-emerald-400">
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
           <p className="mt-2 font-editorial text-2xl sm:text-3xl font-bold tabular-nums tracking-tight text-emerald-700 dark:text-emerald-400">
             +{formatVND(monthTotals.income)}
           </p>
-          <p className="mt-1 text-[11px] font-semibold text-stone-600 dark:text-stone-400">
+          <p className="mt-1 text-xs font-semibold text-stone-600 dark:text-stone-400">
             Dòng tiền vào trong kỳ
           </p>
         </div>
@@ -103,7 +103,7 @@ export default async function DashboardPage() {
         {/* Card 3: Chi tháng */}
         <div className="rounded-sm border-2 border-[#1C1917] bg-white p-4.5 shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] dark:bg-card">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-black uppercase tracking-wider text-[#F25C2B]">
+            <p className="text-xs font-black uppercase tracking-wider text-[#F25C2B]">
               Chi tháng {monthLabel}
             </p>
             <div className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] p-1 text-[#F25C2B]">
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
           <p className="mt-2 font-editorial text-2xl sm:text-3xl font-bold tabular-nums tracking-tight text-[#F25C2B]">
             -{formatVND(monthTotals.expense)}
           </p>
-          <p className="mt-1 text-[11px] font-semibold text-stone-600 dark:text-stone-400">
+          <p className="mt-1 text-xs font-semibold text-stone-600 dark:text-stone-400">
             Chênh lệch: {formatVND(monthTotals.income - monthTotals.expense)}
           </p>
         </div>
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
         {/* Card 4: Số ví */}
         <div className="rounded-sm border-2 border-[#1C1917] bg-white p-4.5 shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] dark:bg-card">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">
               Số tài khoản / Ví
             </p>
             <div className="rounded-xs border border-[#1C1917] bg-stone-100 p-1 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
@@ -131,7 +131,7 @@ export default async function DashboardPage() {
           <p className="mt-2 font-editorial text-2xl sm:text-3xl font-bold tabular-nums tracking-tight text-foreground">
             {wallets.length} ví
           </p>
-          <p className="mt-1 text-[11px] font-semibold text-stone-600 dark:text-stone-400">
+          <p className="mt-1 text-xs font-semibold text-stone-600 dark:text-stone-400">
             Tiền mặt, ngân hàng, thẻ tín dụng
           </p>
         </div>
@@ -161,7 +161,7 @@ export default async function DashboardPage() {
         <div className="overflow-x-auto rounded-xs border-2 border-[#1C1917] bg-white shadow-neo-sm dark:bg-card">
           <table className="w-full text-xs text-left border-collapse">
             <thead>
-              <tr className="border-b-2 border-[#1C1917] bg-[#F5EFEB] text-[11px] font-black uppercase tracking-wider text-[#1C1917] dark:bg-[#2C1F15] dark:text-[#FAF7F0]">
+              <tr className="border-b-2 border-[#1C1917] bg-[#F5EFEB] text-xs font-black uppercase tracking-wider text-[#1C1917] dark:bg-[#2C1F15] dark:text-[#FAF7F0]">
                 <th className="py-2.5 px-3 text-center w-12 border-r-2 border-[#1C1917]">STT</th>
                 <th className="py-2.5 px-4 border-r-2 border-[#1C1917]">Tên ví / Tài khoản</th>
                 <th className="py-2.5 px-4 border-r-2 border-[#1C1917] w-64">Phân bổ tỷ trọng</th>
@@ -183,7 +183,7 @@ export default async function DashboardPage() {
                   {formatVND(totalAssets)}
                 </td>
                 <td className="py-2.5 px-3 text-center">
-                  <span className="inline-block px-2 py-0.5 rounded-xs text-[10px] font-black uppercase bg-[#E8F5E9] text-[#1B5E20] border-1.5 border-[#1C1917] shadow-neo-sm">
+                  <span className="inline-block px-2 py-0.5 rounded-xs text-xs font-black uppercase bg-[#E8F5E9] text-[#1B5E20] border-1.5 border-[#1C1917] shadow-neo-sm">
                     Khớp số liệu
                   </span>
                 </td>
@@ -219,7 +219,7 @@ export default async function DashboardPage() {
                             }}
                           />
                         </div>
-                        <span className="text-[11px] text-stone-700 dark:text-stone-300 w-10 text-right font-bold tabular-nums">
+                        <span className="text-xs text-stone-700 dark:text-stone-300 w-10 text-right font-bold tabular-nums">
                           {ratio.toFixed(0)}%
                         </span>
                       </div>
@@ -233,7 +233,7 @@ export default async function DashboardPage() {
                       {formatVND(w.balance)}
                     </td>
                     <td className="py-2.5 px-3 text-center">
-                      <span className="inline-block px-2 py-0.5 rounded-xs text-[10px] font-bold uppercase bg-stone-100 text-stone-800 border border-[#1C1917] dark:bg-stone-800 dark:text-stone-200">
+                      <span className="inline-block px-2 py-0.5 rounded-xs text-xs font-bold uppercase bg-stone-100 text-stone-800 border border-[#1C1917] dark:bg-stone-800 dark:text-stone-200">
                         Hoạt động
                       </span>
                     </td>
@@ -256,7 +256,7 @@ export default async function DashboardPage() {
               <h3 className="font-editorial text-base font-bold text-foreground">
                 Cơ cấu chi tiêu theo danh mục — Tháng {monthLabel}
               </h3>
-              <p className="text-[11px] text-muted-foreground font-medium">Tỷ lệ các khoản chi phát sinh trong kỳ</p>
+              <p className="text-xs text-muted-foreground font-medium">Tỷ lệ các khoản chi phát sinh trong kỳ</p>
             </div>
           </div>
           <div className="pt-2">
@@ -275,7 +275,7 @@ export default async function DashboardPage() {
               <h3 className="font-editorial text-base font-bold text-foreground">
                 Xu hướng dòng tiền thu — chi 6 tháng gần nhất
               </h3>
-              <p className="text-[11px] text-muted-foreground font-medium">So sánh đối soát luân chuyển dòng tiền</p>
+              <p className="text-xs text-muted-foreground font-medium">So sánh đối soát luân chuyển dòng tiền</p>
             </div>
           </div>
           <div className="pt-2">

@@ -176,7 +176,7 @@ export function AppSidebar({
       <nav aria-label="Điều hướng chính" className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
         {mods.map((mod) => (
           <div key={mod.id} className="mt-3 space-y-1 first:mt-0">
-            <div className="px-3 pb-0.5 text-[10px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
+            <div className="px-3 pb-0.5 text-xs font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
               {mod.label}
             </div>
             {mod.items.map((item) => (
@@ -187,7 +187,7 @@ export function AppSidebar({
 
         {isAdmin && (
           <div className="mt-4 space-y-1 border-t-2 border-[#1C1917] pt-4 dark:border-stone-800">
-            <div className="px-3 pb-0.5 text-[10px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
+            <div className="px-3 pb-0.5 text-xs font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Quản trị
             </div>
             {adminItems.map((item) => (
@@ -220,7 +220,7 @@ export function AppBottomNav({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring",
+                "flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring",
                 active ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold" : "text-muted-foreground hover:text-sidebar-accent-foreground"
               )}
             >
@@ -233,7 +233,7 @@ export function AppBottomNav({
           type="button"
           onClick={() => setMenuOpen(true)}
           aria-label="Mở tất cả module"
-          className="flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] text-muted-foreground transition-colors hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring"
+          className="flex min-h-15 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-xs text-muted-foreground transition-colors hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sidebar-ring"
         >
           <LayoutGrid className="size-4" />
           <span>Menu</span>
@@ -248,7 +248,7 @@ export function AppBottomNav({
           <div className="grid gap-4 pt-3">
             {mods.map((m) => (
               <div key={m.id}>
-                <div className="pb-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                <div className="pb-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   {m.label}
                 </div>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">

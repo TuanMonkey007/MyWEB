@@ -96,7 +96,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                 <span className="text-muted-foreground">/</span>
                 <Link
                   href={`/bai-viet?chuyen-muc=${article.category.slug}`}
-                  className="font-bold text-primary hover:underline uppercase text-[11px]"
+                  className="font-bold text-primary hover:underline uppercase text-xs"
                 >
                   {article.category.name}
                 </Link>
@@ -120,17 +120,17 @@ export default async function ArticleDetailPage({ params }: Props) {
         <header className="space-y-4 rounded-xs border-2 border-[#1C1917] bg-white p-5 sm:p-7 shadow-neo dark:bg-card">
           <div className="flex flex-wrap items-center gap-2">
             {article.category && (
-              <span className="inline-flex items-center rounded-xs border border-[#1C1917] bg-primary px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-primary-foreground shadow-neo-sm">
+              <span className="inline-flex items-center rounded-xs border border-[#1C1917] bg-primary px-2.5 py-0.5 text-xs font-black uppercase tracking-wider text-primary-foreground shadow-neo-sm">
                 {article.category.name}
               </span>
             )}
             {article.pinned && (
-              <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-amber-300 px-2 py-0.5 text-[10.5px] font-black uppercase text-stone-900 shadow-neo-sm">
+              <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-amber-300 px-2 py-0.5 text-xs font-black uppercase text-stone-900 shadow-neo-sm">
                 <Sparkles className="size-3" /> Nổi bật
               </span>
             )}
             {article.visibility !== "PUBLIC" && (
-              <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-stone-100 px-2 py-0.5 text-[10.5px] font-bold text-stone-800 shadow-neo-sm dark:bg-stone-800 dark:text-stone-200">
+              <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-stone-100 px-2 py-0.5 text-xs font-bold text-stone-800 shadow-neo-sm dark:bg-stone-800 dark:text-stone-200">
                 <Lock className="size-3" />
                 {VISIBILITY_LABELS[article.visibility as Visibility]}
               </span>
@@ -196,7 +196,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                 href={`/bai-viet/${nextPrev.prev.slug}`}
                 className="group flex flex-col justify-between rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo-sm hover:shadow-neo hover:bg-[#FAF7F0] dark:bg-card dark:hover:bg-[#22170F] transition-all"
               >
-                <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground group-hover:text-primary">
+                <div className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-muted-foreground group-hover:text-primary">
                   <ArrowLeft className="size-3" /> Bài trước
                 </div>
                 <div className="mt-1 font-editorial font-bold text-sm text-foreground group-hover:text-primary line-clamp-2">
@@ -210,7 +210,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                 href={`/bai-viet/${nextPrev.next.slug}`}
                 className="group flex flex-col justify-between text-right rounded-xs border-2 border-[#1C1917] bg-white p-4 shadow-neo-sm hover:shadow-neo hover:bg-[#FAF7F0] dark:bg-card dark:hover:bg-[#22170F] transition-all"
               >
-                <div className="flex items-center justify-end gap-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground group-hover:text-primary">
+                <div className="flex items-center justify-end gap-1 text-xs font-black uppercase tracking-wider text-muted-foreground group-hover:text-primary">
                   Bài tiếp theo <ArrowRight className="size-3" />
                 </div>
                 <div className="mt-1 font-editorial font-bold text-sm text-foreground group-hover:text-primary line-clamp-2">

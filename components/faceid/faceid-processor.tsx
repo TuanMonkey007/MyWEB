@@ -278,14 +278,14 @@ export function FaceidProcessor() {
                         <span className="min-w-0 flex-1 truncate text-sm">
                           {p.name || <span className="text-muted-foreground">(không tên)</span>}
                         </span>
-                        <span className="shrink-0 text-[11px] text-muted-foreground">
+                        <span className="shrink-0 text-xs text-muted-foreground">
                           {p.count}
                         </span>
                         <button
                           type="button"
                           onClick={() => toggle(excludeIds, setExcludeIds, p.id)}
                           className={cn(
-                            "shrink-0 rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors",
+                            "shrink-0 rounded px-1.5 py-0.5 text-xs font-medium transition-colors",
                             ex ? "bg-red-500 text-white" : "bg-muted text-muted-foreground hover:bg-red-500/20"
                           )}
                         >
@@ -295,7 +295,7 @@ export function FaceidProcessor() {
                           type="button"
                           onClick={() => toggle(exceptionIds, setExceptionIds, p.id)}
                           className={cn(
-                            "shrink-0 rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors",
+                            "shrink-0 rounded px-1.5 py-0.5 text-xs font-medium transition-colors",
                             exc ? "bg-amber-500 text-white" : "bg-muted text-muted-foreground hover:bg-amber-500/20"
                           )}
                         >
@@ -404,7 +404,7 @@ export function FaceidProcessor() {
             </div>
             {result && (
               <div className="mt-3 flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm">
-                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">Xong</Badge>
+                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold">Xong</Badge>
                 <span className="min-w-0 flex-1 truncate">{result.fileName}</span>
                 <a href={`/api/faceid/result/${result.token}?name=${encodeURIComponent(result.fileName)}`}>
                   <Button size="sm" variant="outline">

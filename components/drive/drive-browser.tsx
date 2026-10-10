@@ -404,11 +404,11 @@ export function DriveBrowser({
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span className="truncate font-medium">{f.name}</span>
                     {f.isPublic ? (
-                      <span className="inline-flex items-center gap-1 rounded-xs border border-emerald-600 bg-emerald-100 px-1.5 py-0.2 text-[10px] font-black text-emerald-800 shadow-neo-sm dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700">
+                      <span className="inline-flex items-center gap-1 rounded-xs border border-emerald-600 bg-emerald-100 px-1.5 py-0.2 text-xs font-black text-emerald-800 shadow-neo-sm dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700">
                         <Globe className="size-2.5" /> Public
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                      <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
                         <Lock className="size-2.5" /> Riêng tư
                       </span>
                     )}
@@ -518,7 +518,7 @@ export function DriveBrowser({
                 >
                   <Globe className="size-3.5 text-emerald-600" /> Thư mục công khai (Public)
                 </Label>
-                <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
+                <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
                   Cho phép mọi người (kể cả khách chưa đăng nhập) có quyền <b>xem, tải và phát video</b> nhúng trong bài viết public.
                 </p>
               </div>

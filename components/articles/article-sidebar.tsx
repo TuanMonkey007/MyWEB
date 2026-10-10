@@ -50,7 +50,7 @@ export function ArticleSidebar({
                 Cùng chuyên mục {currentCategoryName ? `• ${currentCategoryName}` : ""}
               </h3>
             </div>
-            <span className="rounded-xs border border-[#1C1917] bg-primary px-1.5 py-0.2 text-[10px] font-black text-primary-foreground">
+            <span className="rounded-xs border border-[#1C1917] bg-primary px-1.5 py-0.2 text-xs font-black text-primary-foreground">
               {sameCat.length}
             </span>
           </div>
@@ -71,7 +71,7 @@ export function ArticleSidebar({
                 />
 
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-muted-foreground">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
                     {article.pinned && (
                       <span className="inline-flex items-center gap-0.5 text-primary">
                         <Pin className="size-2.5" /> Ghim
@@ -113,7 +113,7 @@ export function ArticleSidebar({
                 Bài viết nổi bật & Đề xuất
               </h3>
             </div>
-            <span className="text-[10px] font-black uppercase text-muted-foreground">
+            <span className="text-xs font-black uppercase text-muted-foreground">
               Hot
             </span>
           </div>
@@ -137,7 +137,7 @@ export function ArticleSidebar({
                 </div>
 
                 <div className="min-w-0 flex-1 space-y-1">
-                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-primary">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
                     <span>{article.category?.name || "Tài liệu"}</span>
                     <span className="text-muted-foreground">•</span>
                     <span className="text-muted-foreground flex items-center gap-0.5">
@@ -149,7 +149,7 @@ export function ArticleSidebar({
                     {article.title}
                   </h4>
 
-                  <div className="text-[10px] text-muted-foreground font-mono">
+                  <div className="text-xs text-muted-foreground font-mono">
                     {thoiGianTuongDoi(article.publishedAt ?? article.createdAt)}
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export function ArticleSidebar({
               >
                 <span>{cat.name}</span>
                 {typeof cat._count?.articles === "number" && (
-                  <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-[9.5px] font-black text-white dark:bg-stone-700">
+                  <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-xs font-black text-white dark:bg-stone-700">
                     {cat._count.articles}
                   </span>
                 )}
@@ -223,7 +223,7 @@ export function ArticleSidebar({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[10px] font-bold text-primary truncate">
+                  <div className="text-xs font-bold text-primary truncate">
                     {article.category?.name || "Chung"}
                   </div>
                   <h5 className="font-bold text-xs text-foreground line-clamp-2 group-hover:text-primary transition-colors leading-tight">
@@ -254,7 +254,7 @@ export function ArticleSidebar({
           >
             <Mail className="size-3.5" /> tuannm@huunghi.com.vn
           </a>
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             122 Định Công, Hoàng Mai, Hà Nội
           </span>
         </div>

@@ -70,7 +70,7 @@ export function MarketOverviewCards({
       {/* Header Bar with Live Indicator and Refresh */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 rounded-full border border-emerald-600 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-950/40 dark:text-emerald-400">
+          <div className="flex items-center gap-1.5 rounded-full border border-emerald-600 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-950/40 dark:text-emerald-400">
             <span className="relative flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
@@ -110,12 +110,12 @@ export function MarketOverviewCards({
                   <h3 className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Vàng Thế Giới
                   </h3>
-                  <span className="font-mono text-[11px] font-bold text-stone-500">
+                  <span className="font-mono text-xs font-bold text-stone-500">
                     XAU / USD
                   </span>
                 </div>
               </div>
-              <span className="rounded-xs border border-amber-500/40 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+              <span className="rounded-xs border border-amber-500/40 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
                 Giao ngay (Spot)
               </span>
             </div>
@@ -140,7 +140,7 @@ export function MarketOverviewCards({
                 {formatVnd(data?.gold?.priceVndLuong)} / lượng
               </span>
             </div>
-            <p className="mt-1 text-[10px] text-muted-foreground italic">
+            <p className="mt-1 text-xs text-muted-foreground italic">
               * (1 lượng = 1.20565 oz &times; tỷ giá USD/VND, chưa tính thuế/phí)
             </p>
           </div>
@@ -158,7 +158,7 @@ export function MarketOverviewCards({
                   <h3 className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Bitcoin
                   </h3>
-                  <span className="font-mono text-[11px] font-bold text-stone-500">
+                  <span className="font-mono text-xs font-bold text-stone-500">
                     BTC / USDT (Binance)
                   </span>
                 </div>
@@ -166,7 +166,7 @@ export function MarketOverviewCards({
               {data?.btc?.change24h !== null && (
                 <div
                   className={cn(
-                    "flex items-center gap-1 rounded-xs border px-2 py-0.5 text-[11px] font-bold",
+                    "flex items-center gap-1 rounded-xs border px-2 py-0.5 text-xs font-bold",
                     isBtcPositive
                       ? "border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
                       : "border-rose-500 bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400"
@@ -203,7 +203,7 @@ export function MarketOverviewCards({
           <div className="mt-4 border-t-2 border-dashed border-[#1C1917]/20 pt-3 dark:border-white/20">
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
-                <span className="text-[10px] text-muted-foreground block">
+                <span className="text-xs text-muted-foreground block">
                   Đỉnh 24h:
                 </span>
                 <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
@@ -211,7 +211,7 @@ export function MarketOverviewCards({
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-muted-foreground block">
+                <span className="text-xs text-muted-foreground block">
                   Đáy 24h:
                 </span>
                 <span className="font-mono font-bold text-rose-600 dark:text-rose-400">
@@ -234,12 +234,12 @@ export function MarketOverviewCards({
                   <h3 className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Tỷ Giá & Vĩ Mô
                   </h3>
-                  <span className="font-mono text-[11px] font-bold text-stone-500">
+                  <span className="font-mono text-xs font-bold text-stone-500">
                     USD / VND
                   </span>
                 </div>
               </div>
-              <span className="rounded-xs border border-blue-500/40 bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-950/30 dark:text-blue-400">
+              <span className="rounded-xs border border-blue-500/40 bg-blue-50 px-2 py-0.5 text-xs font-bold text-blue-700 dark:bg-blue-950/30 dark:text-blue-400">
                 Liên ngân hàng
               </span>
             </div>

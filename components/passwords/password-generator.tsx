@@ -67,7 +67,7 @@ export function PasswordGenerator({ onUse }: { onUse: (pw: string) => void }) {
         <div className="h-1.5 overflow-hidden rounded-full bg-muted">
           <div className={cn("h-full transition-all", barColor)} style={{ width: `${pct}%` }} />
         </div>
-        <div className="flex justify-between text-[11px] text-muted-foreground">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>{strength.label}</span>
           <span>{strength.bits} bit · {pw.length} ký tự</span>
         </div>

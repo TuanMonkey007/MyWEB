@@ -38,7 +38,7 @@ export type MailConfigView = {
 function SourceTag({ source }: { source?: "db" | "env" }) {
   if (!source) return null;
   return (
-    <Badge variant="secondary" className="ml-1.5 h-4 px-1.5 text-[10px] font-normal">
+    <Badge variant="secondary" className="ml-1.5 h-4 px-1.5 text-xs font-normal">
       {source === "db" ? "đã lưu" : ".env"}
     </Badge>
   );
@@ -98,7 +98,7 @@ export function MailConfigCard({ config }: { config: MailConfigView }) {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <Settings2 className="size-4" /> Cấu hình mail
-          <Badge variant="outline" className="ml-auto text-[10px] font-normal">
+          <Badge variant="outline" className="ml-auto text-xs font-normal">
             chỉ quản trị viên
           </Badge>
         </CardTitle>

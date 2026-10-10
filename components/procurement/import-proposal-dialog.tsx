@@ -256,7 +256,7 @@ export function ImportProposalButton({ budgetYearId }: { budgetYearId: string })
                             </SelectContent>
                           </Select>
                           {!it.fundId && it.fundName && (
-                            <div className="mt-0.5 text-[11px] text-amber-600">
+                            <div className="mt-0.5 text-xs text-amber-600">
                               File ghi: &quot;{it.fundName}&quot;
                             </div>
                           )}

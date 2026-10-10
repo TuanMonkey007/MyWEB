@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80 dark:shadow-[2px_2px_0px_#000000]",
+          "bg-primary text-primary-foreground border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80",
         outline:
-          "border-2 border-[#1C1917] bg-card text-foreground shadow-neo-sm hover:bg-muted hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80 dark:shadow-[2px_2px_0px_#000000]",
+          "border-2 border-[#1C1917] bg-card text-foreground shadow-neo-sm hover:bg-muted hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80",
         secondary:
           "bg-secondary text-secondary-foreground border-2 border-[#1C1917] shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none dark:border-white/80",
         ghost:

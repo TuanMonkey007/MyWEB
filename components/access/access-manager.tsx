@@ -346,16 +346,16 @@ export function AccessManager({
                     <span className="font-medium">{u.displayName || u.username}</span>
                     <span className="text-xs text-muted-foreground">@{u.username}</span>
                     {u.id === currentUserId && (
-                      <Badge variant="outline" className="text-[10px]">bạn</Badge>
+                      <Badge variant="outline" className="text-xs">bạn</Badge>
                     )}
                     {!u.active && <Badge variant="destructive">Đã khóa</Badge>}
                   </div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {u.role === "ADMIN" ? (
-                      <Badge className="text-[10px]">Quản trị viên — toàn quyền</Badge>
+                      <Badge className="text-xs">Quản trị viên — toàn quyền</Badge>
                     ) : mods && mods.length ? (
                       mods.map((m) => (
-                        <Badge key={m.label} variant="secondary" className="text-[10px]">
+                        <Badge key={m.label} variant="secondary" className="text-xs">
                           {m.label}
                           {m.extra.length ? `: ${m.extra.join(", ")}` : " (chỉ xem)"}
                         </Badge>

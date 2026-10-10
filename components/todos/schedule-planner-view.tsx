@@ -187,7 +187,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
             </div>
             <p className="mt-1.5 text-xs sm:text-sm font-semibold text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
               <span>Mỗi ngày có lịch trình &amp; ghi chú công việc riêng biệt, hỗ trợ xem theo dòng thời gian, tuần, tháng và năm.</span>
-              <span className="inline-flex items-center gap-1.5 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[11px] font-black text-primary shadow-neo-sm dark:bg-[#2C1F15]">
+              <span className="inline-flex items-center gap-1.5 rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-xs font-black text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                 <Clock className="size-3 text-primary animate-pulse" />
                 Hôm nay: {DAYS_OF_WEEK.find((d) => d.day === todayDow)?.full} ({formatDateVN(today)}) &bull; {currentTimeStr}
               </span>
@@ -306,17 +306,17 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase">Màu phân loại:</span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary">
+            <span className="text-xs font-bold text-muted-foreground uppercase">Màu phân loại:</span>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-primary">
               <span className="size-2 rounded-full bg-primary" /> DMS
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600">
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600">
               <span className="size-2 rounded-full bg-blue-600" /> HSK3
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-600">
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-purple-600">
               <span className="size-2 rounded-full bg-purple-600" /> Họp
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-500">
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-500">
               <span className="size-2 rounded-full bg-amber-500" /> Thể thao
             </span>
           </div>
@@ -395,10 +395,10 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                       <span className="size-2 rounded-full bg-amber-400 ring-1 ring-[#1C1917]" title="Hôm nay" />
                     )}
                   </div>
-                  <div className="text-[11px] font-mono mt-0.5 font-semibold opacity-95">
+                  <div className="text-xs font-mono mt-0.5 font-semibold opacity-95">
                     {w.date.getDate()}/{w.date.getMonth() + 1}
                   </div>
-                  <div className="text-[9.5px] opacity-80 font-mono mt-0.5">
+                  <div className="text-xs opacity-80 font-mono mt-0.5">
                     {count > 0 ? `${count} lịch` : "—"}
                   </div>
                 </button>
@@ -413,7 +413,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                 <h2 className="font-editorial text-xl sm:text-2xl font-bold uppercase text-foreground flex items-center gap-2">
                   <span>{currentDayInfo?.full}, ngày {formatDateVN(currentDateObj)}</span>
                   {currentDateStr === todayISO && (
-                    <span className="rounded-xs border border-[#1C1917] bg-amber-400 px-2 py-0.5 text-[10px] font-black text-stone-900 shadow-neo-sm">
+                    <span className="rounded-xs border border-[#1C1917] bg-amber-400 px-2 py-0.5 text-xs font-black text-stone-900 shadow-neo-sm">
                       HÔM NAY
                     </span>
                   )}
@@ -512,7 +512,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
 
                             <span
                               className={cn(
-                                "rounded-xs border border-[#1C1917] px-2 py-0.2 text-[10px] font-black uppercase shadow-neo-sm",
+                                "rounded-xs border border-[#1C1917] px-2 py-0.2 text-xs font-black uppercase shadow-neo-sm",
                                 cfg.badgeBg,
                                 cfg.badgeText
                               )}
@@ -525,14 +525,14 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                             </span>
 
                             {item.isRecurring && (
-                              <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-muted-foreground bg-white/70 dark:bg-card px-1.5 py-0.2 rounded-xs border border-[#1C1917]/30">
+                              <span className="inline-flex items-center gap-0.5 text-xs font-bold text-muted-foreground bg-white/70 dark:bg-card px-1.5 py-0.2 rounded-xs border border-[#1C1917]/30">
                                 <Repeat className="size-2.5" /> Lặp lại
                               </span>
                             )}
                           </div>
 
                           {isCurrentTimeSlot && (
-                            <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-red-500 px-2 py-0.5 text-[10px] font-black text-white shadow-neo-sm animate-pulse">
+                            <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-red-500 px-2 py-0.5 text-xs font-black text-white shadow-neo-sm animate-pulse">
                               <Sparkles className="size-3" /> ĐANG DIỄN RA
                             </span>
                           )}
@@ -631,14 +631,14 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                     >
                       <div className="flex flex-col">
                         <span>{w.dayLabel}</span>
-                        <span className="text-[10px] font-mono opacity-85">{w.date.getDate()}/{w.date.getMonth() + 1}</span>
+                        <span className="text-xs font-mono opacity-85">{w.date.getDate()}/{w.date.getMonth() + 1}</span>
                       </div>
                       {isToday ? (
-                        <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-[9px] font-black text-amber-300">
+                        <span className="rounded-xs bg-[#1C1917] px-1 py-0.2 text-xs font-black text-amber-300">
                           HÔM NAY
                         </span>
                       ) : (
-                        <span className="text-[10px] opacity-80 font-mono">{dayItems.length}</span>
+                        <span className="text-xs opacity-80 font-mono">{dayItems.length}</span>
                       )}
                     </div>
 
@@ -646,7 +646,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                     <div className="flex-1 space-y-2 p-2 min-h-[420px] bg-[#FAF7F0]/40 dark:bg-transparent">
                       {dayItems.length === 0 ? (
                         <div className="flex h-36 flex-col items-center justify-center text-center text-xs text-muted-foreground/60">
-                          <span className="text-[11px]">Không có lịch</span>
+                          <span className="text-xs">Không có lịch</span>
                           {canCreate && (
                             <button
                               type="button"
@@ -658,7 +658,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                                   initialDayOfWeek: w.dayOfWeek,
                                 })
                               }
-                              className="mt-1 text-[10.5px] font-bold text-primary hover:underline"
+                              className="mt-1 text-xs font-bold text-primary hover:underline"
                             >
                               + Thêm lịch
                             </button>
@@ -695,7 +695,7 @@ export function SchedulePlannerView({ items: initialItems }: { items: TimetableI
                               initialDayOfWeek: w.dayOfWeek,
                             })
                           }
-                          className="w-full rounded-xs py-1 text-[11px] font-bold text-muted-foreground hover:bg-[#FAF7F0] hover:text-primary transition-all dark:hover:bg-[#22170F]"
+                          className="w-full rounded-xs py-1 text-xs font-bold text-muted-foreground hover:bg-[#FAF7F0] hover:text-primary transition-all dark:hover:bg-[#22170F]"
                         >
                           + Thêm lịch
                         </button>
@@ -953,7 +953,7 @@ function MonthCalendarView({
                 {dayItems.length > 0 && (
                   <span
                     onClick={() => onSelectDate(cell.dateStr)}
-                    className="cursor-pointer text-[10px] font-mono font-bold text-muted-foreground hover:text-primary"
+                    className="cursor-pointer text-xs font-mono font-bold text-muted-foreground hover:text-primary"
                   >
                     {dayItems.length} hoạt động
                   </span>
@@ -972,7 +972,7 @@ function MonthCalendarView({
                         if (canEdit) onEditItem(item, cell.dateStr);
                       }}
                       className={cn(
-                        "cursor-pointer truncate rounded-xs border px-1.5 py-0.5 text-[10px] font-bold transition-all hover:scale-[1.02]",
+                        "cursor-pointer truncate rounded-xs border px-1.5 py-0.5 text-xs font-bold transition-all hover:scale-[1.02]",
                         cfg.tagBg,
                         cfg.border
                       )}
@@ -987,7 +987,7 @@ function MonthCalendarView({
                 {dayItems.length > 3 && (
                   <div
                     onClick={() => onSelectDate(cell.dateStr)}
-                    className="cursor-pointer text-[9.5px] font-bold text-primary hover:underline text-center"
+                    className="cursor-pointer text-xs font-bold text-primary hover:underline text-center"
                   >
                     +{dayItems.length - 3} lịch khác...
                   </div>
@@ -999,7 +999,7 @@ function MonthCalendarView({
                 <button
                   type="button"
                   onClick={() => onAddForDate(cell.dateStr, cell.dayOfWeek)}
-                  className="w-full rounded-xs py-0.5 text-[9px] font-bold text-muted-foreground/0 group-hover:text-primary group-hover:bg-[#FAF7F0] dark:group-hover:bg-[#22170F] transition-all text-center"
+                  className="w-full rounded-xs py-0.5 text-xs font-bold text-muted-foreground/0 group-hover:text-primary group-hover:bg-[#FAF7F0] dark:group-hover:bg-[#22170F] transition-all text-center"
                 >
                   + Thêm lịch
                 </button>
@@ -1095,16 +1095,16 @@ function YearCalendarView({
                   className="font-editorial text-sm font-bold uppercase text-foreground hover:text-primary transition-colors flex items-center gap-1"
                 >
                   <span>Tháng {mIndex + 1}</span>
-                  <span className="text-[10px] text-muted-foreground font-sans font-normal">&rarr;</span>
+                  <span className="text-xs text-muted-foreground font-sans font-normal">&rarr;</span>
                 </button>
 
-                <span className="text-[10px] font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-muted-foreground">
                   {daysInMonth} ngày
                 </span>
               </div>
 
               {/* Tiêu đề 7 thứ trong tuần */}
-              <div className="grid grid-cols-7 text-center text-[10px] font-bold text-muted-foreground mb-1">
+              <div className="grid grid-cols-7 text-center text-xs font-bold text-muted-foreground mb-1">
                 <span>T2</span>
                 <span>T3</span>
                 <span>T4</span>
@@ -1141,7 +1141,7 @@ function YearCalendarView({
                       )}
                       title={`Ngày ${d}/${mIndex + 1}/${viewYear}: ${dayItemsCount} hoạt động`}
                     >
-                      <span className={cn("text-[11px] font-mono", isToday ? "font-black" : "text-foreground")}>
+                      <span className={cn("text-xs font-mono", isToday ? "font-black" : "text-foreground")}>
                         {d}
                       </span>
                       {dayItemsCount > 0 && !isToday && (
@@ -1291,20 +1291,20 @@ function ScheduleCard({
     >
       <div>
         <div className="flex items-center justify-between gap-1 mb-1.5">
-          <span className="flex items-center gap-1 text-[10.5px] font-black font-mono text-foreground">
+          <span className="flex items-center gap-1 text-xs font-black font-mono text-foreground">
             <Clock className="size-3 text-primary shrink-0" />
             {item.startTime ? `${item.startTime} - ${item.endTime || ""}` : "Cả buổi"}
           </span>
 
           <div className="flex items-center gap-1">
             {item.isRecurring && (
-              <span className="text-[9px] font-black uppercase rounded-xs bg-white/80 dark:bg-card px-1 py-0.2 border border-[#1C1917]/20 text-muted-foreground" title="Lặp lại hàng tuần">
+              <span className="text-xs font-black uppercase rounded-xs bg-white/80 dark:bg-card px-1 py-0.2 border border-[#1C1917]/20 text-muted-foreground" title="Lặp lại hàng tuần">
                 <Repeat className="size-2.5 inline" />
               </span>
             )}
             <span
               className={cn(
-                "rounded-xs border border-[#1C1917] px-1.5 py-0.2 text-[9px] font-black uppercase shadow-neo-sm",
+                "rounded-xs border border-[#1C1917] px-1.5 py-0.2 text-xs font-black uppercase shadow-neo-sm",
                 cfg.badgeBg,
                 cfg.badgeText
               )}
@@ -1319,14 +1319,14 @@ function ScheduleCard({
         </h4>
 
         {item.note && (
-          <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+          <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
             {item.note}
           </p>
         )}
       </div>
 
       {item.location && (
-        <div className="mt-2.5 pt-1.5 border-t border-[#1C1917]/15 flex items-center gap-1 text-[10.5px] font-semibold text-muted-foreground truncate">
+        <div className="mt-2.5 pt-1.5 border-t border-[#1C1917]/15 flex items-center gap-1 text-xs font-semibold text-muted-foreground truncate">
           <MapPin className="size-3 text-primary shrink-0" />
           <span className="truncate">{item.location}</span>
         </div>

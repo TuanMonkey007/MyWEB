@@ -98,7 +98,7 @@ export function HtmlEditor({
       {/* HTML Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-1.5 border-b-2 border-[#1C1917] bg-[#F5EFEB] p-2 dark:bg-[#1E140C] dark:border-stone-800">
         <div className="flex flex-wrap items-center gap-1">
-          <span className="mr-1.5 inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-black uppercase tracking-wider text-primary">
+          <span className="mr-1.5 inline-flex items-center gap-1 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-primary">
             <FileCode className="size-3.5" /> Thẻ nhanh:
           </span>
 
@@ -248,7 +248,7 @@ export function HtmlEditor({
             placeholder="Viết hoặc dán mã HTML ở đây (ví dụ: <h2>Tiêu đề</h2><p>Nội dung...</p>)..."
             className="min-h-[460px] w-full resize-y bg-[#18110B] p-4 font-mono text-xs sm:text-sm text-[#FAF7F0] outline-none focus:ring-2 focus:ring-primary leading-relaxed selection:bg-primary selection:text-white"
           />
-          <div className="absolute bottom-2 right-3 rounded bg-black/60 px-2 py-0.5 text-[10px] font-mono text-stone-400">
+          <div className="absolute bottom-2 right-3 rounded bg-black/60 px-2 py-0.5 text-xs font-mono text-stone-400">
             {value.length} ký tự · Hỗ trợ Tab & Phím tắt HTML
           </div>
         </div>
@@ -258,7 +258,7 @@ export function HtmlEditor({
           <div className="min-h-[460px] overflow-y-auto bg-white p-5 dark:bg-card">
             <div className="mb-3 pb-2 border-b border-border flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider">
               <span>Xem trước kết quả render:</span>
-              <span className="text-[10px] text-emerald-600 font-mono">● Trực tiếp</span>
+              <span className="text-xs text-emerald-600 font-mono">● Trực tiếp</span>
             </div>
             <div
               className="prose-article"

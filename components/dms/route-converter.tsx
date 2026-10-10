@@ -146,7 +146,7 @@ function TemplateSlot({
           <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-3 text-sm">
             <FileSpreadsheet className="size-5 shrink-0 text-primary" />
             <span className="min-w-0 flex-1 truncate font-medium">{savedTemplate}</span>
-            <Badge variant="secondary" className="shrink-0 text-[10px] font-normal">
+            <Badge variant="secondary" className="shrink-0 text-xs font-normal">
               mẫu đã lưu
             </Badge>
           </div>
@@ -375,7 +375,7 @@ export function RouteConverter({
             </div>
             {result && (
               <div className="mt-3 flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm">
-                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">Xong · {result.rowCount} dòng</Badge>
+                <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold">Xong · {result.rowCount} dòng</Badge>
                 <span className="min-w-0 flex-1 truncate">{result.fileName}</span>
                 <a href={`/api/dms/routes/result/${result.token}?name=${encodeURIComponent(result.fileName)}`}>
                   <Button size="sm" variant="outline">

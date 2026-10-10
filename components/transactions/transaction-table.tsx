@@ -78,7 +78,7 @@ export function TransactionTable({
                       )}
                     </div>
                     {row.categoryName && (
-                      <Badge variant="secondary" className="mt-1 text-[10px] font-bold">
+                      <Badge variant="secondary" className="mt-1 text-xs font-bold">
                         {row.categoryName}
                       </Badge>
                     )}

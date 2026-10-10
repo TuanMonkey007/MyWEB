@@ -77,19 +77,19 @@ export default async function ProposalDetailPage({ params }: { params: Params })
         <CardContent className="space-y-4 pt-5">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div className="rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] p-3.5 shadow-neo-sm dark:bg-card">
-              <div className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">Tổng tiền đề xuất</div>
+              <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">Tổng tiền đề xuất</div>
               <div className="font-editorial text-xl font-bold tabular-nums text-foreground mt-1">
                 {formatVND(totalProposed)}
               </div>
             </div>
             <div className="rounded-xs border-2 border-[#1C1917] bg-[#FDF1EA] p-3.5 shadow-neo-sm dark:bg-card">
-              <div className="text-[11px] font-black uppercase tracking-wider text-[#F25C2B]">Đã chi thực tế (VAT)</div>
+              <div className="text-xs font-black uppercase tracking-wider text-[#F25C2B]">Đã chi thực tế (VAT)</div>
               <div className="font-editorial text-xl font-bold tabular-nums text-[#F25C2B] mt-1">
                 {formatVND(totalActual)}
               </div>
             </div>
             <div className="rounded-xs border-2 border-[#1C1917] bg-stone-100 p-3.5 shadow-neo-sm dark:bg-stone-800">
-              <div className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">Hạng mục</div>
+              <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">Hạng mục</div>
               <div className="font-editorial text-xl font-bold tabular-nums text-foreground mt-1">
                 {proposal.items.length} hạng mục
               </div>

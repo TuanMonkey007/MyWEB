@@ -38,7 +38,7 @@ export function SiteHeader({
               <span className="block font-editorial text-sm sm:text-base font-bold leading-tight text-foreground tracking-tight">
                 {platformName}
               </span>
-              <span className="hidden text-[10px] font-semibold leading-tight text-muted-foreground sm:block">
+              <span className="hidden text-xs font-semibold leading-tight text-muted-foreground sm:block">
                 Hệ thống Quản trị & Điều hành Dữ liệu Tập trung
               </span>
             </div>

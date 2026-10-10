@@ -94,7 +94,7 @@ export function WalletList({ wallets }: { wallets: WalletDTO[] }) {
                   </div>
                   <div>
                     <div className="font-medium leading-tight">{w.name}</div>
-                    <Badge variant="secondary" className="mt-1 text-[10px]">
+                    <Badge variant="secondary" className="mt-1 text-xs">
                       {WALLET_TYPE_LABELS[w.type as WalletType] ?? w.type}
                     </Badge>
                   </div>

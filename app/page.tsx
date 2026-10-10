@@ -224,7 +224,7 @@ export default function PersonalLandingPage() {
       <div className="border-b-2 border-[#1C1917] bg-[#1E140C] text-xs text-[#FAF7F0] py-2 px-4 sm:px-8">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px]">
+            <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-xs">
               <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
               Sẵn sàng kết nối & Hỗ trợ kỹ thuật
             </span>
@@ -247,9 +247,9 @@ export default function PersonalLandingPage() {
 
       {/* ── FLOATING NAVIGATION BAR (Warm Neo-Brutalism) ── */}
       <header className="sticky top-4 z-50 px-4 sm:px-6">
-        <nav className="mx-auto max-w-6xl rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-5 py-3 shadow-neo transition-all flex items-center justify-between dark:bg-[#22170F]">
+        <nav className="mx-auto max-w-6xl rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] px-4 py-3 sm:px-5 shadow-neo transition-all flex flex-wrap items-center justify-between gap-x-3 gap-y-2 dark:bg-[#22170F]">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-primary text-xs font-black tracking-wide text-primary-foreground shadow-neo-sm">
               T
             </div>
@@ -257,7 +257,7 @@ export default function PersonalLandingPage() {
               <span className="font-editorial text-xl font-bold tracking-tight text-[#1C1917] leading-none dark:text-[#FAF7F0]">
                 TUANNM
               </span>
-              <span className="text-[10px] font-black uppercase tracking-wider text-primary">
+              <span className="text-xs font-black uppercase tracking-wider text-primary">
                 Data & DMS Solutions
               </span>
             </div>
@@ -283,7 +283,7 @@ export default function PersonalLandingPage() {
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto sm:flex-nowrap">
             <Link
               href="/markets"
               className="inline-flex items-center gap-1.5 rounded-xs border-2 border-[#1C1917] bg-amber-400 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-stone-900 shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo transition-all"
@@ -373,13 +373,13 @@ export default function PersonalLandingPage() {
                   <FileSpreadsheet className="size-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                  <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     DMS Tool
                   </div>
                   <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
                     Chuyển tuyến NPP thần tốc
                   </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
                     Tự động gán mã NVBH và ngày hiệu lực cho NPP mới.
                   </p>
                 </div>
@@ -391,13 +391,13 @@ export default function PersonalLandingPage() {
                   <ScanFace className="size-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                  <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Nhân sự
                   </div>
                   <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
                     Lọc dữ liệu FaceID
                   </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
                     Lọc quét trùng cổng bảo vệ, sửa giờ ngoại lệ.
                   </p>
                 </div>
@@ -409,13 +409,13 @@ export default function PersonalLandingPage() {
                   <PiggyBank className="size-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                  <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Ngân sách
                   </div>
                   <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
                     Quản trị quỹ mua hàng
                   </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
                     Phân bổ 12 tháng, đối soát VAT và đề xuất.
                   </p>
                 </div>
@@ -427,13 +427,13 @@ export default function PersonalLandingPage() {
                   <Wallet className="size-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                  <div className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     Dòng tiền
                   </div>
                   <div className="font-editorial text-base font-bold text-foreground leading-snug mt-1">
                     Sổ thu chi đa ví
                   </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
                     Ghi chép thu chi, đối soát số dư thực tế.
                   </p>
                 </div>
@@ -443,7 +443,7 @@ export default function PersonalLandingPage() {
             {/* Floating orange badge */}
             <div className="absolute -bottom-5 right-4 z-10 rounded-xs border-2 border-[#1C1917] bg-primary px-4 py-2.5 text-center text-primary-foreground shadow-neo">
               <div className="font-editorial text-xl font-black leading-none">5+ NĂM</div>
-              <div className="mt-0.5 text-[9px] font-bold uppercase tracking-wider">
+              <div className="mt-0.5 text-xs font-bold uppercase tracking-wider">
                 Vận hành & Số hóa DMS
               </div>
             </div>
@@ -499,21 +499,21 @@ export default function PersonalLandingPage() {
             <div className="grid grid-cols-3 gap-3.5">
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">10+</div>
-                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-foreground">
                   Tools thực chiến
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">100%</div>
-                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-foreground">
                   Tự động hóa
                 </div>
               </div>
 
               <div className="rounded-xs border-2 border-[#1C1917] bg-white p-3.5 text-center shadow-neo-sm dark:bg-card">
                 <div className="font-editorial text-2xl sm:text-3xl font-bold text-primary">50K+</div>
-                <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                <div className="mt-1 text-xs font-bold uppercase tracking-wider text-foreground">
                   Dòng dữ liệu/ngày
                 </div>
               </div>
@@ -621,7 +621,7 @@ export default function PersonalLandingPage() {
                     <div className="flex size-11 items-center justify-center rounded-xs border-2 border-[#1C1917] bg-[#FAF7F0] text-primary shadow-neo-sm dark:bg-[#22170F]">
                       <Icon className="size-5 stroke-[2.5]" />
                     </div>
-                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
+                    <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-xs font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                       {tool.tag}
                     </span>
                   </div>
@@ -636,7 +636,7 @@ export default function PersonalLandingPage() {
                 </div>
 
                 <div className="mt-5 pt-3.5 border-t-2 border-dashed border-stone-200 dark:border-stone-800 flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase">
+                  <span className="text-xs font-bold text-muted-foreground uppercase">
                     {tool.category}
                   </span>
                   <Link
@@ -702,11 +702,11 @@ export default function PersonalLandingPage() {
 
                   <div className="p-5">
                     <div className="flex items-center justify-between gap-2 mb-2.5">
-                      <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-[10px] font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
+                      <span className="rounded-xs border border-[#1C1917] bg-[#FDF1EA] px-2 py-0.5 text-xs font-black uppercase text-primary shadow-neo-sm dark:bg-[#2C1F15]">
                         {typeof article.category === "string" ? article.category : article.category?.name ?? "Tài liệu"}
                       </span>
                       {article.pinned && (
-                        <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-amber-400 px-1.5 py-0.5 text-[10px] font-black uppercase text-stone-900 shadow-neo-sm">
+                        <span className="inline-flex items-center gap-1 rounded-xs border border-[#1C1917] bg-amber-400 px-1.5 py-0.5 text-xs font-black uppercase text-stone-900 shadow-neo-sm">
                           <Sparkles className="size-2.5 text-stone-900" /> Nổi bật
                         </span>
                       )}
@@ -728,7 +728,7 @@ export default function PersonalLandingPage() {
 
                 <div className="p-5 pt-0">
                   <div className="pt-3.5 border-t-2 border-[#1C1917] flex items-center justify-between dark:border-stone-800">
-                    <span className="text-[11px] font-bold text-muted-foreground font-mono">
+                    <span className="text-xs font-bold text-muted-foreground font-mono">
                       {article.publishedAt
                         ? new Date(article.publishedAt).toLocaleDateString("vi-VN")
                         : article.date || "Mới đăng"}{" "}
@@ -776,7 +776,7 @@ export default function PersonalLandingPage() {
                     <Mail className="size-5" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                    <div className="text-xs font-bold uppercase tracking-wider text-stone-400">
                       Email công việc
                     </div>
                     <a href="mailto:tuannm@huunghi.com.vn" className="font-mono text-sm font-bold text-white hover:text-primary transition-colors">
@@ -790,7 +790,7 @@ export default function PersonalLandingPage() {
                     <MapPin className="size-5" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                    <div className="text-xs font-bold uppercase tracking-wider text-stone-400">
                       Địa điểm công tác
                     </div>
                     <div className="text-xs font-bold text-white">
@@ -889,7 +889,7 @@ export default function PersonalLandingPage() {
               <div className="font-editorial text-lg font-bold tracking-tight text-white">
                 TUANNM · DIGITAL SOLUTIONS
               </div>
-              <div className="text-[10px] font-bold text-stone-400">
+              <div className="text-xs font-bold text-stone-400">
                 Phòng DMS & CNTT — Công ty Cổ phần Thực phẩm Hữu Nghị
               </div>
             </div>
@@ -913,7 +913,7 @@ export default function PersonalLandingPage() {
             </Link>
           </div>
 
-          <div className="text-[11px] font-mono text-stone-500">
+          <div className="text-xs font-mono text-stone-500">
             © 2026 TUANNM. Xây dựng cho hiệu suất tối đa.
           </div>
         </div>

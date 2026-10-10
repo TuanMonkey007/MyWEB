@@ -350,7 +350,7 @@ export function TimetableDialog({
                   )}
                 >
                   <span className={cn("size-3.5 rounded-full border border-[#1C1917]", cfg.badgeBg)} />
-                  <span className="text-[10px] font-bold truncate max-w-full">
+                  <span className="text-xs font-bold truncate max-w-full">
                     {cfg.label.split(" ")[0]}
                   </span>
                 </button>

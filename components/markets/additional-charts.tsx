@@ -260,7 +260,7 @@ export function AdditionalChartsSection() {
                         <div className="truncate font-bold text-foreground group-hover:text-primary">
                           {item.name}
                         </div>
-                        <div className="font-mono text-[10px] text-muted-foreground">
+                        <div className="font-mono text-xs text-muted-foreground">
                           {item.symbol} {item.category && `· ${item.category}`}
                         </div>
                       </div>
@@ -272,7 +272,7 @@ export function AdditionalChartsSection() {
 
               {/* Custom Symbol Form */}
               <div className="mt-3 border-t-2 border-dashed border-[#1C1917]/20 pt-3 dark:border-white/20">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                <span className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
                   Hoặc nhập mã bất kỳ (TradingView):
                 </span>
                 <form onSubmit={handleAddCustom} className="flex gap-2">
@@ -339,14 +339,14 @@ export function AdditionalChartsSection() {
                       {chart.name}
                     </h4>
                   </div>
-                  <span className="font-mono text-[11px] font-bold text-muted-foreground">
+                  <span className="font-mono text-xs font-bold text-muted-foreground">
                     {chart.symbol}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
                   {/* Timeframe selector */}
-                  <div className="flex items-center rounded-xs border border-[#1C1917] bg-stone-100 p-0.5 text-[10px] font-bold dark:border-white/40 dark:bg-stone-800">
+                  <div className="flex items-center rounded-xs border border-[#1C1917] bg-stone-100 p-0.5 text-xs font-bold dark:border-white/40 dark:bg-stone-800">
                     {["15", "60", "D", "W"].map((tf) => (
                       <button
                         key={tf}
