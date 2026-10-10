@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { STRIP_EXTENSION_ATTRS_SCRIPT } from "@/lib/strip-extension-attrs";
 import { themeStyleVars } from "@/lib/theme-color";
@@ -30,6 +31,18 @@ const roboto = localFont({
   src: "../assets/fonts/Roboto-Variable.ttf",
   variable: "--font-roboto",
   weight: "100 900",
+});
+
+// Font tiêu đề (tiện ích .font-editorial). Trước đây nạp bằng @import Google
+// Fonts trong globals.css: chặn render, và kéo cả Plus Jakarta Sans không ai
+// dùng. next/font tải lúc build rồi tự host, nên runtime không còn request
+// nào ra ngoài. Chỉ lấy 700 và 900 — đúng hai mức dùng kèm font-bold và
+// font-black; bản Next này không nhận dải "700 900" cho Playfair.
+const playfair = Playfair_Display({
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["700", "900"],
+  variable: "--font-editorial",
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -105,7 +118,7 @@ export default async function RootLayout({
     <html
       lang="vi"
       suppressHydrationWarning
-      className={`${inter.variable} ${beVietnam.variable} ${roboto.variable} h-full antialiased`}
+      className={`${inter.variable} ${beVietnam.variable} ${roboto.variable} ${playfair.variable} h-full antialiased`}
       style={
         {
           fontSize: `${settings.fontSize}px`,
