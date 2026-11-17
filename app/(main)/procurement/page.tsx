@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { YearSelect } from "@/components/procurement/year-select";
 import { BudgetOverviewTable } from "@/components/procurement/budget-overview-table";
+import { YearReportButton } from "@/components/procurement/year-report-button";
 
 export const dynamic = "force-dynamic";
 
@@ -55,9 +56,12 @@ export default async function ProcurementPage({
             {selected.title ?? `Năm ${selected.year}`} · Còn lại = Tổng quỹ − Đã chi thực tế
           </p>
         </div>
-        <Suspense>
-          <YearSelect years={years.map((y) => y.year)} selectedYear={selected.year} />
-        </Suspense>
+        <div className="flex flex-wrap items-center gap-2">
+          <YearReportButton budgetYearId={selected.id} />
+          <Suspense>
+            <YearSelect years={years.map((y) => y.year)} selectedYear={selected.year} />
+          </Suspense>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
