@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, type KeyboardEvent } from "react";
+import { ChevronRight } from "lucide-react";
 import { formatVND } from "@/lib/format";
 import type { GroupStats } from "@/lib/procurement";
 import { cn } from "@/lib/utils";
@@ -11,6 +13,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { FundItemsSheet, type FundTarget } from "./fund-items-sheet";
+
+// Dòng bấm được (chuột + bàn phím) để mở chi tiết các khoản đã đề xuất
+function clickable(open: () => void) {
+  return {
+    role: "button" as const,
+    tabIndex: 0,
+    onClick: open,
+    onKeyDown: (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open();
+      }
+    },
+  };
+}
 
 function remainingColor(remaining: number, total: number): string {
   if (total <= 0) return "text-muted-foreground";
@@ -36,7 +54,12 @@ function UsageBar({ spent, pending, total }: { spent: number; pending: number; t
 }
 
 export function BudgetOverviewTable({ groups }: { groups: GroupStats[] }) {
+  const [target, setTarget] = useState<FundTarget | null>(null);
   return (
+    <>
+    <p className="-mb-3 text-xs font-semibold text-muted-foreground">
+      Bấm vào một nhóm hoặc quỹ để xem các khoản đã chi và đang chờ mua.
+    </p>
     <div className="overflow-x-auto rounded-sm border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card">
       <Table className="border-0 shadow-none">
         <TableHeader>
@@ -63,21 +86,45 @@ export function BudgetOverviewTable({ groups }: { groups: GroupStats[] }) {
         </TableHeader>
         <TableBody className="divide-y-2 divide-border/60">
           {groups.map((g) => (
-            <Group key={g.id} group={g} />
+            <Group key={g.id} group={g} onOpen={setTarget} />
           ))}
         </TableBody>
       </Table>
     </div>
+    <FundItemsSheet target={target} onOpenChange={(open) => !open && setTarget(null)} />
+    </>
   );
 }
 
-function Group({ group: g }: { group: GroupStats }) {
+function Group({
+  group: g,
+  onOpen,
+}: {
+  group: GroupStats;
+  onOpen: (t: FundTarget) => void;
+}) {
   const selfOnly = g.funds.length === 1 && g.funds[0].name === g.name;
+  const openGroup = () =>
+    onOpen({
+      title: `${g.code}. ${g.name}`,
+      subtitle: selfOnly ? "Quỹ" : `Cả nhóm · ${g.funds.length} quỹ`,
+      fundIds: g.funds.map((f) => f.id),
+      total: g.total,
+      spent: g.spent,
+      pending: g.pending,
+      remaining: g.remaining,
+    });
   return (
     <>
-      <TableRow className="bg-[#FAF7F0] hover:bg-[#F3ECE2] border-b-2 border-[#1C1917] font-black text-foreground dark:bg-[#22170F] dark:hover:bg-[#2C1F15] transition-colors">
+      <TableRow
+        {...clickable(openGroup)}
+        title="Xem các khoản đã đề xuất"
+        className="group/row cursor-pointer focus-visible:outline-2 focus-visible:outline-[#F25C2B] focus-visible:-outline-offset-2 bg-[#FAF7F0] hover:bg-[#F3ECE2] border-b-2 border-[#1C1917] font-black text-foreground dark:bg-[#22170F] dark:hover:bg-[#2C1F15] transition-colors">
         <TableCell className="py-2.5 px-3.5 font-bold text-foreground border-r-2 border-[#1C1917]">
-          {g.code}. {g.name}
+          <span className="flex items-center gap-1">
+            {g.code}. {g.name}
+            <ChevronRight className="size-4 shrink-0 opacity-30 transition-opacity group-hover/row:opacity-100" />
+          </span>
         </TableCell>
         <TableCell className="text-right font-black tabular-nums py-2.5 px-3.5 border-r-2 border-[#1C1917]">
           {formatVND(g.total)}
@@ -102,9 +149,32 @@ function Group({ group: g }: { group: GroupStats }) {
       </TableRow>
       {!selfOnly &&
         g.funds.map((f) => (
-          <TableRow key={f.id} className="hover:bg-muted/30 transition-colors">
-            <TableCell className="py-2 px-3.5 pl-8 text-xs font-semibold text-muted-foreground border-r-2 border-[#1C1917]">
-              {f.name}
+          <TableRow
+            key={f.id}
+            {...clickable(() =>
+              onOpen({
+                title: f.name,
+                subtitle: `Quỹ thuộc nhóm ${g.code}. ${g.name}`,
+                fundIds: [f.id],
+                total: f.total,
+                spent: f.spent,
+                pending: f.pending,
+                remaining: f.remaining,
+              })
+            )}
+            title="Xem các khoản đã đề xuất"
+            className="group/row cursor-pointer hover:bg-muted/40 focus-visible:outline-2 focus-visible:outline-[#F25C2B] focus-visible:-outline-offset-2 transition-colors"
+          >
+            <TableCell className="py-2 px-3.5 pl-8 text-xs font-semibold text-muted-foreground border-r-2 border-[#1C1917] group-hover/row:text-foreground">
+              <span className="flex items-center gap-1">
+                {f.name}
+                {f.itemCount > 0 && (
+                  <span className="rounded-sm bg-muted px-1 text-[10px] font-black tabular-nums">
+                    {f.itemCount}
+                  </span>
+                )}
+                <ChevronRight className="size-3.5 shrink-0 opacity-0 transition-opacity group-hover/row:opacity-100" />
+              </span>
             </TableCell>
             <TableCell className="text-right tabular-nums py-2 px-3.5 text-xs font-semibold border-r-2 border-[#1C1917]">
               {formatVND(f.total)}

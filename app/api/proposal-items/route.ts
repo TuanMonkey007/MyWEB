@@ -2,6 +2,32 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { jsonError, parseItemBody } from "@/lib/api";
 
+// Các hạng mục đã đề xuất trên một hay nhiều quỹ (?fundIds=a,b) — kèm đợt đề xuất,
+// dùng cho bảng chi tiết khi bấm vào quỹ ở trang Ngân sách
+export async function GET(req: Request) {
+  const raw = new URL(req.url).searchParams.get("fundIds") ?? "";
+  const fundIds = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 200);
+  if (fundIds.length === 0) return jsonError("Thiếu fundIds");
+
+  const items = await prisma.proposalItem.findMany({
+    where: { fundId: { in: fundIds } },
+    orderBy: [{ proposal: { proposedAt: "asc" } }, { createdAt: "asc" }],
+    select: {
+      id: true,
+      name: true,
+      unit: true,
+      quantity: true,
+      status: true,
+      proposedAmount: true,
+      actualAmount: true,
+      notes: true,
+      fund: { select: { id: true, name: true } },
+      proposal: { select: { id: true, number: true, title: true, proposedAt: true } },
+    },
+  });
+  return NextResponse.json(items);
+}
+
 export async function POST(req: Request) {
   const body = await req.json();
   const proposal = await prisma.proposal.findUnique({
