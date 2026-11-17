@@ -1,0 +1,27 @@
+# Bắt buộc: node_modules của máy dev chứa binary sai nền tảng (sharp, engine
+# Prisma). Lọt vào image là container chết ngay khi khởi động.
+node_modules
+.next
+out
+
+# Dữ liệu thật — không được nằm trong image
+prisma/*.db
+prisma/*.db-journal
+prisma/.app-secret
+uploads
+
+# Bí mật
+.env
+.env.*
+!.env.example
+
+.git
+.gitignore
+.claude
+*.md
+!README.md
+scripts/*.ps1
+Dockerfile
+docker-compose.yml
+.dockerignore
+.DS_Store

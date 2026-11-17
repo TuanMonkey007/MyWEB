@@ -1,0 +1,40 @@
+services:
+  web:
+    build: .
+    image: myweb:latest
+    container_name: myweb
+    restart: unless-stopped
+
+    ports:
+      # Chỉ mở trên loopback — đặt nginx/Caddy phía trước lo TLS.
+      # Muốn mở thẳng ra LAN thì đổi thành "3000:3000" và mở firewalld.
+      - "127.0.0.1:3000:3000"
+
+    env_file:
+      - .env.production
+
+    volumes:
+      # Hậu tố :Z là BẮT BUỘC trên CentOS 7 — SELinux bật mặc định, thiếu nó
+      # container bị từ chối đọc/ghi và app chết với lỗi permission.
+      # Dùng :Z (chữ hoa, nhãn riêng cho container này), không phải :z.
+      #
+      # Mount CẢ THƯ MỤC chứ không mount riêng file .db: lib/secret-box.ts
+      # sinh file .app-secret nằm cạnh database. Mount lẻ file thì khoá này
+      # mất mỗi lần tái tạo container, và mọi API key mail đã lưu phải nhập lại.
+      #
+      # Phải là ổ ĐĨA LOCAL. Đừng trỏ vào NFS/CIFS: khoá file của SQLite không
+      # đáng tin trên hệ thống file mạng, rủi ro hỏng database.
+      - /opt/myweb/data:/data:Z
+
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"

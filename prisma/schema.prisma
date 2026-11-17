@@ -6,6 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Engine của Prisma là binary theo nền tảng. "native" cho máy dev (macOS),
+  // "debian-openssl-1.1.x" cho container chạy trên node:20-bullseye (Debian 11).
+  // Đổi base image sang bookworm/Alpine thì PHẢI đổi target tương ứng,
+  // sai target là Prisma không khởi động được.
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
