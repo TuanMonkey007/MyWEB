@@ -15,6 +15,7 @@ import {
 import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ItemDialog, type FundOption, type ItemDTO } from "./item-dialog";
+import { InheritItemsButton } from "./inherit-items-dialog";
 import { useCan, NO_PERM } from "@/components/permissions-provider";
 
 export function ItemStatusBadge({ status }: { status: string }) {
@@ -53,22 +54,29 @@ export function ItemsTable({
         <h2 className="font-editorial text-lg font-bold uppercase tracking-tight text-foreground">
           Hạng mục chi tiết ({items.length})
         </h2>
-        <Button
-          size="sm"
-          disabled={!canCreate}
-          title={canCreate ? undefined : NO_PERM}
-          onClick={() => {
-            setSelected(null);
-            setDialogOpen(true);
-          }}
-        >
-          <Plus className="size-3.5" /> Thêm hạng mục
-        </Button>
+        <div className="flex flex-wrap justify-end gap-2">
+          <InheritItemsButton proposalId={proposalId} fundOptions={fundOptions} />
+          <Button
+            size="sm"
+            disabled={!canCreate}
+            title={canCreate ? undefined : NO_PERM}
+            onClick={() => {
+              setSelected(null);
+              setDialogOpen(true);
+            }}
+          >
+            <Plus className="size-3.5" /> Thêm hạng mục
+          </Button>
+        </div>
       </div>
 
       {items.length === 0 ? (
-        <div className="rounded-sm border-2 border-dashed border-[#1C1917] bg-white py-12 text-center text-sm font-semibold text-muted-foreground shadow-neo dark:bg-card">
+        <div className="flex flex-col items-center gap-3 rounded-sm border-2 border-dashed border-[#1C1917] bg-white py-12 text-center text-sm font-semibold text-muted-foreground shadow-neo dark:bg-card">
           Chưa có hạng mục nào trong đợt này.
+          <span className="text-xs font-medium">
+            Mua lại hàng của tháng trước? Kế thừa để khỏi nhập lại từ đầu.
+          </span>
+          <InheritItemsButton proposalId={proposalId} fundOptions={fundOptions} variant="default" />
         </div>
       ) : (
         <div className="overflow-x-auto rounded-sm border-2 border-[#1C1917] bg-white shadow-neo dark:bg-card">
