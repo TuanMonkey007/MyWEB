@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         title:
           typeof body.title === "string" && body.title.trim() ? body.title.trim() : null,
         notes: "Nhập từ file Excel",
-        items: { create: clean },
+        items: { create: clean.map((it, i) => ({ ...it, sortOrder: i })) },
       },
     });
     return NextResponse.json({ id: proposal.id }, { status: 201 });

@@ -62,7 +62,7 @@ async function loadYear(budgetYearId: string) {
     prisma.proposal.findMany({
       where: { budgetYearId },
       orderBy: [{ proposedAt: "asc" }, { number: "asc" }],
-      include: { items: { orderBy: { createdAt: "asc" } } },
+      include: { items: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] } },
     }),
   ]);
   return { year, groups, proposals };

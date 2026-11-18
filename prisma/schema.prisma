@@ -182,6 +182,7 @@ model ProposalItem {
   actualAmount   Float? // tiền mua thực tế (VAT), chỉ khi PURCHASED
   purchasedAt    DateTime?
   notes          String?
+  sortOrder      Int        @default(0) // thứ tự trong đợt (kéo thả); trùng thì theo createdAt
   createdAt      DateTime   @default(now())
 
   attachments Attachment[]

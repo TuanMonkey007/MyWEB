@@ -23,7 +23,7 @@ export default async function ProposalDetailPage({ params }: { params: Params })
       budgetYear: true,
       attachments: { orderBy: { createdAt: "asc" } },
       items: {
-        orderBy: { createdAt: "asc" },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
         include: { attachments: { orderBy: { createdAt: "asc" } } },
       },
     },

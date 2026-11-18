@@ -161,7 +161,8 @@ async function seedProcurement() {
         number: p.number,
         proposedAt: p.proposedAt ? new Date(p.proposedAt) : new Date(data.year, 0, 1),
         items: {
-          create: p.items.map((it) => ({
+          create: p.items.map((it, i) => ({
+            sortOrder: i,
             name: it.name,
             fundId: fundIdByName.get(it.fundName)!,
             quantity: it.quantity,

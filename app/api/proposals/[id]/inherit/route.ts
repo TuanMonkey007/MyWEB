@@ -33,7 +33,7 @@ export async function GET(_req: Request, { params }: Params) {
         budgetYear: { select: { year: true } },
         items: {
           where: { status: { not: "CANCELLED" } },
-          orderBy: { createdAt: "asc" },
+          orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
           include: { fund: { select: { id: true, name: true } } },
         },
       },
@@ -120,8 +120,15 @@ export async function POST(req: Request, { params }: Params) {
     if (!fundOk.has(p.fundId)) return jsonError("Quỹ không thuộc năm ngân sách của đợt này");
   }
 
+  // Mặt hàng kế thừa nối vào cuối đợt, giữ thứ tự đã chọn
+  const last = await prisma.proposalItem.aggregate({
+    _max: { sortOrder: true },
+    where: { proposalId: target.id },
+  });
+  const base = (last._max.sortOrder ?? -1) + 1;
+
   await prisma.$transaction(
-    parsed.map((p) => {
+    parsed.map((p, i) => {
       const s = sourceById.get(p.sourceItemId)!;
       return prisma.proposalItem.create({
         data: {
@@ -135,6 +142,7 @@ export async function POST(req: Request, { params }: Params) {
           notes: s.notes,
           status: "PENDING",
           proposedAmount: p.proposedAmount,
+          sortOrder: base + i,
         },
       });
     })

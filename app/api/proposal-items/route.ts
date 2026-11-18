@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
   const items = await prisma.proposalItem.findMany({
     where: { fundId: { in: fundIds } },
-    orderBy: [{ proposal: { proposedAt: "asc" } }, { createdAt: "asc" }],
+    orderBy: [{ proposal: { proposedAt: "asc" } }, { sortOrder: "asc" }, { createdAt: "asc" }],
     select: {
       id: true,
       name: true,
@@ -41,8 +41,13 @@ export async function POST(req: Request) {
   const fund = await prisma.budgetFund.findUnique({ where: { id: parsed.fundId } });
   if (!fund) return jsonError("Quỹ không tồn tại");
 
+  // Hạng mục mới nằm cuối đợt
+  const last = await prisma.proposalItem.aggregate({
+    _max: { sortOrder: true },
+    where: { proposalId: proposal.id },
+  });
   const item = await prisma.proposalItem.create({
-    data: { ...parsed, proposalId: proposal.id },
+    data: { ...parsed, proposalId: proposal.id, sortOrder: (last._max.sortOrder ?? -1) + 1 },
     include: { fund: true, attachments: true },
   });
   return NextResponse.json(item, { status: 201 });

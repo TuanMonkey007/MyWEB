@@ -23,7 +23,7 @@ export async function GET(req: Request, { params }: Params) {
     where: { id },
     include: {
       budgetYear: true,
-      items: { orderBy: { createdAt: "asc" }, include: { fund: true } },
+      items: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }], include: { fund: true } },
     },
   });
   if (!proposal) return jsonError("Không tìm thấy đợt đề xuất", 404);
